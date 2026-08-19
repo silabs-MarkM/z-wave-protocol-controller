@@ -844,13 +844,15 @@ static decrypt_return_code_t S2_decrypt_msg(struct S2 *p_context, s2_connection_
         /*In this state we don't know which class_id was used to encrypt the frame, so
          * we will try de-crypting with all our classes */
 
-        /*Check the fsm before using the workbuf. Need backup for both INSTANTIATE (class iteration)
-         * and NEGOTIATED (SPAN retry) cases, as CCM_decrypt_and_auth modifies ciphertext in place */
-        if (ctxt->fsm == IDLE && (span->state == SPAN_INSTANTIATE || span->state == SPAN_NEGOTIATED)) {
-            if (ciphertext_len > sizeof(ctxt->workbuf)) {
+        /* CCM_decrypt_and_auth modifies ciphertext in place. Backup on the stack so
+         * class iteration and SPAN retries work while workbuf still holds an in-flight TX
+         * (VERIFYING_DELIVERY / SENDING_MSG). */
+        uint8_t ciphertext_backup[sizeof(ctxt->workbuf)];
+        if (span->state == SPAN_INSTANTIATE || span->state == SPAN_NEGOTIATED) {
+            if (ciphertext_len > sizeof(ciphertext_backup)) {
                 goto auth_fail;
             }
-            memcpy(ctxt->workbuf, ciphertext, ciphertext_len);
+            memcpy(ciphertext_backup, ciphertext, ciphertext_len);
         }
 
         for (i = 0; i < N_SEC_CLASS; i++) {
@@ -868,7 +870,7 @@ static decrypt_return_code_t S2_decrypt_msg(struct S2 *p_context, s2_connection_
                 for (uint8_t span_attempt = 0; span_attempt < max_span_attempts; span_attempt++) {
                     /* Restore ciphertext before each retry attempt, as CCM_decrypt_and_auth modifies it in place */
                     if (span_attempt > 0) {
-                        memcpy(ciphertext, ctxt->workbuf, ciphertext_len);
+                        memcpy(ciphertext, ciphertext_backup, ciphertext_len);
                     }
 
                     next_nonce_generate(&span->d.rng, nonce);
@@ -931,11 +933,9 @@ static decrypt_return_code_t S2_decrypt_msg(struct S2 *p_context, s2_connection_
                 }
             }
 
-            if (ctxt->fsm != IDLE || span->state == SPAN_NEGOTIATED) {
-                /* Two failure cases:
-                 * 1) ctxt->fsm != IDLE: workbuf in use, cannot backup ciphertext for class iteration
-                 * 2) span->state == SPAN_NEGOTIATED: Already know the correct key and tried SPAN retries.
-                 *    Should not iterate through other security classes. Genuine auth failure. */
+            if (span->state == SPAN_NEGOTIATED) {
+                /* Already know the correct key and tried SPAN retries.
+                 * Should not iterate through other security classes. Genuine auth failure. */
                 goto auth_fail;
             }
 
@@ -946,7 +946,7 @@ static decrypt_return_code_t S2_decrypt_msg(struct S2 *p_context, s2_connection_
             }
 
             // Restore the ciphertext
-            memcpy(ciphertext, ctxt->workbuf, ciphertext_len);
+            memcpy(ciphertext, ciphertext_backup, ciphertext_len);
 
             /*reset prng to the negotiated state with the right new test key */
             next_nonce_instantiate(&span->d.rng, s_nonce, r_nonce, ctxt->sg[span->class_id].nonce_key);

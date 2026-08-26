@@ -153,6 +153,19 @@ sl_status_t zwave_controller_transport_abort_send_data(zwave_tx_session_id_t ses
  */
 bool zwave_controller_transport_is_busy(void);
 
+/**
+ * @brief True if the Z-Wave API still has a frame on the air.
+ *
+ * Unlike \ref zwave_controller_transport_is_busy, this ignores upper-layer
+ * transports (S2/S0) that can remain "busy" after the radio callback while
+ * waiting for an application send-data timeout. SOS Nonce Reports must be
+ * allowed to TX in that window.
+ *
+ * @return true  if the priority-0 (Z-Wave API) transport is transmitting.
+ * @return false if the radio is idle (or no API transport is registered).
+ */
+bool zwave_controller_transport_on_air(void);
+
 #ifdef __cplusplus
 }
 #endif

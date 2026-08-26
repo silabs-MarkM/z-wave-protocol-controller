@@ -154,3 +154,12 @@ bool zwave_controller_transport_is_busy(void)
     }
     return false;
 }
+
+bool zwave_controller_transport_on_air(void)
+{
+    // Priority 0 is the Z-Wave API (radio). See zwave_controller_transport.h.
+    if ((transports[0].is_busy != NULL) && (transports[0].is_busy() == true)) {
+        return true;
+    }
+    return false;
+}

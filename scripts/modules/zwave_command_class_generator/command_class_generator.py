@@ -15,8 +15,14 @@ from pathlib import Path
 import json
 import logging
 import subprocess
+import sys
 from itertools import chain
-from jinja2 import Environment, FileSystemLoader, Template
+from jinja2 import Environment, FileSystemLoader
+
+_SCRIPTS_DIR = Path(__file__).resolve().parents[2]
+if str(_SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS_DIR))
+from mqtt_asyncapi.mqtt_schema import command_payload_schema
 
 
 class ClangFormat:
@@ -108,7 +114,7 @@ class CommandClassGenerator:
         "+command_class+_mqtt.hpp.j2",
         "+command_class+_mqtt.cpp.j2",
     }
-    _MQTT_INTERFACE_DOC_TEMPLATE_NAME = "+command_class+_mqtt_interface.md.j2"
+    _MQTT_INTERFACE_DOC_TEMPLATE_NAME = "command_classes.asyncapi.yaml.j2"
 
     @classmethod
     def _should_render(cls, template_name, command_class):
@@ -117,7 +123,7 @@ class CommandClassGenerator:
         if template_name in cls._MQTT_ONLY_TEMPLATE_NAMES:
             return False
         if template_name == cls._MQTT_INTERFACE_DOC_TEMPLATE_NAME:
-            return command_class.has_mqtt_interface_doc
+            return True
         return True
 
     def _mqtt_interface_doc_path(self, command_class, output_dir: Path) -> Path:
@@ -168,6 +174,8 @@ class CommandClassGenerator:
         )
         markdownTemplateEnv.filters["as_json"] = _as_json
         markdownTemplateEnv.filters["parse_json"] = _parse_json
+        markdownTemplateEnv.filters["mqtt_payload_schema"] = command_payload_schema
+        templateEnv.filters["mqtt_payload_schema"] = command_payload_schema
 
         utility_templates = [
             "utils.j2",
@@ -183,24 +191,35 @@ class CommandClassGenerator:
             template_relative_path = template.relative_to(self._templates_dir)
             template_name = template.name
 
-            # Use markdown environment for .md.j2 files, default environment for others
-            if template_name.endswith('.md.j2'):
-                template = markdownTemplateEnv.get_template(str(template_relative_path))
+            is_doc_template = template_name.endswith(".md.j2") or template_name.endswith(
+                ".yaml.j2"
+            )
+            if is_doc_template:
+                loaded = markdownTemplateEnv.get_template(str(template_relative_path))
             else:
-                template = templateEnv.get_template(str(template_relative_path))
+                loaded = templateEnv.get_template(str(template_relative_path))
 
-            for command_class in self._command_classes:
+            is_per_cc = "+command_class+" in str(template_relative_path)
+            classes_to_render = (
+                self._command_classes
+                if is_per_cc
+                else [self._command_classes[0] if self._command_classes else None]
+            )
 
-                if not self._should_render(template_name, command_class):
+            for command_class in classes_to_render:
+                if command_class is None:
+                    continue
+                if is_per_cc and not self._should_render(template_name, command_class):
                     continue
 
-                output = template.render(
+                output = loaded.render(
                     command_classes=self._command_classes,
                     command_class=command_class,
                 )
 
                 output_file_name = (
-                    template.name.replace(".j2", "")
+                    str(template_relative_path)
+                    .replace(".j2", "")
                     .replace(".jinja", "")
                     .replace(".jinja2", "")
                 )
@@ -208,10 +227,15 @@ class CommandClassGenerator:
                     "+command_class+", f"{command_class.name.lower()}"
                 )
 
-                if not template.name.endswith(".txt.j2") and not template.name.endswith(".md.j2"):
-                    formatted_output = self._clang_format.format(output)
-                else:
+                skip_format = (
+                    template.name.endswith(".txt.j2")
+                    or template.name.endswith(".md.j2")
+                    or template.name.endswith(".yaml.j2")
+                )
+                if skip_format:
                     formatted_output = output
+                else:
+                    formatted_output = self._clang_format.format(output)
 
                 if self._output_dir:
                     output_dir = self._output_dir

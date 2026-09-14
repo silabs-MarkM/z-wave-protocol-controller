@@ -8,6 +8,14 @@ execute_process(COMMAND python3 ${CMAKE_SOURCE_DIR}/scripts/command_class_genera
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 message(NOTICE "-- Command classes generation completed")
+message(NOTICE "-- Assembling MQTT AsyncAPI and rendering docs")
+execute_process(COMMAND python3 ${CMAKE_SOURCE_DIR}/scripts/mqtt_asyncapi/assemble_and_render.py
+  --root ${CMAKE_SOURCE_DIR}
+  --cc-yaml ${CMAKE_CURRENT_SOURCE_DIR}/doc/generated/command_classes.asyncapi.yaml
+  --assembled-out ${CMAKE_BINARY_DIR}/asyncapi.assembled.yaml
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+message(NOTICE "-- MQTT AsyncAPI assemble completed")
 
 ### Create command class common library object
 

@@ -14,6 +14,8 @@ on:
       - 'mkdocs.yml'
       - 'scripts/mkdocs/'
       - 'scripts/command_class_generator/**'
+      - 'scripts/mqtt_asyncapi/**'
+      - 'components/**/asyncapi/**'
       - 'README.md'
   pull_request:
     branches: [main, master]
@@ -27,6 +29,8 @@ on:
       - 'mkdocs.yml'
       - 'scripts/mkdocs/'
       - 'scripts/command_class_generator/**'
+      - 'scripts/mqtt_asyncapi/**'
+      - 'components/**/asyncapi/**'
       - 'README.md'
   workflow_dispatch:
 
@@ -56,7 +60,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -81,6 +85,21 @@ jobs:
             --cfg scripts/command_class_generator/config.yaml \
             --templates scripts/command_class_generator/templates \
             --out build/command_class_docs
+          python3 scripts/mqtt_asyncapi/assemble_and_render.py \
+            --root . \
+            --cc-yaml build/command_class_docs/doc/generated/command_classes.asyncapi.yaml \
+            --cc-md-root build/command_class_docs \
+            --assembled-out build/asyncapi.assembled.yaml
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate AsyncAPI
+        env:
+          SUPPRESS_NO_CONFIG_WARNING: 'true'
+        run: npx --yes @asyncapi/cli@6.0.2 validate build/asyncapi.assembled.yaml
 
       - name: Prepare docs for MkDocs
         env:

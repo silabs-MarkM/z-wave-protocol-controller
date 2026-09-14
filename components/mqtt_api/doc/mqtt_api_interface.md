@@ -1,6 +1,6 @@
 # MQTT API Interface Documentation
 
-This page is the **developer reference** for the `MqttApiBase` class and topic naming rules. For the **catalog of live MQTT topics** exposed by ZPC (Discovery, Network Management, SmartStart, Device Interview, Network Status, OTA, Command Classes), see the [MQTT API Index](mqtt_api_index.md) — it is the single source of truth for what topics exist, in which direction they flow, and where to find their full reference.
+This page is the **developer reference** for the `MqttApiBase` class and topic naming rules. For the **catalog of live MQTT topics** exposed by ZPC, see the [MQTT API Index](mqtt_api_index.md) (generated from per-component `asyncapi/` YAML).
 
 ## Table of Contents
 - [MqttApiBase API Reference](#mqttapibase-api-reference)

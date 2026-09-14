@@ -57,11 +57,12 @@ distributed under the MIT License:
 
 ## Apache License 2.0
 
-The following component is used as a runtime dependency and is distributed
-under the Apache License, Version 2.0
+The following components are used as runtime or CI dependencies and are
+distributed under the Apache License, Version 2.0
 (https://www.apache.org/licenses/LICENSE-2.0):
 
-- **OpenSSL** (https://www.openssl.org/)
+- **OpenSSL** (https://www.openssl.org/) — runtime
+- **@asyncapi/cli** (https://github.com/asyncapi/cli, pinned in `.github/workflows/docs.yml`) — CI-only validator for the MQTT AsyncAPI document; not linked into ZPC
 
 ---
 

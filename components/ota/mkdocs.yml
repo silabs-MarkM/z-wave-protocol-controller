@@ -3,3 +3,4 @@ site_name: api/ota
 docs_dir: docs
 nav:
   - OTA Firmware Manager: ota.md
+  - OTA MQTT API: ota_mqtt_api.md

@@ -1,5 +1,7 @@
 ## COMMAND_CLASS_WAKE_UP MQTT API
 
+<!-- Generated from AsyncAPI; do not edit -->
+
 | MQTT Support | Support | Control |
 |--------------|---------|---------|
 | true | false | true |
@@ -12,94 +14,101 @@
 - [WAKE_UP_INTERVAL_SET](#wake_up_interval_set)
 - [WAKE_UP_NO_MORE_INFORMATION](#wake_up_no_more_information)
 - [WAKE_UP_NOTIFICATION](#wake_up_notification)
+
 ### WAKE_UP_INTERVAL_CAPABILITIES_GET
-  
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/WakeUp/Command/WakeUpIntervalCapabilitiesGet
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/WakeUp/Command/WakeUpIntervalCapabilitiesGet`
+
+**Direction:** Command (client → ZPC)
 
 **Payload:**
+
 ```json
-{ }
-```
-### WAKE_UP_INTERVAL_CAPABILITIES_REPORT
-                                                                                                                                                                                                                                                
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/WakeUp/Report/WakeUpIntervalCapabilitiesReport
+{}
 ```
 
+### WAKE_UP_INTERVAL_CAPABILITIES_REPORT
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/WakeUp/Report/WakeUpIntervalCapabilitiesReport`
+
+**Direction:** Report (ZPC → client)
+
 **Payload:**
+
 ```json
 {
-  "minimum_wake_up_interval_seconds": "0x123",
-  "maximum_wake_up_interval_seconds": "0x123",
-  "default_wake_up_interval_seconds": "0x123",
-  "wake_up_interval_step_seconds": "0x123",
+  "minimum_wake_up_interval_seconds": "0x01",
+  "maximum_wake_up_interval_seconds": "0x01",
+  "default_wake_up_interval_seconds": "0x01",
+  "wake_up_interval_step_seconds": "0x01",
   "properties1": {
-    "wake_up_on_demand": "0x05"
+    "wake_up_on_demand": "0x01"
   }
 }
 ```
+
 ### WAKE_UP_INTERVAL_GET
-  
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/WakeUp/Command/WakeUpIntervalGet
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/WakeUp/Command/WakeUpIntervalGet`
+
+**Direction:** Command (client → ZPC)
 
 **Payload:**
+
 ```json
-{ }
+{}
 ```
+
 ### WAKE_UP_INTERVAL_REPORT
-                                                                              
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/WakeUp/Report/WakeUpIntervalReport
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/WakeUp/Report/WakeUpIntervalReport`
+
+**Direction:** Report (ZPC → client)
 
 **Payload:**
+
 ```json
 {
-  "seconds": "0x123",
-  "nodeid": "0x12"
+  "seconds": "0x01",
+  "nodeid": "0x01"
 }
 ```
+
 ### WAKE_UP_INTERVAL_SET
-                                                                              
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/WakeUp/Command/WakeUpIntervalSet
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/WakeUp/Command/WakeUpIntervalSet`
+
+**Direction:** Command (client → ZPC)
 
 **Payload:**
+
 ```json
 {
-  "seconds": "0x123",
-  "nodeid": "0x12"
+  "seconds": "0x01",
+  "nodeid": "0x01"
 }
 ```
+
 ### WAKE_UP_NO_MORE_INFORMATION
-  
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/WakeUp/Command/WakeUpNoMoreInformation
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/WakeUp/Command/WakeUpNoMoreInformation`
+
+**Direction:** Command (client → ZPC)
 
 **Payload:**
+
 ```json
-{ }
+{}
 ```
+
 ### WAKE_UP_NOTIFICATION
-  
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/WakeUp/Report/WakeUpNotification
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/WakeUp/Report/WakeUpNotification`
+
+**Direction:** Report (ZPC → client)
 
 **Payload:**
+
 ```json
-{ }
+{}
 ```

@@ -3,3 +3,4 @@ site_name: api/network_monitor
 docs_dir: doc
 nav:
   - Network Status: network_status.md
+  - Network Status MQTT API: network_status_mqtt_api.md

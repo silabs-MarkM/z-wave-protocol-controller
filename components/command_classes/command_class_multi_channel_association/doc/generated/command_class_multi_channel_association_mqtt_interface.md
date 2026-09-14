@@ -1,5 +1,7 @@
 ## COMMAND_CLASS_MULTI_CHANNEL_ASSOCIATION MQTT API
 
+<!-- Generated from AsyncAPI; do not edit -->
+
 | MQTT Support | Support | Control |
 |--------------|---------|---------|
 | true | true | true |
@@ -11,124 +13,124 @@
 - [MULTI_CHANNEL_ASSOCIATION_REMOVE](#multi_channel_association_remove)
 - [MULTI_CHANNEL_ASSOCIATION_REPORT](#multi_channel_association_report)
 - [MULTI_CHANNEL_ASSOCIATION_SET](#multi_channel_association_set)
+
 ### MULTI_CHANNEL_ASSOCIATION_GET
-                                          
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/MultiChannelAssociation/Command/MultiChannelAssociationGet
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/MultiChannelAssociation/Command/MultiChannelAssociationGet`
+
+**Direction:** Command (client → ZPC)
 
 **Payload:**
+
 ```json
 {
-  "grouping_identifier": "0x12"
+  "grouping_identifier": "0x01"
 }
 ```
+
 ### MULTI_CHANNEL_ASSOCIATION_GROUPINGS_GET
-  
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/MultiChannelAssociation/Command/MultiChannelAssociationGroupingsGet
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/MultiChannelAssociation/Command/MultiChannelAssociationGroupingsGet`
+
+**Direction:** Command (client → ZPC)
 
 **Payload:**
+
 ```json
-{ }
+{}
 ```
+
 ### MULTI_CHANNEL_ASSOCIATION_GROUPINGS_REPORT
-                                          
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/MultiChannelAssociation/Report/MultiChannelAssociationGroupingsReport
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/MultiChannelAssociation/Report/MultiChannelAssociationGroupingsReport`
+
+**Direction:** Report (ZPC → client)
 
 **Payload:**
+
 ```json
 {
-  "supported_groupings": "0x12"
+  "supported_groupings": "0x01"
 }
 ```
+
 ### MULTI_CHANNEL_ASSOCIATION_REMOVE
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/MultiChannelAssociation/Command/MultiChannelAssociationRemove
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/MultiChannelAssociation/Command/MultiChannelAssociationRemove`
+
+**Direction:** Command (client → ZPC)
 
 **Payload:**
+
 ```json
 {
-  "grouping_identifier": "0x12",
+  "grouping_identifier": "0x01",
   "node_id": [
-    "0x01",
-    "0x02",
-    "0x03"
+    "0x01"
   ],
-  "marker": "0xFF",
+  "marker": "0x01",
   "vg": [
     {
-      "multi_channel_node_id": "0x12",
+      "multi_channel_node_id": "0x01",
       "properties1": {
-        "end_point": "0x05",
-        "bit_address": "0x05"
+        "end_point": "0x01",
+        "bit_address": "0x01"
       }
     }
   ]
 }
 ```
+
 ### MULTI_CHANNEL_ASSOCIATION_REPORT
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/MultiChannelAssociation/Report/MultiChannelAssociationReport
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/MultiChannelAssociation/Report/MultiChannelAssociationReport`
+
+**Direction:** Report (ZPC → client)
 
 **Payload:**
+
 ```json
 {
-  "grouping_identifier": "0x12",
-  "max_nodes_supported": "0x12",
-  "reports_to_follow": "0x12",
+  "grouping_identifier": "0x01",
+  "max_nodes_supported": "0x01",
+  "reports_to_follow": "0x01",
   "node_id": [
-    "0x01",
-    "0x02",
-    "0x03"
+    "0x01"
   ],
-  "marker": "0xFF",
+  "marker": "0x01",
   "vg": [
     {
-      "multi_channel_node_id": "0x12",
+      "multi_channel_node_id": "0x01",
       "properties1": {
-        "end_point": "0x05",
-        "bit_address": "0x05"
+        "end_point": "0x01",
+        "bit_address": "0x01"
       }
     }
   ]
 }
 ```
+
 ### MULTI_CHANNEL_ASSOCIATION_SET
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/MultiChannelAssociation/Command/MultiChannelAssociationSet
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/MultiChannelAssociation/Command/MultiChannelAssociationSet`
+
+**Direction:** Command (client → ZPC)
 
 **Payload:**
+
 ```json
 {
-  "grouping_identifier": "0x12",
+  "grouping_identifier": "0x01",
   "node_id": [
-    "0x01",
-    "0x02",
-    "0x03"
+    "0x01"
   ],
-  "marker": "0xFF",
+  "marker": "0x01",
   "vg": [
     {
-      "multi_channel_node_id": "0x12",
+      "multi_channel_node_id": "0x01",
       "properties1": {
-        "end_point": "0x05",
-        "bit_address": "0x05"
+        "end_point": "0x01",
+        "bit_address": "0x01"
       }
     }
   ]

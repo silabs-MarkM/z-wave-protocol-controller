@@ -1,0 +1,61 @@
+{% import "utils.j2" as utils with context %}
+{# Generated command-class MQTT channels. Do not edit the output file. #}
+channels:
+{% for command_class in command_classes if command_class.has_mqtt_interface_doc %}
+{% set cc_token = utils.convert_command_name_to_mqtt_topic_token(command_class.name.replace("COMMAND_CLASS_", "")) %}
+{% set cc_dir = command_class.name | lower %}
+{% for command in command_class.commands %}
+{% set is_tx = command.is_tx() %}
+{% if command_class.mqtt_support or is_tx %}
+{% if utils.should_mqtt_publish_report(command) == "True" or not is_tx %}
+{% set frame_type = "Report" if is_tx else "Command" %}
+{% set cmd_token = command.name.replace("_", " ").split(" ") | map("capitalize") | join("") %}
+{% set channel_id = "cc" ~ cc_token ~ cmd_token ~ frame_type %}
+  {{ channel_id }}:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/{{ cc_token }}/{{ frame_type }}/{{ cmd_token }}
+    x-doc-group: command_class
+    x-cc-name: {{ command_class.name }}
+    x-cc-dir: {{ cc_dir }}
+    x-mqtt-support: "{{ "true" if command_class.mqtt_support else "false" }}"
+    x-support: "{{ "true" if command_class.support else "false" }}"
+    x-control: "{{ "true" if command_class.control else "false" }}"
+    x-command-name: {{ command.name }}
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+      nodeId:
+        $ref: "#/components/parameters/nodeId"
+      endpointId:
+        $ref: "#/components/parameters/endpointId"
+    messages:
+      {{ channel_id }}:
+        name: {{ command.name }}
+        payload:
+          schema:
+{{ command | mqtt_payload_schema | as_json(indent=2) | indent(12, first=true) }}
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+operations:
+{% for command_class in command_classes if command_class.has_mqtt_interface_doc %}
+{% set cc_token = utils.convert_command_name_to_mqtt_topic_token(command_class.name.replace("COMMAND_CLASS_", "")) %}
+{% for command in command_class.commands %}
+{% set is_tx = command.is_tx() %}
+{% if command_class.mqtt_support or is_tx %}
+{% if utils.should_mqtt_publish_report(command) == "True" or not is_tx %}
+{% set frame_type = "Report" if is_tx else "Command" %}
+{% set cmd_token = command.name.replace("_", " ").split(" ") | map("capitalize") | join("") %}
+{% set channel_id = "cc" ~ cc_token ~ cmd_token ~ frame_type %}
+{% set op_id = ("send" if is_tx else "receive") ~ cc_token ~ cmd_token %}
+  {{ op_id }}:
+    action: {{ "send" if is_tx else "receive" }}
+    title: {{ command.name }}
+    channel:
+      $ref: "#/channels/{{ channel_id }}"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endfor %}

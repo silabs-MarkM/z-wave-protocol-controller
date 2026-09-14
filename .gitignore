@@ -88,6 +88,9 @@ docs/api/
 site/
 .venv-docs/
 
+# Assembled MQTT AsyncAPI (generated; source is per-component asyncapi/*.yaml)
+components/**/asyncapi.assembled.yaml
+
 # Logs
 logs/
 ci-logs/

@@ -45,7 +45,9 @@ SOURCE_LINK_REWRITES = {
     "../../device_interviewer/docs/": "../device_interviewer/",
     "../../network_monitor/doc/": "../network_monitor/",
     "../../ota/docs/": "../ota/",
+    "../../security/doc/": "../security/",
     "../../command_classes/doc/generated/": "../command_classes/",
+    "../components/security/doc/": "api/security/",
     "../../../docs/sequences/": "../../sequences/",
 }
 

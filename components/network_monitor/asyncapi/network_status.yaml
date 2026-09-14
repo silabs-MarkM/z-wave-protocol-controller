@@ -1,0 +1,49 @@
+x-doc-group: network_status
+x-doc-title: Network Status MQTT API
+x-doc-preamble: |
+  Unsolicited reports reflecting the availability of Z-Wave nodes
+  (online/offline/unknown transitions for Always-Listening, FLiRS, and Non-Listening devices).
+  No request is needed from the client.
+channels:
+  networkStatusReport:
+    address: zpc/{homeId}/Network/Status/Report
+    x-doc-group: network_status
+    description: Node availability transitions.
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      networkStatusReport:
+        name: Network status report
+        payload:
+          schema:
+            type: object
+            properties:
+              node_id:
+                type: integer
+                description: Z-Wave Node ID whose status changed
+              status:
+                type: string
+                description: '"online", "offline", or "unknown"'
+                enum:
+                  - online
+                  - offline
+                  - unknown
+              reason:
+                type: string
+                description: Optional reason for the transition
+            additionalProperties: true
+            example:
+              node_id: 2
+              status: online
+operations:
+  sendNetworkStatusReport:
+    action: send
+    title: NETWORK_STATUS_REPORT
+    description: |
+      Published whenever Network Monitor detects a node availability transition.
+      See the Network Status behavior document for AL/FLiRS/NL semantics.
+    channel:
+      $ref: "#/channels/networkStatusReport"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"

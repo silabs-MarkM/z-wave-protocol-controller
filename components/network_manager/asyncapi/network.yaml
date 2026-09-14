@@ -1,0 +1,576 @@
+x-doc-group: network
+x-doc-title: Network Management MQTT API
+x-doc-preamble: |
+  Add/remove nodes, accept DSK, grant keys, list devices, factory reset, and
+  Network Layer Security (NLS) operations.
+
+  Breaking change: node inventory topics use `Network/Node/List` and
+  `Network/Node/Properties` (not Device-prefixed names).
+channels:
+  networkNodeAdd:
+    address: zpc/{homeId}/Network/Node/Add
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      empty:
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+  networkNodeAddReport:
+    address: zpc/{homeId}/Network/Node/Add/Report
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      nodeAddReport:
+        payload:
+          schema:
+            type: object
+            properties:
+              node_id:
+                type: integer
+              dsk:
+                type: string
+              status:
+                type: string
+              reason:
+                description: Present on failure (string or 6404 number)
+              activity:
+                type: string
+            additionalProperties: true
+  networkNodeAddAbort:
+    address: zpc/{homeId}/Network/Node/Add/Abort
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      empty:
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+  networkNodeRemove:
+    address: zpc/{homeId}/Network/Node/Remove
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      empty:
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+  networkNodeRemoveReport:
+    address: zpc/{homeId}/Network/Node/Remove/Report
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      nodeRemoveReport:
+        payload:
+          schema:
+            type: object
+            properties:
+              node_id:
+                type: integer
+              dsk:
+                type: string
+              status:
+                type: string
+              reason:
+                type: string
+              activity:
+                type: string
+            additionalProperties: true
+  networkNodeRemoveFailed:
+    address: zpc/{homeId}/Network/Node/RemoveFailed
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      removeFailed:
+        payload:
+          schema:
+            type: object
+            properties:
+              node_id:
+                type: integer
+            additionalProperties: true
+            example:
+              node_id: 2
+  networkNodeRemoveFailedReport:
+    address: zpc/{homeId}/Network/Node/RemoveFailed/Report
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      removeFailedReport:
+        payload:
+          schema:
+            type: object
+            properties:
+              node_id:
+                type: integer
+              status:
+                type: string
+              reason:
+                type: string
+            additionalProperties: true
+  networkNodeRemoveAbort:
+    address: zpc/{homeId}/Network/Node/Remove/Abort
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      empty:
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+  networkDskAccept:
+    address: zpc/{homeId}/Network/DSK/Accept
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      dskAccept:
+        payload:
+          schema:
+            type: object
+            properties:
+              dsk:
+                type: string
+            additionalProperties: true
+  networkRequestedKeysReport:
+    address: zpc/{homeId}/Network/RequestedKeys/Report
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      requestedKeys:
+        payload:
+          schema:
+            type: object
+            properties:
+              Keys:
+                type: string
+              CSA:
+                type: boolean
+            additionalProperties: true
+            example:
+              Keys: "0x7"
+              CSA: false
+  networkGrantKeys:
+    address: zpc/{homeId}/Network/GrantKeys
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      grantKeys:
+        payload:
+          schema:
+            type: object
+            properties:
+              Accept:
+                type: boolean
+              Keys:
+                description: Keys bitmask (number or string)
+              CSA:
+                type: boolean
+            additionalProperties: true
+            example:
+              Accept: true
+              Keys: 7
+              CSA: false
+  networkRequestedDskReport:
+    address: zpc/{homeId}/Network/RequestedDSK/Report
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      requestedDsk:
+        payload:
+          schema:
+            type: object
+            properties:
+              DSK:
+                type: string
+            additionalProperties: true
+  networkNodeList:
+    address: zpc/{homeId}/Network/Node/List
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      empty:
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+  networkNodeListReport:
+    address: zpc/{homeId}/Network/Node/List/Report
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      nodeListReport:
+        payload:
+          schema:
+            type: array
+            items:
+              type: object
+              additionalProperties: true
+  networkNodeProperties:
+    address: zpc/{homeId}/Network/Node/Properties
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      nodeProperties:
+        payload:
+          schema:
+            type: object
+            properties:
+              node_id:
+                type: integer
+            additionalProperties: true
+            example:
+              node_id: 2
+  networkNodePropertiesReport:
+    address: zpc/{homeId}/Network/Node/Properties/Report
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      nodePropertiesReport:
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+  networkNodeInterview:
+    address: zpc/{homeId}/Network/Node/Interview
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      interview:
+        payload:
+          schema:
+            type: object
+            properties:
+              node_id:
+                type: integer
+            additionalProperties: true
+            example:
+              node_id: 2
+  networkFactoryReset:
+    address: zpc/{homeId}/Network/FactoryReset
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      empty:
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+  networkFactoryResetReport:
+    address: zpc/Network/FactoryReset/Report
+    x-doc-group: network
+    description: Global topic (no home_id segment), like Discovery/Report.
+    messages:
+      factoryResetReport:
+        payload:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+              home_id:
+                type: string
+            additionalProperties: true
+            example:
+              status: ready
+              home_id: AABBCCDD
+  networkNlsEnable:
+    address: zpc/{homeId}/Network/NLS/Enable
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      nlsEnable:
+        payload:
+          schema:
+            type: object
+            properties:
+              node_id:
+                type: integer
+            additionalProperties: true
+  networkNlsEnableReport:
+    address: zpc/{homeId}/Network/NLS/Enable/Report
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      nlsEnableReport:
+        payload:
+          schema:
+            type: object
+            properties:
+              node_id:
+                type: integer
+              status:
+                type: string
+            additionalProperties: true
+  networkNlsState:
+    address: zpc/{homeId}/Network/NLS/State
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      nlsState:
+        payload:
+          schema:
+            type: object
+            properties:
+              node_id:
+                type: integer
+            additionalProperties: true
+  networkNlsStateReport:
+    address: zpc/{homeId}/Network/NLS/State/Report
+    x-doc-group: network
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      nlsStateReport:
+        payload:
+          schema:
+            type: object
+            properties:
+              node_id:
+                type: integer
+              nls_support:
+                type: boolean
+              nls_state:
+                type: boolean
+              status:
+                type: string
+            additionalProperties: true
+operations:
+  receiveNetworkNodeAdd:
+    action: receive
+    title: NETWORK_NODE_ADD
+    description: Start inclusion.
+    channel:
+      $ref: "#/channels/networkNodeAdd"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  sendNetworkNodeAddReport:
+    action: send
+    title: NETWORK_NODE_ADD_REPORT
+    description: |
+      Success includes `node_id` and optional `dsk`. Fail may be immediate rejection
+      (`reason` 6401 busy / 6402 reset) or security fail (`reason` 6404).
+      Status is `"success"` or `"fail"`.
+    channel:
+      $ref: "#/channels/networkNodeAddReport"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveNetworkNodeAddAbort:
+    action: receive
+    title: NETWORK_NODE_ADD_ABORT
+    description: Abort ongoing inclusion. No report is published.
+    channel:
+      $ref: "#/channels/networkNodeAddAbort"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveNetworkNodeRemove:
+    action: receive
+    title: NETWORK_NODE_REMOVE
+    description: Start exclusion.
+    channel:
+      $ref: "#/channels/networkNodeRemove"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  sendNetworkNodeRemoveReport:
+    action: send
+    title: NETWORK_NODE_REMOVE_REPORT
+    description: Also fired on successful Remove Failed. `dsk` omitted if unavailable.
+    channel:
+      $ref: "#/channels/networkNodeRemoveReport"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveNetworkNodeRemoveFailed:
+    action: receive
+    title: NETWORK_NODE_REMOVE_FAILED
+    description: Remove a node believed failed. Controller NOP-probes first.
+    channel:
+      $ref: "#/channels/networkNodeRemoveFailed"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  sendNetworkNodeRemoveFailedReport:
+    action: send
+    title: NETWORK_NODE_REMOVE_FAILED_REPORT
+    description: |
+      `ok` / `fail` with `reason` (`operation_successful`, `node_online`, …).
+      On success, Remove/Report is also published.
+    channel:
+      $ref: "#/channels/networkNodeRemoveFailedReport"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveNetworkNodeRemoveAbort:
+    action: receive
+    title: NETWORK_NODE_REMOVE_ABORT
+    description: Abort ongoing exclusion. No report is published.
+    channel:
+      $ref: "#/channels/networkNodeRemoveAbort"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveNetworkDskAccept:
+    action: receive
+    title: NETWORK_DSK_ACCEPT
+    description: Accept DSK during classic S2 inclusion. Not used for SmartStart.
+    channel:
+      $ref: "#/channels/networkDskAccept"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  sendNetworkRequestedKeysReport:
+    action: send
+    title: NETWORK_REQUESTED_KEYS_REPORT
+    description: Keys requested during classic S2 inclusion. Not published for SmartStart.
+    channel:
+      $ref: "#/channels/networkRequestedKeysReport"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveNetworkGrantKeys:
+    action: receive
+    title: NETWORK_GRANT_KEYS
+    description: Grant keys during classic S2 inclusion. Not used for SmartStart.
+    channel:
+      $ref: "#/channels/networkGrantKeys"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  sendNetworkRequestedDskReport:
+    action: send
+    title: NETWORK_REQUESTED_DSK_REPORT
+    description: DSK verification needed during classic S2 inclusion.
+    channel:
+      $ref: "#/channels/networkRequestedDskReport"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveNetworkNodeList:
+    action: receive
+    title: NETWORK_NODE_LIST
+    description: Request node list.
+    channel:
+      $ref: "#/channels/networkNodeList"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  sendNetworkNodeListReport:
+    action: send
+    title: NETWORK_NODE_LIST_REPORT
+    description: Array of nodes with `node_information` and `version_report`.
+    channel:
+      $ref: "#/channels/networkNodeListReport"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveNetworkNodeProperties:
+    action: receive
+    title: NETWORK_NODE_PROPERTIES
+    description: Request node properties.
+    channel:
+      $ref: "#/channels/networkNodeProperties"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  sendNetworkNodePropertiesReport:
+    action: send
+    title: NETWORK_NODE_PROPERTIES_REPORT
+    description: Node properties; missing attribute-store values are `null`.
+    channel:
+      $ref: "#/channels/networkNodePropertiesReport"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveNetworkNodeInterview:
+    action: receive
+    title: NETWORK_NODE_INTERVIEW
+    description: |
+      Request a (re-)interview for `node_id`. Completion is published on
+      `Interview/Report`, not under this topic.
+    channel:
+      $ref: "#/channels/networkNodeInterview"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveNetworkFactoryReset:
+    action: receive
+    title: NETWORK_FACTORY_RESET
+    description: Factory reset the controller.
+    channel:
+      $ref: "#/channels/networkFactoryReset"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  sendNetworkFactoryResetReport:
+    action: send
+    title: NETWORK_FACTORY_RESET_REPORT
+    description: |
+      Global topic. Published once when the controller is ready on the new network.
+      Not retained.
+    channel:
+      $ref: "#/channels/networkFactoryResetReport"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveNetworkNlsEnable:
+    action: receive
+    title: NETWORK_NLS_ENABLE
+    description: Enable NLS for a node.
+    channel:
+      $ref: "#/channels/networkNlsEnable"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  sendNetworkNlsEnableReport:
+    action: send
+    title: NETWORK_NLS_ENABLE_REPORT
+    description: NLS enable result.
+    channel:
+      $ref: "#/channels/networkNlsEnableReport"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveNetworkNlsState:
+    action: receive
+    title: NETWORK_NLS_STATE
+    description: Request NLS state.
+    channel:
+      $ref: "#/channels/networkNlsState"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  sendNetworkNlsStateReport:
+    action: send
+    title: NETWORK_NLS_STATE_REPORT
+    description: NLS state report.
+    channel:
+      $ref: "#/channels/networkNlsStateReport"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"

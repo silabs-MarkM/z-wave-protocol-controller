@@ -1,5 +1,7 @@
 ## COMMAND_CLASS_THERMOSTAT_MODE MQTT API
 
+<!-- Generated from AsyncAPI; do not edit -->
+
 | MQTT Support | Support | Control |
 |--------------|---------|---------|
 | true | false | true |
@@ -10,78 +12,81 @@
 - [THERMOSTAT_MODE_SET](#thermostat_mode_set)
 - [THERMOSTAT_MODE_SUPPORTED_GET](#thermostat_mode_supported_get)
 - [THERMOSTAT_MODE_SUPPORTED_REPORT](#thermostat_mode_supported_report)
+
 ### THERMOSTAT_MODE_GET
-  
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/ThermostatMode/Command/ThermostatModeGet
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/ThermostatMode/Command/ThermostatModeGet`
+
+**Direction:** Command (client → ZPC)
 
 **Payload:**
+
 ```json
-{ }
+{}
 ```
+
 ### THERMOSTAT_MODE_REPORT
-                                                                                                                                                      
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/ThermostatMode/Report/ThermostatModeReport
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/ThermostatMode/Report/ThermostatModeReport`
+
+**Direction:** Report (ZPC → client)
 
 **Payload:**
+
 ```json
 {
   "level": {
-    "mode": "0x05",
-    "no_of_manufacturer_data_fields": "0x05"
+    "mode": "0x01",
+    "no_of_manufacturer_data_fields": "0x01"
   },
   "manufacturer_data": [
-    "0x01",
-    "0x02",
-    "0x03"
+    "0x01"
   ]
 }
 ```
+
 ### THERMOSTAT_MODE_SET
-                                                                                                                                                      
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/ThermostatMode/Command/ThermostatModeSet
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/ThermostatMode/Command/ThermostatModeSet`
+
+**Direction:** Command (client → ZPC)
 
 **Payload:**
+
 ```json
 {
   "level": {
-    "mode": "0x05",
-    "no_of_manufacturer_data_fields": "0x05"
+    "mode": "0x01",
+    "no_of_manufacturer_data_fields": "0x01"
   },
   "manufacturer_data": [
-    "0x01",
-    "0x02",
-    "0x03"
+    "0x01"
   ]
 }
 ```
+
 ### THERMOSTAT_MODE_SUPPORTED_GET
-  
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/ThermostatMode/Command/ThermostatModeSupportedGet
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/ThermostatMode/Command/ThermostatModeSupportedGet`
+
+**Direction:** Command (client → ZPC)
 
 **Payload:**
+
 ```json
-{ }
+{}
 ```
+
 ### THERMOSTAT_MODE_SUPPORTED_REPORT
-            
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/ThermostatMode/Report/ThermostatModeSupportedReport
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/ThermostatMode/Report/ThermostatModeSupportedReport`
+
+**Direction:** Report (ZPC → client)
 
 **Payload:**
+
 ```json
-{ }
+{
+  "bit_mask": "0x01"
+}
 ```

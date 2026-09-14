@@ -3,3 +3,4 @@ site_name: api/security
 docs_dir: doc
 nav:
   - Security Keys Dump: security_keys_dump_mqtt_api.md
+  - Security Keys Dump MQTT topics: security_keys_dump_mqtt_topics.md

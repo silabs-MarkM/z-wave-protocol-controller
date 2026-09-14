@@ -1,0 +1,60 @@
+x-doc-group: security_keys_dump
+x-doc-title: Security Keys Dump MQTT Topics
+x-doc-preamble: |
+  On request, ZPC seals its currently-assigned S2 (and S0, if any) keys with a given
+  X25519 recipient public key and writes the envelope to a configured path.
+  The report carries only a status code; no key material is exposed to the broker.
+  The feature is disabled by default. See the Security Keys Dump setup documentation.
+channels:
+  dumpSecurityKeys:
+    address: zpc/{homeId}/Network/DumpSecurityKeys
+    x-doc-group: security_keys_dump
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      dumpSecurityKeysCommand:
+        name: Dump security keys command
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            description: Empty request body
+  dumpSecurityKeysReport:
+    address: zpc/{homeId}/Network/DumpSecurityKeys/Report
+    x-doc-group: security_keys_dump
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      dumpSecurityKeysReport:
+        name: Dump security keys report
+        payload:
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                description: |
+                  0 ok, 1 feature_disabled, 2 missing_config, 3 pubkey_load_failed,
+                  4 collect_failed, 5 seal_failed, 6 file_write_failed
+            additionalProperties: true
+            example:
+              status: 0
+operations:
+  receiveDumpSecurityKeys:
+    action: receive
+    title: NETWORK_DUMP_SECURITY_KEYS
+    description: Request a sealed dump of assigned security keys. The request body is empty.
+    channel:
+      $ref: "#/channels/dumpSecurityKeys"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  sendDumpSecurityKeysReport:
+    action: send
+    title: NETWORK_DUMP_SECURITY_KEYS_REPORT
+    description: Status only. The report never contains key material, fingerprints, or path information.
+    channel:
+      $ref: "#/channels/dumpSecurityKeysReport"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"

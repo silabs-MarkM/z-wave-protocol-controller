@@ -1,0 +1,160 @@
+x-doc-group: smartstart
+x-doc-title: SmartStart MQTT API
+x-doc-preamble: |
+  SmartStart allows pre-provisioned devices to join the network automatically when they
+  are powered and in range. The client maintains a SmartStart provisioning list and
+  synchronizes it with ZPC via Update, Add, Remove, and Clear. Read the list back via List.
+x-doc-appendix: |
+  ## Entry lifecycle and persistence
+
+  The SmartStart list tracks **pending** entries. ZPC removes an entry when inclusion
+  completes (success or failure) or when the DSK is already in the current network.
+  The list is in-memory only and is empty after ZPC restarts.
+
+  S2 during SmartStart is handled internally. `Network/RequestedKeys/Report`,
+  `Network/GrantKeys`, `Network/RequestedDSK/Report`, and `Network/DSK/Accept` apply
+  only to standard inclusion via `Network/Node/Add`.
+
+  See [Inclusion flow](../../../docs/sequences/inclusion_flow.md).
+channels:
+  smartStartUpdate:
+    address: zpc/{homeId}/Network/SmartStart/Update
+    x-doc-group: smartstart
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      smartStartList:
+        $ref: "#/components/messages/smartStartProvisioningList"
+  smartStartAdd:
+    address: zpc/{homeId}/Network/SmartStart/Add
+    x-doc-group: smartstart
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      smartStartList:
+        $ref: "#/components/messages/smartStartProvisioningList"
+  smartStartRemove:
+    address: zpc/{homeId}/Network/SmartStart/Remove
+    x-doc-group: smartstart
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      smartStartList:
+        $ref: "#/components/messages/smartStartProvisioningList"
+  smartStartClear:
+    address: zpc/{homeId}/Network/SmartStart/Clear
+    x-doc-group: smartstart
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      empty:
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+  smartStartList:
+    address: zpc/{homeId}/Network/SmartStart/List
+    x-doc-group: smartstart
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      empty:
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+  smartStartListReport:
+    address: zpc/{homeId}/Network/SmartStart/List/Report
+    x-doc-group: smartstart
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      smartStartList:
+        $ref: "#/components/messages/smartStartProvisioningList"
+operations:
+  receiveSmartStartUpdate:
+    action: receive
+    title: NETWORK_SMARTSTART_UPDATE
+    description: |
+      Replaces ZPC's entire SmartStart provisioning list with the entries in the payload.
+      Not incremental. For incremental changes use Add, Remove, or Clear.
+    channel:
+      $ref: "#/channels/smartStartUpdate"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveSmartStartAdd:
+    action: receive
+    title: NETWORK_SMARTSTART_ADD
+    description: |
+      Appends entries. Existing DSKs are skipped. No dedicated report topic;
+      observe the list via List.
+    channel:
+      $ref: "#/channels/smartStartAdd"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveSmartStartRemove:
+    action: receive
+    title: NETWORK_SMARTSTART_REMOVE
+    description: |
+      Removes entries identified by DSK. Only the DSK field is read.
+      Unknown DSKs are skipped. No dedicated report topic.
+    channel:
+      $ref: "#/channels/smartStartRemove"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveSmartStartClear:
+    action: receive
+    title: NETWORK_SMARTSTART_CLEAR
+    description: Purges the entire list. Payload ignored.
+    channel:
+      $ref: "#/channels/smartStartClear"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveSmartStartList:
+    action: receive
+    title: NETWORK_SMARTSTART_LIST
+    description: Request the current SmartStart list. Payload ignored.
+    channel:
+      $ref: "#/channels/smartStartList"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  sendSmartStartListReport:
+    action: send
+    title: NETWORK_SMARTSTART_LIST_REPORT
+    description: Current provisioning list (`value` array, same shape as Update).
+    channel:
+      $ref: "#/channels/smartStartListReport"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+components:
+  messages:
+    smartStartProvisioningList:
+      name: SmartStart provisioning list
+      payload:
+        schema:
+          type: object
+          properties:
+            value:
+              type: array
+              items:
+                type: object
+                properties:
+                  DSK:
+                    type: string
+                  PreferredProtocols:
+                    type: array
+                    items:
+                      type: string
+                additionalProperties: true
+          additionalProperties: true
+          example:
+            value:
+              - DSK: "06743-56104-10648-10659-64918-00784-01021-46920"
+                PreferredProtocols:
+                  - Z-Wave

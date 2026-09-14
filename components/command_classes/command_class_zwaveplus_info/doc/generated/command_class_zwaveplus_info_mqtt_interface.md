@@ -1,5 +1,7 @@
 ## COMMAND_CLASS_ZWAVEPLUS_INFO MQTT API
 
+<!-- Generated from AsyncAPI; do not edit -->
+
 | MQTT Support | Support | Control |
 |--------------|---------|---------|
 | false | true | true |
@@ -8,20 +10,21 @@
 
 ### Table of Contents
 - [ZWAVEPLUS_INFO_REPORT](#zwaveplus_info_report)
+
 ### ZWAVEPLUS_INFO_REPORT
-                                                                                                                                                                                          
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/ZwaveplusInfo/Report/ZwaveplusInfoReport
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/ZwaveplusInfo/Report/ZwaveplusInfoReport`
+
+**Direction:** Report (ZPC → client)
 
 **Payload:**
+
 ```json
 {
-  "z_wave_plus_version": "0x12",
+  "z_wave_plus_version": "0x01",
   "role_type": "0x01",
   "node_type": "0x01",
-  "installer_icon_type": "0x2574",
-  "user_icon_type": "0x2574"
+  "installer_icon_type": "0x01",
+  "user_icon_type": "0x01"
 }
 ```

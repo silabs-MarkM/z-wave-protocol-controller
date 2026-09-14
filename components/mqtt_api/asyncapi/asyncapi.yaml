@@ -1,0 +1,47 @@
+asyncapi: 3.1.0
+info:
+  title: Z-Wave Protocol Controller MQTT API
+  version: 2.0.0
+  description: |
+    MQTT contract for the Z-Wave Protocol Controller (ZPC).
+    Command topics are received by ZPC; Report topics are published by ZPC.
+    This document is assembled from per-component AsyncAPI YAML and generated
+    command-class channels. Do not treat generated markdown as source.
+  license:
+    name: Silicon Labs Master Software License Agreement (MSLA)
+    url: https://www.silabs.com/about-us/legal/master-software-license-agreement
+defaultContentType: application/json
+servers:
+  broker:
+    host: localhost:1883
+    protocol: mqtt
+    description: MQTT 3.1.1 broker. ZPC uses QoS 0 and a clean session.
+    bindings:
+      mqtt:
+        bindingVersion: "0.2.0"
+        cleanSession: true
+        clientId: zpc
+  brokerTls:
+    host: localhost:8883
+    protocol: mqtt
+    description: Optional TLS (ssl://) when CA, client cert, and key are configured.
+    bindings:
+      mqtt:
+        bindingVersion: "0.2.0"
+        cleanSession: true
+        clientId: zpc
+components:
+  parameters:
+    homeId:
+      description: Eight-character hexadecimal Z-Wave Home ID
+    nodeId:
+      description: Z-Wave node identifier as used in the MQTT topic path
+    endpointId:
+      description: Endpoint number without the ep prefix (0 is the root device)
+  operationTraits:
+    mqttQos0:
+      bindings:
+        mqtt:
+          bindingVersion: "0.2.0"
+          qos: 0
+          retain: false

@@ -4,22 +4,7 @@ On request, ZPC seals its currently-assigned S2 (and S0, if any) keys with a giv
 
 The feature is disabled by default. To enable, set `security.security_keys_dump_enable: true` and configure a recipient public key + output path (see [Setup](#setup)).
 
-## Topics
-
-| Type            | Topic                                           |
-|-----------------|-------------------------------------------------|
-| Request         | `zpc/<home_id>/Network/DumpSecurityKeys`        |
-| Report          | `zpc/<home_id>/Network/DumpSecurityKeys/Report` |
-
-## Request payload
-
-The request body is empty.
-
-## Report payload
-
-```json
-{ "status": <status_code> }
-```
+MQTT topics and payload schemas are in [Security Keys Dump MQTT topics](security_keys_dump_mqtt_topics.md). Status codes in the report:
 
 | `status` | Name                | Meaning                                                                                  |
 |---------:|---------------------|------------------------------------------------------------------------------------------|

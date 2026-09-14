@@ -3,3 +3,4 @@ site_name: api/device_interviewer
 docs_dir: docs
 nav:
   - Device Interviewer: device_interviewer.md
+  - Interview MQTT API: interview_mqtt_api.md

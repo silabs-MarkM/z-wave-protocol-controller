@@ -1,0 +1,48 @@
+x-doc-group: interview
+x-doc-title: Device Interview MQTT API
+x-doc-preamble: |
+  Clients request an on-demand interview via Network Management MQTT
+  (`zpc/{homeId}/Network/Node/Interview`). Completion is published here per endpoint.
+channels:
+  interviewReport:
+    address: zpc/{homeId}/Interview/Report
+    x-doc-group: interview
+    description: Published when an endpoint interview finishes.
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      interviewReport:
+        name: Interview report
+        payload:
+          schema:
+            type: object
+            properties:
+              node_id:
+                type: integer
+                description: Z-Wave node ID
+              endpoint_id:
+                type: integer
+                description: Endpoint ID (0 for root)
+              status:
+                type: integer
+                description: Interview result (0 for success; non-zero for failure or cancelled)
+            additionalProperties: true
+            example:
+              node_id: 2
+              endpoint_id: 0
+              status: 0
+operations:
+  sendInterviewReport:
+    action: send
+    title: INTERVIEW_REPORT
+    description: |
+      Published when an interview completes for an endpoint—either successfully or after
+      cancellation/failure. One report is sent per endpoint (including endpoint 0).
+      For successful interviews, the report is delayed until every command class
+      `on_interview`-triggered resolution has settled, so receiving this message means
+      the device is actually ready.
+    channel:
+      $ref: "#/channels/interviewReport"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"

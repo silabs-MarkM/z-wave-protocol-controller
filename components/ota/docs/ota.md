@@ -483,30 +483,7 @@ Non-success status (`!= 0xFF`) from **Firmware Update Activation Status Report**
 
 ## MQTT API
 
-Topics are registered with the MQTT base layer (default: a base prefix such as `zpc/<home_id>/` is prepended; exact prefix depends on `MqttApiBase` configuration). Command topics below are the **relative** suffixes.
-
-### Commands (subscribe)
-
-| Topic | Role |
-|-------|------|
-| `OTA/UploadImage` | Store binary image (`image_name`, `data` array) |
-| `OTA/StartFirmwareUpload` | Queue OTA start (`node_id`, `image_name`, `wait_for_activation`) |
-| `OTA/ListImages` | List cached `.gbl` files |
-| `OTA/RemoveImage` | Remove image by name |
-| `OTA/Progress` | **Trigger** for a one-shot progress snapshot (publish here; see below) |
-| `OTA/Abort` | Abort operation for the specified node (`{"node_id": 2}`; `node_id` is required) |
-| `OTA/Activate` | Queue activation event (`node_id`) |
-
-### Reports (publish)
-
-| Topic | When |
-|-------|------|
-| `OTA/UploadImage/Report` | After store attempt |
-| `OTA/StartFirmwareUpload/Report` | Accept/reject/error, abort, duplicate start |
-| `OTA/ListImages/Report` | Image list |
-| `OTA/RemoveImage/Report` | Remove result |
-| `OTA/Progress/Report` | Progress and completion payloads (**subscribe** here; published after `OTA/Progress` and on transfer events) |
-| `OTA/Activate/Report` | Parse errors on the activation command |
+Topic names, direction, and payload schemas are defined in the AsyncAPI contract and rendered in [OTA MQTT API](ota_mqtt_api.md). Do not edit that page by hand.
 
 ### Payload conventions (JSON keys)
 

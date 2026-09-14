@@ -1,0 +1,342 @@
+x-doc-group: ota
+x-doc-title: OTA MQTT API
+x-doc-preamble: |
+  Firmware update over the air: image management, start/abort, progress, and activation.
+  Command and report topics are relative to `zpc/{homeId}/`.
+  Per-node Firmware Update MD topics follow the command-class pattern.
+x-doc-appendix: |
+  Progress is a request/response pair: publish any payload to `OTA/Progress` (ignored)
+  and subscribe to `OTA/Progress/Report`. The same report topic is used for completion
+  and failure. See the OTA Firmware Manager document for the state machine.
+channels:
+  otaUploadImage:
+    address: zpc/{homeId}/OTA/UploadImage
+    x-doc-group: ota
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      otaUploadImage:
+        payload:
+          schema:
+            type: object
+            properties:
+              image_name:
+                type: string
+              data:
+                type: array
+                items:
+                  type: integer
+            additionalProperties: true
+  otaUploadImageReport:
+    address: zpc/{homeId}/OTA/UploadImage/Report
+    x-doc-group: ota
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      otaUploadImageReport:
+        payload:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+              reason:
+                type: string
+            additionalProperties: true
+  otaListImages:
+    address: zpc/{homeId}/OTA/ListImages
+    x-doc-group: ota
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      otaListImages:
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+  otaListImagesReport:
+    address: zpc/{homeId}/OTA/ListImages/Report
+    x-doc-group: ota
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      otaListImagesReport:
+        payload:
+          schema:
+            type: object
+            properties:
+              images:
+                type: array
+                items:
+                  type: string
+            additionalProperties: true
+  otaRemoveImage:
+    address: zpc/{homeId}/OTA/RemoveImage
+    x-doc-group: ota
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      otaRemoveImage:
+        payload:
+          schema:
+            type: object
+            properties:
+              image_name:
+                type: string
+            additionalProperties: true
+  otaRemoveImageReport:
+    address: zpc/{homeId}/OTA/RemoveImage/Report
+    x-doc-group: ota
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      otaRemoveImageReport:
+        payload:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+              reason:
+                type: string
+            additionalProperties: true
+  otaStartFirmwareUpload:
+    address: zpc/{homeId}/OTA/StartFirmwareUpload
+    x-doc-group: ota
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      otaStartFirmwareUpload:
+        payload:
+          schema:
+            type: object
+            properties:
+              node_id:
+                type: integer
+              image_name:
+                type: string
+              wait_for_activation:
+                type: boolean
+            additionalProperties: true
+  otaStartFirmwareUploadReport:
+    address: zpc/{homeId}/OTA/StartFirmwareUpload/Report
+    x-doc-group: ota
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      otaStartFirmwareUploadReport:
+        payload:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: accepted, rejected, error, or aborted
+              reason:
+                type: string
+            additionalProperties: true
+  otaProgress:
+    address: zpc/{homeId}/OTA/Progress
+    x-doc-group: ota
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      otaProgress:
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            description: Payload ignored
+  otaProgressReport:
+    address: zpc/{homeId}/OTA/Progress/Report
+    x-doc-group: ota
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      otaProgressReport:
+        payload:
+          schema:
+            type: object
+            properties:
+              node_id:
+                type: integer
+              image_size:
+                type: integer
+              current_sent:
+                type: integer
+              percentage:
+                type: integer
+              status:
+                type: string
+              waittime:
+                type: integer
+              status_code:
+                type: integer
+            additionalProperties: true
+            example:
+              node_id: 2
+              image_size: 65536
+              current_sent: 32768
+              percentage: 50
+  otaAbort:
+    address: zpc/{homeId}/OTA/Abort
+    x-doc-group: ota
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      otaAbort:
+        payload:
+          schema:
+            type: object
+            properties:
+              node_id:
+                type: integer
+            additionalProperties: true
+  otaActivate:
+    address: zpc/{homeId}/OTA/Activate
+    x-doc-group: ota
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      otaActivate:
+        payload:
+          schema:
+            type: object
+            properties:
+              node_id:
+                type: integer
+            additionalProperties: true
+  otaActivateReport:
+    address: zpc/{homeId}/OTA/Activate/Report
+    x-doc-group: ota
+    parameters:
+      homeId:
+        $ref: "#/components/parameters/homeId"
+    messages:
+      otaActivateReport:
+        payload:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+              reason:
+                type: string
+            additionalProperties: true
+operations:
+  receiveOtaUploadImage:
+    action: receive
+    title: OTA_UPLOAD_IMAGE
+    description: Store a `.gbl` image in the cache (`image_name`, `data` array).
+    channel:
+      $ref: "#/channels/otaUploadImage"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  sendOtaUploadImageReport:
+    action: send
+    title: OTA_UPLOAD_IMAGE_REPORT
+    description: Store result (`ok` or `error`).
+    channel:
+      $ref: "#/channels/otaUploadImageReport"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveOtaListImages:
+    action: receive
+    title: OTA_LIST_IMAGES
+    description: List cached `.gbl` files. Payload ignored.
+    channel:
+      $ref: "#/channels/otaListImages"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  sendOtaListImagesReport:
+    action: send
+    title: OTA_LIST_IMAGES_REPORT
+    description: Array of cached images (`images`). No `status` field.
+    channel:
+      $ref: "#/channels/otaListImagesReport"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveOtaRemoveImage:
+    action: receive
+    title: OTA_REMOVE_IMAGE
+    description: Remove a cached image by name.
+    channel:
+      $ref: "#/channels/otaRemoveImage"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  sendOtaRemoveImageReport:
+    action: send
+    title: OTA_REMOVE_IMAGE_REPORT
+    description: Remove result (`ok` or `error`).
+    channel:
+      $ref: "#/channels/otaRemoveImageReport"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveOtaStartFirmwareUpload:
+    action: receive
+    title: OTA_START_FIRMWARE_UPLOAD
+    description: Start OTA for a node (`node_id`, `image_name`, `wait_for_activation`).
+    channel:
+      $ref: "#/channels/otaStartFirmwareUpload"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  sendOtaStartFirmwareUploadReport:
+    action: send
+    title: OTA_START_FIRMWARE_UPLOAD_REPORT
+    description: Accept, reject, error, or abort.
+    channel:
+      $ref: "#/channels/otaStartFirmwareUploadReport"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveOtaProgress:
+    action: receive
+    title: OTA_PROGRESS
+    description: Request a one-shot progress snapshot. Payload ignored.
+    channel:
+      $ref: "#/channels/otaProgress"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  sendOtaProgressReport:
+    action: send
+    title: OTA_PROGRESS_REPORT
+    description: Progress snapshot and final completion or failure status.
+    channel:
+      $ref: "#/channels/otaProgressReport"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveOtaAbort:
+    action: receive
+    title: OTA_ABORT
+    description: Abort the current transfer. `node_id` is required.
+    channel:
+      $ref: "#/channels/otaAbort"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  receiveOtaActivate:
+    action: receive
+    title: OTA_ACTIVATE
+    description: Apply firmware stored in waiting-for-activation (`node_id`).
+    channel:
+      $ref: "#/channels/otaActivate"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"
+  sendOtaActivateReport:
+    action: send
+    title: OTA_ACTIVATE_REPORT
+    description: Parse errors on the activation command. Device status travels on OTA/Progress/Report.
+    channel:
+      $ref: "#/channels/otaActivateReport"
+    traits:
+      - $ref: "#/components/operationTraits/mqttQos0"

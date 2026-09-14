@@ -1000,25 +1000,8 @@ Device Node
 
 ## MQTT API
 
-Clients request an on-demand interview via Network Management MQTT (`zpc/<home_id>/Network/Node/Interview` with `{"node_id": <id>}`). See [NETWORK_NODE_INTERVIEW](../../network_manager/doc/network_management_mqtt_api.md#network_node_interview). That command fires `COMPONENT_CONNECTOR_NODE_INTERVIEW_REQUESTED`, which this component already handles.
-
-The Device Interviewer publishes an MQTT message when a device interview terminates (per node and per endpoint). This allows clients to be notified as soon as each endpoint is fully interviewed.
-
-### Interview/Report
-
-**Topic:** `zpc/{home_id}/Interview/Report` (published by ZPC)
-
-**When:** Published when an interview completes for an endpoint—either successfully or after cancellation/failure. One report is sent per endpoint (including endpoint 0). For successful interviews, the report is delayed until every command class `on_interview`-triggered resolution has settled (subscribed to `COMPONENT_CONNECTOR_INTERVIEW_FULLY_RESOLVED`), so receiving this message means the device is actually ready.
-
-**Payload (JSON):**
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `node_id` | number | Z-Wave node ID. |
-| `endpoint_id` | number | Endpoint ID (0 for root). |
-| `status` | number | Interview result (e.g. 0 for success; non-zero for failure or cancelled). |
-
-**Example:** Subscribe to `zpc/<home_id>/Interview/Report` to receive notifications such as `{"node_id":2,"endpoint_id":0,"status":0}` when the interview for node 2 endpoint 0 finishes successfully.
+Topic names, direction, and payload schemas are in [Device Interview MQTT API](interview_mqtt_api.md).
+On-demand interview is requested via [NETWORK_NODE_INTERVIEW](../../network_manager/doc/network_management_mqtt_api.md#network_node_interview).
 
 ## Synchronous Operations
 

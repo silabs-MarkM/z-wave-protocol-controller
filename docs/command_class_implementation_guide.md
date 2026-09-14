@@ -85,7 +85,7 @@ command_class_switch_multilevel/
 ├── CMakeLists.txt
 ├── doc/ # Command class documentation (you can add files here, e.g. sequence diagrams)
 │   ├── command_class_switch_multilevel.md
-│   └── generated/ # Auto-generated MQTT interface documentation (do not edit)
+│   └── generated/ # Auto-generated MQTT interface documentation from AsyncAPI (do not edit)
 │       └── command_class_switch_multilevel_mqtt_interface.md
 ├── generated/ # Command class core logic (do not edit)
 │   ├── inc/

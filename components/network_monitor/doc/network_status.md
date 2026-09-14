@@ -8,27 +8,7 @@ automatically as soon as the Network Monitor detects a transition.
 The monitor handles Always-Listening (AL), FLiRS (FL) and Non-Listening (NL)
 devices, each with behaviour tailored to their communication model.
 
-## MQTT Topic
-
-Reports are published to:
-
-```
-zpc/<home_id>/Network/Status/Report
-```
-
-## Payload
-
-```json
-{
-  "node_id": 2,
-  "status": "online"
-}
-```
-
-| Field     | Type    | Description                                      |
-|-----------|---------|--------------------------------------------------|
-| `node_id` | integer | The Z-Wave Node ID whose status changed.         |
-| `status`  | string  | The new status: `"online"`, `"offline"`, or `"unknown"`. |
+MQTT topic and payload schemas are in [Network Status MQTT API](network_status_mqtt_api.md).
 
 ## Status Values
 

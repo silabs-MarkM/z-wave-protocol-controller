@@ -1,5 +1,7 @@
 ## COMMAND_CLASS_ASSOCIATION MQTT API
 
+<!-- Generated from AsyncAPI; do not edit -->
+
 | MQTT Support | Support | Control |
 |--------------|---------|---------|
 | true | true | true |
@@ -13,120 +15,122 @@
 - [ASSOCIATION_SET](#association_set)
 - [ASSOCIATION_SPECIFIC_GROUP_GET](#association_specific_group_get)
 - [ASSOCIATION_SPECIFIC_GROUP_REPORT](#association_specific_group_report)
+
 ### ASSOCIATION_GET
-                                          
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/Association/Command/AssociationGet
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/Association/Command/AssociationGet`
+
+**Direction:** Command (client → ZPC)
 
 **Payload:**
+
 ```json
 {
-  "grouping_identifier": "0x12"
+  "grouping_identifier": "0x01"
 }
 ```
+
 ### ASSOCIATION_GROUPINGS_GET
-  
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/Association/Command/AssociationGroupingsGet
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/Association/Command/AssociationGroupingsGet`
+
+**Direction:** Command (client → ZPC)
 
 **Payload:**
+
 ```json
-{ }
+{}
 ```
+
 ### ASSOCIATION_GROUPINGS_REPORT
-                                          
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/Association/Report/AssociationGroupingsReport
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/Association/Report/AssociationGroupingsReport`
+
+**Direction:** Report (ZPC → client)
 
 **Payload:**
+
 ```json
 {
-  "supported_groupings": "0x12"
+  "supported_groupings": "0x01"
 }
 ```
+
 ### ASSOCIATION_REMOVE
-                                                                              
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/Association/Command/AssociationRemove
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/Association/Command/AssociationRemove`
+
+**Direction:** Command (client → ZPC)
 
 **Payload:**
+
 ```json
 {
-  "grouping_identifier": "0x12",
+  "grouping_identifier": "0x01",
   "node_id": [
-    "0x01",
-    "0x02",
-    "0x03"
+    "0x01"
   ]
 }
 ```
+
 ### ASSOCIATION_REPORT
-                                                                                                                                                      
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/Association/Report/AssociationReport
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/Association/Report/AssociationReport`
+
+**Direction:** Report (ZPC → client)
 
 **Payload:**
+
 ```json
 {
-  "grouping_identifier": "0x12",
-  "max_nodes_supported": "0x12",
-  "reports_to_follow": "0x12",
+  "grouping_identifier": "0x01",
+  "max_nodes_supported": "0x01",
+  "reports_to_follow": "0x01",
   "nodeid": [
-    "0x01",
-    "0x02",
-    "0x03"
+    "0x01"
   ]
 }
 ```
+
 ### ASSOCIATION_SET
-                                                                              
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/Association/Command/AssociationSet
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/Association/Command/AssociationSet`
+
+**Direction:** Command (client → ZPC)
 
 **Payload:**
+
 ```json
 {
-  "grouping_identifier": "0x12",
+  "grouping_identifier": "0x01",
   "node_id": [
-    "0x01",
-    "0x02",
-    "0x03"
+    "0x01"
   ]
 }
 ```
+
 ### ASSOCIATION_SPECIFIC_GROUP_GET
-  
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/Association/Command/AssociationSpecificGroupGet
-```
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/Association/Command/AssociationSpecificGroupGet`
+
+**Direction:** Command (client → ZPC)
 
 **Payload:**
+
 ```json
-{ }
-```
-### ASSOCIATION_SPECIFIC_GROUP_REPORT
-                                          
-**Command:**
-```sh
-zpc/<home_id>/<node_id>/ep<endpoint_id>/Association/Report/AssociationSpecificGroupReport
+{}
 ```
 
+### ASSOCIATION_SPECIFIC_GROUP_REPORT
+
+**Topic:** `zpc/<home_id>/<node_id>/ep<endpoint_id>/Association/Report/AssociationSpecificGroupReport`
+
+**Direction:** Report (ZPC → client)
+
 **Payload:**
+
 ```json
 {
-  "group": "0x12"
+  "group": "0x01"
 }
 ```

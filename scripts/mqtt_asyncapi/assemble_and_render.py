@@ -62,6 +62,15 @@ def load_component_fragments(root_dir: Path) -> list[dict]:
     return fragments
 
 
+def load_command_class_fragments(cc_root: Path) -> list[dict]:
+    if not cc_root.is_dir():
+        return []
+    fragments = []
+    for path in sorted(cc_root.glob("*/asyncapi/*.yaml")):
+        fragments.append(load_yaml(path))
+    return fragments
+
+
 
 def fragment_doc_meta(fragment: dict) -> dict:
     group = fragment.get("x-doc-group")
@@ -79,7 +88,7 @@ def strip_extension_keys(document: dict) -> dict:
     return {key: value for key, value in document.items() if not str(key).startswith("x-doc-")}
 
 
-def assemble(root: dict, fragments: list[dict], cc_doc: dict) -> tuple[dict, dict]:
+def assemble(root: dict, fragments: list[dict]) -> tuple[dict, dict]:
     assembled = dict(root)
     assembled.setdefault("channels", {})
     assembled.setdefault("operations", {})
@@ -90,7 +99,6 @@ def assemble(root: dict, fragments: list[dict], cc_doc: dict) -> tuple[dict, dic
         if meta:
             meta_by_group[meta["group"]] = meta
         assembled = deep_merge(assembled, strip_extension_keys(fragment))
-    assembled = deep_merge(assembled, strip_extension_keys(cc_doc))
     apply_topic_tags(assembled)
     inline_message_refs(assembled)
     return assembled, meta_by_group
@@ -488,10 +496,16 @@ def main() -> int:
         help="Directory containing the root asyncapi.yaml",
     )
     parser.add_argument(
+        "--cc-root",
+        type=Path,
+        default=None,
+        help="Command-class tree containing */asyncapi/*.yaml fragments",
+    )
+    parser.add_argument(
         "--cc-yaml",
         type=Path,
         default=None,
-        help="Generated command_classes.asyncapi.yaml",
+        help="Deprecated: single command_classes.asyncapi.yaml (use --cc-root)",
     )
     parser.add_argument(
         "--assembled-out",
@@ -507,17 +521,18 @@ def main() -> int:
     args = parser.parse_args()
     root_dir = args.root
     asyncapi_dir = args.asyncapi_dir or (root_dir / "components/mqtt_api/asyncapi")
-    cc_yaml = args.cc_yaml or (
-        root_dir / "components/command_classes/doc/generated/command_classes.asyncapi.yaml"
-    )
+    cc_root = args.cc_root or (root_dir / "components/command_classes")
     assembled_out = args.assembled_out or (root_dir / "build" / "asyncapi.assembled.yaml")
     cc_md_root = args.cc_md_root or (root_dir / "components/command_classes")
 
     root_doc = load_yaml(asyncapi_dir / "asyncapi.yaml")
     fragments = load_component_fragments(root_dir)
-    cc_doc = load_yaml(cc_yaml) if cc_yaml.exists() else {}
+    if args.cc_yaml and args.cc_yaml.is_file():
+        fragments.append(load_yaml(args.cc_yaml))
+    else:
+        fragments.extend(load_command_class_fragments(cc_root))
 
-    assembled, meta_by_group = assemble(root_doc, fragments, cc_doc)
+    assembled, meta_by_group = assemble(root_doc, fragments)
     assembled_out.parent.mkdir(parents=True, exist_ok=True)
     with assembled_out.open("w", encoding="utf-8") as handle:
         yaml.safe_dump(

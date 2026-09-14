@@ -1,0 +1,309 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccSwitchMultilevelSwitchMultilevelGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchMultilevel/Command/SwitchMultilevelGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_SWITCH_MULTILEVEL
+    x-cc-dir: command_class_switch_multilevel
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: SWITCH_MULTILEVEL_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccSwitchMultilevelSwitchMultilevelGetCommand:
+        name: SWITCH_MULTILEVEL_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccSwitchMultilevelSwitchMultilevelReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchMultilevel/Report/SwitchMultilevelReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_SWITCH_MULTILEVEL
+    x-cc-dir: command_class_switch_multilevel
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: SWITCH_MULTILEVEL_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccSwitchMultilevelSwitchMultilevelReportReport:
+        name: SWITCH_MULTILEVEL_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              current_value:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              target_value:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              duration:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            current_value: 0
+            duration: 0
+            target_value: 0
+  ccSwitchMultilevelSwitchMultilevelSetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchMultilevel/Command/SwitchMultilevelSet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_SWITCH_MULTILEVEL
+    x-cc-dir: command_class_switch_multilevel
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: SWITCH_MULTILEVEL_SET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccSwitchMultilevelSwitchMultilevelSetCommand:
+        name: SWITCH_MULTILEVEL_SET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              value:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              duration:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            value: '0'
+            duration: '0'
+  ccSwitchMultilevelSwitchMultilevelStartLevelChangeCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchMultilevel/Command/SwitchMultilevelStartLevelChange
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_SWITCH_MULTILEVEL
+    x-cc-dir: command_class_switch_multilevel
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: SWITCH_MULTILEVEL_START_LEVEL_CHANGE
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccSwitchMultilevelSwitchMultilevelStartLevelChangeCommand:
+        name: SWITCH_MULTILEVEL_START_LEVEL_CHANGE
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  inc_dec:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  ignore_start_level:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  up_down:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              start_level:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              dimming_duration:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              step_size:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            properties1:
+              ignore_start_level: '0x00'
+              up_down: '0x00'
+              inc_dec: '0x00'
+            start_level: '0x05'
+            dimming_duration: '0x14'
+            step_size: '0x00'
+  ccSwitchMultilevelSwitchMultilevelStopLevelChangeCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchMultilevel/Command/SwitchMultilevelStopLevelChange
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_SWITCH_MULTILEVEL
+    x-cc-dir: command_class_switch_multilevel
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: SWITCH_MULTILEVEL_STOP_LEVEL_CHANGE
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccSwitchMultilevelSwitchMultilevelStopLevelChangeCommand:
+        name: SWITCH_MULTILEVEL_STOP_LEVEL_CHANGE
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccSwitchMultilevelSwitchMultilevelSupportedGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchMultilevel/Command/SwitchMultilevelSupportedGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_SWITCH_MULTILEVEL
+    x-cc-dir: command_class_switch_multilevel
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: SWITCH_MULTILEVEL_SUPPORTED_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccSwitchMultilevelSwitchMultilevelSupportedGetCommand:
+        name: SWITCH_MULTILEVEL_SUPPORTED_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccSwitchMultilevelSwitchMultilevelSupportedReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchMultilevel/Report/SwitchMultilevelSupportedReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_SWITCH_MULTILEVEL
+    x-cc-dir: command_class_switch_multilevel
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: SWITCH_MULTILEVEL_SUPPORTED_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccSwitchMultilevelSwitchMultilevelSupportedReportReport:
+        name: SWITCH_MULTILEVEL_SUPPORTED_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  primary_switch_type:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  reserved1:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              properties2:
+                type: object
+                properties:
+                  secondary_switch_type:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  reserved2:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+        examples:
+        - payload:
+            properties1:
+              primary_switch_type: 2
+              reserved1: 0
+            properties2:
+              reserved2: 0
+              secondary_switch_type: 3
+operations:
+  receiveSwitchMultilevelSwitchMultilevelGet:
+    action: receive
+    title: SWITCH_MULTILEVEL_GET
+    channel:
+      $ref: '#/channels/ccSwitchMultilevelSwitchMultilevelGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendSwitchMultilevelSwitchMultilevelReport:
+    action: send
+    title: SWITCH_MULTILEVEL_REPORT
+    channel:
+      $ref: '#/channels/ccSwitchMultilevelSwitchMultilevelReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveSwitchMultilevelSwitchMultilevelSet:
+    action: receive
+    title: SWITCH_MULTILEVEL_SET
+    channel:
+      $ref: '#/channels/ccSwitchMultilevelSwitchMultilevelSetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveSwitchMultilevelSwitchMultilevelStartLevelChange:
+    action: receive
+    title: SWITCH_MULTILEVEL_START_LEVEL_CHANGE
+    channel:
+      $ref: '#/channels/ccSwitchMultilevelSwitchMultilevelStartLevelChangeCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveSwitchMultilevelSwitchMultilevelStopLevelChange:
+    action: receive
+    title: SWITCH_MULTILEVEL_STOP_LEVEL_CHANGE
+    channel:
+      $ref: '#/channels/ccSwitchMultilevelSwitchMultilevelStopLevelChangeCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveSwitchMultilevelSwitchMultilevelSupportedGet:
+    action: receive
+    title: SWITCH_MULTILEVEL_SUPPORTED_GET
+    channel:
+      $ref: '#/channels/ccSwitchMultilevelSwitchMultilevelSupportedGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendSwitchMultilevelSwitchMultilevelSupportedReport:
+    action: send
+    title: SWITCH_MULTILEVEL_SUPPORTED_REPORT
+    channel:
+      $ref: '#/channels/ccSwitchMultilevelSwitchMultilevelSupportedReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

@@ -1,0 +1,193 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccTimeDateReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Time/Report/DateReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_TIME
+    x-cc-dir: command_class_time
+    x-mqtt-support: 'false'
+    x-support: 'true'
+    x-control: 'false'
+    x-command-name: DATE_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccTimeDateReportReport:
+        name: DATE_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              year:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              month:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              day:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            year: '0x01'
+            month: '0x01'
+            day: '0x01'
+  ccTimeTimeOffsetReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Time/Report/TimeOffsetReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_TIME
+    x-cc-dir: command_class_time
+    x-mqtt-support: 'false'
+    x-support: 'true'
+    x-control: 'false'
+    x-command-name: TIME_OFFSET_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccTimeTimeOffsetReportReport:
+        name: TIME_OFFSET_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              level:
+                type: object
+                properties:
+                  hour_tzo:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  sign_tzo:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              minute_tzo:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              level2:
+                type: object
+                properties:
+                  minute_offset_dst:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  sign_offset_dst:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              month_start_dst:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              day_start_dst:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              hour_start_dst:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              month_end_dst:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              day_end_dst:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              hour_end_dst:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            level:
+              hour_tzo: '0x01'
+              sign_tzo: '0x01'
+            minute_tzo: '0x01'
+            level2:
+              minute_offset_dst: '0x01'
+              sign_offset_dst: '0x01'
+            month_start_dst: '0x01'
+            day_start_dst: '0x01'
+            hour_start_dst: '0x01'
+            month_end_dst: '0x01'
+            day_end_dst: '0x01'
+            hour_end_dst: '0x01'
+  ccTimeTimeReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Time/Report/TimeReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_TIME
+    x-cc-dir: command_class_time
+    x-mqtt-support: 'false'
+    x-support: 'true'
+    x-control: 'false'
+    x-command-name: TIME_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccTimeTimeReportReport:
+        name: TIME_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  hour_local_time:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  time_source:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  rtc_failure:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              minute_local_time:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              second_local_time:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            properties1:
+              hour_local_time: '0x01'
+              time_source: '0x01'
+              rtc_failure: '0x01'
+            minute_local_time: '0x01'
+            second_local_time: '0x01'
+operations:
+  sendTimeDateReport:
+    action: send
+    title: DATE_REPORT
+    channel:
+      $ref: '#/channels/ccTimeDateReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendTimeTimeOffsetReport:
+    action: send
+    title: TIME_OFFSET_REPORT
+    channel:
+      $ref: '#/channels/ccTimeTimeOffsetReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendTimeTimeReport:
+    action: send
+    title: TIME_REPORT
+    channel:
+      $ref: '#/channels/ccTimeTimeReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

@@ -1,0 +1,276 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccWakeUpWakeUpIntervalCapabilitiesGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/WakeUp/Command/WakeUpIntervalCapabilitiesGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_WAKE_UP
+    x-cc-dir: command_class_wake_up
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: WAKE_UP_INTERVAL_CAPABILITIES_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccWakeUpWakeUpIntervalCapabilitiesGetCommand:
+        name: WAKE_UP_INTERVAL_CAPABILITIES_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccWakeUpWakeUpIntervalCapabilitiesReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/WakeUp/Report/WakeUpIntervalCapabilitiesReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_WAKE_UP
+    x-cc-dir: command_class_wake_up
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: WAKE_UP_INTERVAL_CAPABILITIES_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccWakeUpWakeUpIntervalCapabilitiesReportReport:
+        name: WAKE_UP_INTERVAL_CAPABILITIES_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              minimum_wake_up_interval_seconds:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              maximum_wake_up_interval_seconds:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              default_wake_up_interval_seconds:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              wake_up_interval_step_seconds:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              properties1:
+                type: object
+                properties:
+                  wake_up_on_demand:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+        examples:
+        - payload:
+            default_wake_up_interval_seconds: 60
+            maximum_wake_up_interval_seconds: 100000
+            minimum_wake_up_interval_seconds: 5
+            properties1:
+              reserved: 0
+              wake_up_on_demand: 0
+            wake_up_interval_step_seconds: 1
+  ccWakeUpWakeUpIntervalGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/WakeUp/Command/WakeUpIntervalGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_WAKE_UP
+    x-cc-dir: command_class_wake_up
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: WAKE_UP_INTERVAL_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccWakeUpWakeUpIntervalGetCommand:
+        name: WAKE_UP_INTERVAL_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccWakeUpWakeUpIntervalReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/WakeUp/Report/WakeUpIntervalReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_WAKE_UP
+    x-cc-dir: command_class_wake_up
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: WAKE_UP_INTERVAL_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccWakeUpWakeUpIntervalReportReport:
+        name: WAKE_UP_INTERVAL_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              seconds:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              nodeid:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            nodeid: 1
+            seconds: 4200
+  ccWakeUpWakeUpIntervalSetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/WakeUp/Command/WakeUpIntervalSet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_WAKE_UP
+    x-cc-dir: command_class_wake_up
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: WAKE_UP_INTERVAL_SET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccWakeUpWakeUpIntervalSetCommand:
+        name: WAKE_UP_INTERVAL_SET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              seconds:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              nodeid:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            seconds: '0x01'
+            nodeid: '0x01'
+  ccWakeUpWakeUpNoMoreInformationCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/WakeUp/Command/WakeUpNoMoreInformation
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_WAKE_UP
+    x-cc-dir: command_class_wake_up
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: WAKE_UP_NO_MORE_INFORMATION
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccWakeUpWakeUpNoMoreInformationCommand:
+        name: WAKE_UP_NO_MORE_INFORMATION
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccWakeUpWakeUpNotificationReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/WakeUp/Report/WakeUpNotification
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_WAKE_UP
+    x-cc-dir: command_class_wake_up
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: WAKE_UP_NOTIFICATION
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccWakeUpWakeUpNotificationReport:
+        name: WAKE_UP_NOTIFICATION
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+operations:
+  receiveWakeUpWakeUpIntervalCapabilitiesGet:
+    action: receive
+    title: WAKE_UP_INTERVAL_CAPABILITIES_GET
+    channel:
+      $ref: '#/channels/ccWakeUpWakeUpIntervalCapabilitiesGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendWakeUpWakeUpIntervalCapabilitiesReport:
+    action: send
+    title: WAKE_UP_INTERVAL_CAPABILITIES_REPORT
+    channel:
+      $ref: '#/channels/ccWakeUpWakeUpIntervalCapabilitiesReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveWakeUpWakeUpIntervalGet:
+    action: receive
+    title: WAKE_UP_INTERVAL_GET
+    channel:
+      $ref: '#/channels/ccWakeUpWakeUpIntervalGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendWakeUpWakeUpIntervalReport:
+    action: send
+    title: WAKE_UP_INTERVAL_REPORT
+    channel:
+      $ref: '#/channels/ccWakeUpWakeUpIntervalReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveWakeUpWakeUpIntervalSet:
+    action: receive
+    title: WAKE_UP_INTERVAL_SET
+    channel:
+      $ref: '#/channels/ccWakeUpWakeUpIntervalSetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveWakeUpWakeUpNoMoreInformation:
+    action: receive
+    title: WAKE_UP_NO_MORE_INFORMATION
+    channel:
+      $ref: '#/channels/ccWakeUpWakeUpNoMoreInformationCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendWakeUpWakeUpNotification:
+    action: send
+    title: WAKE_UP_NOTIFICATION
+    channel:
+      $ref: '#/channels/ccWakeUpWakeUpNotificationReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

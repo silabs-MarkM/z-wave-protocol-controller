@@ -1,0 +1,36 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccDeviceResetLocallyDeviceResetLocallyNotificationReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/DeviceResetLocally/Report/DeviceResetLocallyNotification
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_DEVICE_RESET_LOCALLY
+    x-cc-dir: command_class_device_reset_locally
+    x-mqtt-support: 'false'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: DEVICE_RESET_LOCALLY_NOTIFICATION
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccDeviceResetLocallyDeviceResetLocallyNotificationReport:
+        name: DEVICE_RESET_LOCALLY_NOTIFICATION
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+operations:
+  sendDeviceResetLocallyDeviceResetLocallyNotification:
+    action: send
+    title: DEVICE_RESET_LOCALLY_NOTIFICATION
+    channel:
+      $ref: '#/channels/ccDeviceResetLocallyDeviceResetLocallyNotificationReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

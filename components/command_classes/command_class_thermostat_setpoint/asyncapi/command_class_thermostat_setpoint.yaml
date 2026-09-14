@@ -1,0 +1,389 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccThermostatSetpointThermostatSetpointGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatSetpoint/Command/ThermostatSetpointGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_THERMOSTAT_SETPOINT
+    x-cc-dir: command_class_thermostat_setpoint
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: THERMOSTAT_SETPOINT_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccThermostatSetpointThermostatSetpointGetCommand:
+        name: THERMOSTAT_SETPOINT_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              level:
+                type: object
+                properties:
+                  setpoint_type:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+        examples:
+        - payload:
+            level:
+              setpoint_type: '0x0F'
+  ccThermostatSetpointThermostatSetpointReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatSetpoint/Report/ThermostatSetpointReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_THERMOSTAT_SETPOINT
+    x-cc-dir: command_class_thermostat_setpoint
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: THERMOSTAT_SETPOINT_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccThermostatSetpointThermostatSetpointReportReport:
+        name: THERMOSTAT_SETPOINT_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              level:
+                type: object
+                properties:
+                  setpoint_type:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              level2:
+                type: object
+                properties:
+                  size:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  scale:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  precision:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              value:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+        examples:
+        - payload:
+            level:
+              reserved: 0
+              setpoint_type: 0
+            level2:
+              precision: 0
+              scale: 0
+              size: 1
+            value:
+            - 0
+  ccThermostatSetpointThermostatSetpointSetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatSetpoint/Command/ThermostatSetpointSet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_THERMOSTAT_SETPOINT
+    x-cc-dir: command_class_thermostat_setpoint
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: THERMOSTAT_SETPOINT_SET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccThermostatSetpointThermostatSetpointSetCommand:
+        name: THERMOSTAT_SETPOINT_SET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              level:
+                type: object
+                properties:
+                  setpoint_type:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              level2:
+                type: object
+                properties:
+                  size:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  scale:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  precision:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              value:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+        examples:
+        - payload:
+            level:
+              setpoint_type: '0x02'
+            level2:
+              size: '0x01'
+              scale: '0x00'
+              precision: '0x00'
+            value:
+            - '0x16'
+  ccThermostatSetpointThermostatSetpointSupportedGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatSetpoint/Command/ThermostatSetpointSupportedGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_THERMOSTAT_SETPOINT
+    x-cc-dir: command_class_thermostat_setpoint
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: THERMOSTAT_SETPOINT_SUPPORTED_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccThermostatSetpointThermostatSetpointSupportedGetCommand:
+        name: THERMOSTAT_SETPOINT_SUPPORTED_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccThermostatSetpointThermostatSetpointSupportedReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatSetpoint/Report/ThermostatSetpointSupportedReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_THERMOSTAT_SETPOINT
+    x-cc-dir: command_class_thermostat_setpoint
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: THERMOSTAT_SETPOINT_SUPPORTED_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccThermostatSetpointThermostatSetpointSupportedReportReport:
+        name: THERMOSTAT_SETPOINT_SUPPORTED_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              bit_mask:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            bit_mask:
+            - 20
+            - 8
+  ccThermostatSetpointThermostatSetpointCapabilitiesGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatSetpoint/Command/ThermostatSetpointCapabilitiesGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_THERMOSTAT_SETPOINT
+    x-cc-dir: command_class_thermostat_setpoint
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: THERMOSTAT_SETPOINT_CAPABILITIES_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccThermostatSetpointThermostatSetpointCapabilitiesGetCommand:
+        name: THERMOSTAT_SETPOINT_CAPABILITIES_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  setpoint_type:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+        examples:
+        - payload:
+            properties1:
+              setpoint_type: '0x01'
+  ccThermostatSetpointThermostatSetpointCapabilitiesReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatSetpoint/Report/ThermostatSetpointCapabilitiesReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_THERMOSTAT_SETPOINT
+    x-cc-dir: command_class_thermostat_setpoint
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: THERMOSTAT_SETPOINT_CAPABILITIES_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccThermostatSetpointThermostatSetpointCapabilitiesReportReport:
+        name: THERMOSTAT_SETPOINT_CAPABILITIES_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  setpoint_type:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              properties2:
+                type: object
+                properties:
+                  size1:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  scale1:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  precision1:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              min_value:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+              properties3:
+                type: object
+                properties:
+                  size2:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  scale2:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  precision2:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              maxvalue:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+        examples:
+        - payload:
+            maxvalue:
+            - 0
+            - 0
+            - 1
+            - 104
+            min_value:
+            - 0
+            - 0
+            - 0
+            - 100
+            properties1:
+              reserved: 0
+              setpoint_type: 2
+            properties2:
+              precision1: 32
+              scale1: 0
+              size1: 4
+            properties3:
+              precision2: 32
+              scale2: 0
+              size2: 4
+operations:
+  receiveThermostatSetpointThermostatSetpointGet:
+    action: receive
+    title: THERMOSTAT_SETPOINT_GET
+    channel:
+      $ref: '#/channels/ccThermostatSetpointThermostatSetpointGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendThermostatSetpointThermostatSetpointReport:
+    action: send
+    title: THERMOSTAT_SETPOINT_REPORT
+    channel:
+      $ref: '#/channels/ccThermostatSetpointThermostatSetpointReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveThermostatSetpointThermostatSetpointSet:
+    action: receive
+    title: THERMOSTAT_SETPOINT_SET
+    channel:
+      $ref: '#/channels/ccThermostatSetpointThermostatSetpointSetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveThermostatSetpointThermostatSetpointSupportedGet:
+    action: receive
+    title: THERMOSTAT_SETPOINT_SUPPORTED_GET
+    channel:
+      $ref: '#/channels/ccThermostatSetpointThermostatSetpointSupportedGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendThermostatSetpointThermostatSetpointSupportedReport:
+    action: send
+    title: THERMOSTAT_SETPOINT_SUPPORTED_REPORT
+    channel:
+      $ref: '#/channels/ccThermostatSetpointThermostatSetpointSupportedReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveThermostatSetpointThermostatSetpointCapabilitiesGet:
+    action: receive
+    title: THERMOSTAT_SETPOINT_CAPABILITIES_GET
+    channel:
+      $ref: '#/channels/ccThermostatSetpointThermostatSetpointCapabilitiesGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendThermostatSetpointThermostatSetpointCapabilitiesReport:
+    action: send
+    title: THERMOSTAT_SETPOINT_CAPABILITIES_REPORT
+    channel:
+      $ref: '#/channels/ccThermostatSetpointThermostatSetpointCapabilitiesReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

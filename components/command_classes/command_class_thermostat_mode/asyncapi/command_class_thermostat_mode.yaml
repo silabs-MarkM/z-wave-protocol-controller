@@ -1,0 +1,214 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccThermostatModeThermostatModeGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatMode/Command/ThermostatModeGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_THERMOSTAT_MODE
+    x-cc-dir: command_class_thermostat_mode
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: THERMOSTAT_MODE_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccThermostatModeThermostatModeGetCommand:
+        name: THERMOSTAT_MODE_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccThermostatModeThermostatModeReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatMode/Report/ThermostatModeReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_THERMOSTAT_MODE
+    x-cc-dir: command_class_thermostat_mode
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: THERMOSTAT_MODE_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccThermostatModeThermostatModeReportReport:
+        name: THERMOSTAT_MODE_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              level:
+                type: object
+                properties:
+                  mode:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  no_of_manufacturer_data_fields:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              manufacturer_data:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+        examples:
+        - payload:
+            level:
+              mode: 0
+              no_of_manufacturer_data_fields: 0
+            manufacturer_data: []
+  ccThermostatModeThermostatModeSetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatMode/Command/ThermostatModeSet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_THERMOSTAT_MODE
+    x-cc-dir: command_class_thermostat_mode
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: THERMOSTAT_MODE_SET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccThermostatModeThermostatModeSetCommand:
+        name: THERMOSTAT_MODE_SET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              level:
+                type: object
+                properties:
+                  mode:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  no_of_manufacturer_data_fields:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              manufacturer_data:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+        examples:
+        - payload:
+            level:
+              mode: '0x01'
+              no_of_manufacturer_data_fields: '0x00'
+            manufacturer_data: []
+  ccThermostatModeThermostatModeSupportedGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatMode/Command/ThermostatModeSupportedGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_THERMOSTAT_MODE
+    x-cc-dir: command_class_thermostat_mode
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: THERMOSTAT_MODE_SUPPORTED_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccThermostatModeThermostatModeSupportedGetCommand:
+        name: THERMOSTAT_MODE_SUPPORTED_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccThermostatModeThermostatModeSupportedReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatMode/Report/ThermostatModeSupportedReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_THERMOSTAT_MODE
+    x-cc-dir: command_class_thermostat_mode
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: THERMOSTAT_MODE_SUPPORTED_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccThermostatModeThermostatModeSupportedReportReport:
+        name: THERMOSTAT_MODE_SUPPORTED_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              bit_mask:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            bit_mask:
+            - 3
+            - 32
+            - 0
+            - 128
+operations:
+  receiveThermostatModeThermostatModeGet:
+    action: receive
+    title: THERMOSTAT_MODE_GET
+    channel:
+      $ref: '#/channels/ccThermostatModeThermostatModeGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendThermostatModeThermostatModeReport:
+    action: send
+    title: THERMOSTAT_MODE_REPORT
+    channel:
+      $ref: '#/channels/ccThermostatModeThermostatModeReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveThermostatModeThermostatModeSet:
+    action: receive
+    title: THERMOSTAT_MODE_SET
+    channel:
+      $ref: '#/channels/ccThermostatModeThermostatModeSetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveThermostatModeThermostatModeSupportedGet:
+    action: receive
+    title: THERMOSTAT_MODE_SUPPORTED_GET
+    channel:
+      $ref: '#/channels/ccThermostatModeThermostatModeSupportedGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendThermostatModeThermostatModeSupportedReport:
+    action: send
+    title: THERMOSTAT_MODE_SUPPORTED_REPORT
+    channel:
+      $ref: '#/channels/ccThermostatModeThermostatModeSupportedReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

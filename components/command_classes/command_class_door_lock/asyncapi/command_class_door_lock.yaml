@@ -1,0 +1,480 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccDoorLockDoorLockConfigurationGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/DoorLock/Command/DoorLockConfigurationGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_DOOR_LOCK
+    x-cc-dir: command_class_door_lock
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: DOOR_LOCK_CONFIGURATION_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccDoorLockDoorLockConfigurationGetCommand:
+        name: DOOR_LOCK_CONFIGURATION_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccDoorLockDoorLockConfigurationReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/DoorLock/Report/DoorLockConfigurationReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_DOOR_LOCK
+    x-cc-dir: command_class_door_lock
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: DOOR_LOCK_CONFIGURATION_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccDoorLockDoorLockConfigurationReportReport:
+        name: DOOR_LOCK_CONFIGURATION_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              operation_type:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              properties1:
+                type: object
+                properties:
+                  inside_door_handles_enabled:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  outside_door_handles_enabled:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              lock_timeout_minutes:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              lock_timeout_seconds:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              auto_relock_time:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              hold_and_release_time:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              properties2:
+                type: object
+                properties:
+                  ta:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  btb:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  reserved1:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+        examples:
+        - payload:
+            auto_relock_time: 0
+            hold_and_release_time: 0
+            lock_timeout_minutes: 0
+            lock_timeout_seconds: 0
+            operation_type: 1
+            properties1:
+              inside_door_handles_enabled: 15
+              outside_door_handles_enabled: 240
+            properties2:
+              btb: 2
+              reserved1: 0
+              ta: 1
+  ccDoorLockDoorLockConfigurationSetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/DoorLock/Command/DoorLockConfigurationSet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_DOOR_LOCK
+    x-cc-dir: command_class_door_lock
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: DOOR_LOCK_CONFIGURATION_SET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccDoorLockDoorLockConfigurationSetCommand:
+        name: DOOR_LOCK_CONFIGURATION_SET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              operation_type:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              properties1:
+                type: object
+                properties:
+                  inside_door_handles_enabled:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  outside_door_handles_enabled:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              lock_timeout_minutes:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              lock_timeout_seconds:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              auto_relock_time:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              hold_and_release_time:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              properties2:
+                type: object
+                properties:
+                  ta:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  btb:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  reserved1:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+        examples:
+        - payload:
+            operation_type: '0x02'
+            properties1:
+              inside_door_handles_enabled: '0x01'
+              outside_door_handles_enabled: '0x08'
+            lock_timeout_minutes: '0x00'
+            lock_timeout_seconds: '0x05'
+            auto_relock_time: '0x0A'
+            hold_and_release_time: '0x14'
+            properties2:
+              ta: '0x01'
+              btb: '0x00'
+  ccDoorLockDoorLockOperationGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/DoorLock/Command/DoorLockOperationGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_DOOR_LOCK
+    x-cc-dir: command_class_door_lock
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: DOOR_LOCK_OPERATION_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccDoorLockDoorLockOperationGetCommand:
+        name: DOOR_LOCK_OPERATION_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccDoorLockDoorLockOperationReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/DoorLock/Report/DoorLockOperationReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_DOOR_LOCK
+    x-cc-dir: command_class_door_lock
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: DOOR_LOCK_OPERATION_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccDoorLockDoorLockOperationReportReport:
+        name: DOOR_LOCK_OPERATION_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              current_door_lock_mode:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              properties1:
+                type: object
+                properties:
+                  inside_door_handles_mode:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  outside_door_handles_mode:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              door_condition:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              remaining_lock_time_minutes:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              remaining_lock_time_seconds:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              target_door_lock_mode:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              duration:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            current_door_lock_mode: 255
+            door_condition: 1
+            duration: 0
+            properties1:
+              inside_door_handles_mode: 15
+              outside_door_handles_mode: 240
+            remaining_lock_time_minutes: 254
+            remaining_lock_time_seconds: 254
+            target_door_lock_mode: 255
+  ccDoorLockDoorLockOperationSetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/DoorLock/Command/DoorLockOperationSet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_DOOR_LOCK
+    x-cc-dir: command_class_door_lock
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: DOOR_LOCK_OPERATION_SET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccDoorLockDoorLockOperationSetCommand:
+        name: DOOR_LOCK_OPERATION_SET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              door_lock_mode:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            door_lock_mode: '0x01'
+  ccDoorLockDoorLockCapabilitiesGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/DoorLock/Command/DoorLockCapabilitiesGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_DOOR_LOCK
+    x-cc-dir: command_class_door_lock
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: DOOR_LOCK_CAPABILITIES_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccDoorLockDoorLockCapabilitiesGetCommand:
+        name: DOOR_LOCK_CAPABILITIES_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccDoorLockDoorLockCapabilitiesReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/DoorLock/Report/DoorLockCapabilitiesReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_DOOR_LOCK
+    x-cc-dir: command_class_door_lock
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: DOOR_LOCK_CAPABILITIES_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccDoorLockDoorLockCapabilitiesReportReport:
+        name: DOOR_LOCK_CAPABILITIES_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  supported_operation_type_bit_mask_length:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              supported_operation_type_bit_mask:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+              supported_door_lock_mode_list_length:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              supported_door_lock_mode:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+              properties2:
+                type: object
+                properties:
+                  supported_inside_handle_modes_bitmask:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  supported_outside_handle_modes_bitmask:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              supported_door_components:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              properties3:
+                type: object
+                properties:
+                  btbs:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  tas:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  hrs:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  ars:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+        examples:
+        - payload:
+            properties1:
+              reserved: 0
+              supported_operation_type_bit_mask_length: 1
+            properties2:
+              supported_inside_handle_modes_bitmask: 15
+              supported_outside_handle_modes_bitmask: 240
+            properties3:
+              ars: 8
+              btbs: 1
+              hrs: 4
+              reserved: 0
+              tas: 2
+            supported_door_components: 6
+            supported_door_lock_mode:
+            - 0
+            - 1
+            - 16
+            - 17
+            - 32
+            - 33
+            - 255
+            supported_door_lock_mode_list_length: 7
+            supported_operation_type_bit_mask:
+            - 6
+operations:
+  receiveDoorLockDoorLockConfigurationGet:
+    action: receive
+    title: DOOR_LOCK_CONFIGURATION_GET
+    channel:
+      $ref: '#/channels/ccDoorLockDoorLockConfigurationGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendDoorLockDoorLockConfigurationReport:
+    action: send
+    title: DOOR_LOCK_CONFIGURATION_REPORT
+    channel:
+      $ref: '#/channels/ccDoorLockDoorLockConfigurationReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveDoorLockDoorLockConfigurationSet:
+    action: receive
+    title: DOOR_LOCK_CONFIGURATION_SET
+    channel:
+      $ref: '#/channels/ccDoorLockDoorLockConfigurationSetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveDoorLockDoorLockOperationGet:
+    action: receive
+    title: DOOR_LOCK_OPERATION_GET
+    channel:
+      $ref: '#/channels/ccDoorLockDoorLockOperationGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendDoorLockDoorLockOperationReport:
+    action: send
+    title: DOOR_LOCK_OPERATION_REPORT
+    channel:
+      $ref: '#/channels/ccDoorLockDoorLockOperationReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveDoorLockDoorLockOperationSet:
+    action: receive
+    title: DOOR_LOCK_OPERATION_SET
+    channel:
+      $ref: '#/channels/ccDoorLockDoorLockOperationSetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveDoorLockDoorLockCapabilitiesGet:
+    action: receive
+    title: DOOR_LOCK_CAPABILITIES_GET
+    channel:
+      $ref: '#/channels/ccDoorLockDoorLockCapabilitiesGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendDoorLockDoorLockCapabilitiesReport:
+    action: send
+    title: DOOR_LOCK_CAPABILITIES_REPORT
+    channel:
+      $ref: '#/channels/ccDoorLockDoorLockCapabilitiesReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

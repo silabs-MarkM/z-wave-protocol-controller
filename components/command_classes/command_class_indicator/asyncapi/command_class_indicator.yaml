@@ -1,0 +1,355 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccIndicatorIndicatorGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Indicator/Command/IndicatorGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_INDICATOR
+    x-cc-dir: command_class_indicator
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: INDICATOR_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccIndicatorIndicatorGetCommand:
+        name: INDICATOR_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              indicator_id:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            indicator_id: '0x01'
+  ccIndicatorIndicatorReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Indicator/Report/IndicatorReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_INDICATOR
+    x-cc-dir: command_class_indicator
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: INDICATOR_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccIndicatorIndicatorReportReport:
+        name: INDICATOR_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              indicator_0_value:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              properties1:
+                type: object
+                properties:
+                  indicator_object_count:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              vg1:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    indicator_id:
+                      type: string
+                      description: Hex-encoded value as published on MQTT
+                    property_id:
+                      type: string
+                      description: Hex-encoded value as published on MQTT
+                    value:
+                      type: string
+                      description: Hex-encoded value as published on MQTT
+                  additionalProperties: true
+        examples:
+        - payload:
+            indicator_0_value: 0
+            properties1:
+              indicator_object_count: 1
+              reserved: 0
+            vg1:
+            - indicator_id: 5
+              property_id: 1
+              value: 0
+  ccIndicatorIndicatorSetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Indicator/Command/IndicatorSet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_INDICATOR
+    x-cc-dir: command_class_indicator
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: INDICATOR_SET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccIndicatorIndicatorSetCommand:
+        name: INDICATOR_SET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              indicator_0_value:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              properties1:
+                type: object
+                properties:
+                  indicator_object_count:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              vg1:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    indicator_id:
+                      type: string
+                      description: Hex-encoded value as published on MQTT
+                    property_id:
+                      type: string
+                      description: Hex-encoded value as published on MQTT
+                    value:
+                      type: string
+                      description: Hex-encoded value as published on MQTT
+                  additionalProperties: true
+        examples:
+        - payload:
+            indicator_0_value: '0x00'
+            properties1:
+              indicator_object_count: '0x03'
+            vg1:
+            - indicator_id: '0x50'
+              property_id: '0x03'
+              value: '0x08'
+            - indicator_id: '0x50'
+              property_id: '0x04'
+              value: '0x03'
+            - indicator_id: '0x50'
+              property_id: '0x05'
+              value: '0x06'
+  ccIndicatorIndicatorSupportedGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Indicator/Command/IndicatorSupportedGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_INDICATOR
+    x-cc-dir: command_class_indicator
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: INDICATOR_SUPPORTED_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccIndicatorIndicatorSupportedGetCommand:
+        name: INDICATOR_SUPPORTED_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              indicator_id:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            indicator_id: '0x01'
+  ccIndicatorIndicatorSupportedReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Indicator/Report/IndicatorSupportedReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_INDICATOR
+    x-cc-dir: command_class_indicator
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: INDICATOR_SUPPORTED_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccIndicatorIndicatorSupportedReportReport:
+        name: INDICATOR_SUPPORTED_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              indicator_id:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              next_indicator_id:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              properties1:
+                type: object
+                properties:
+                  property_supported_bit_mask_length:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              property_supported_bit_mask:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            indicator_id: 5
+            next_indicator_id: 80
+            properties1:
+              property_supported_bit_mask_length: 1
+              reserved: 0
+            property_supported_bit_mask:
+            - 2
+  ccIndicatorIndicatorDescriptionGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Indicator/Command/IndicatorDescriptionGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_INDICATOR
+    x-cc-dir: command_class_indicator
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: INDICATOR_DESCRIPTION_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccIndicatorIndicatorDescriptionGetCommand:
+        name: INDICATOR_DESCRIPTION_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              indicator_id:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            indicator_id: '0x01'
+  ccIndicatorIndicatorDescriptionReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Indicator/Report/IndicatorDescriptionReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_INDICATOR
+    x-cc-dir: command_class_indicator
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: INDICATOR_DESCRIPTION_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccIndicatorIndicatorDescriptionReportReport:
+        name: INDICATOR_DESCRIPTION_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              indicator_id:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              description_length:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              description:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+        examples:
+        - payload:
+            indicator_id: '0x01'
+            description_length: '0x01'
+            description:
+            - '0x01'
+operations:
+  receiveIndicatorIndicatorGet:
+    action: receive
+    title: INDICATOR_GET
+    channel:
+      $ref: '#/channels/ccIndicatorIndicatorGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendIndicatorIndicatorReport:
+    action: send
+    title: INDICATOR_REPORT
+    channel:
+      $ref: '#/channels/ccIndicatorIndicatorReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveIndicatorIndicatorSet:
+    action: receive
+    title: INDICATOR_SET
+    channel:
+      $ref: '#/channels/ccIndicatorIndicatorSetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveIndicatorIndicatorSupportedGet:
+    action: receive
+    title: INDICATOR_SUPPORTED_GET
+    channel:
+      $ref: '#/channels/ccIndicatorIndicatorSupportedGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendIndicatorIndicatorSupportedReport:
+    action: send
+    title: INDICATOR_SUPPORTED_REPORT
+    channel:
+      $ref: '#/channels/ccIndicatorIndicatorSupportedReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveIndicatorIndicatorDescriptionGet:
+    action: receive
+    title: INDICATOR_DESCRIPTION_GET
+    channel:
+      $ref: '#/channels/ccIndicatorIndicatorDescriptionGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendIndicatorIndicatorDescriptionReport:
+    action: send
+    title: INDICATOR_DESCRIPTION_REPORT
+    channel:
+      $ref: '#/channels/ccIndicatorIndicatorDescriptionReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

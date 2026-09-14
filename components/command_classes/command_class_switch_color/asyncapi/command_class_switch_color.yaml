@@ -1,0 +1,313 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccSwitchColorSwitchColorSupportedGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchColor/Command/SwitchColorSupportedGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_SWITCH_COLOR
+    x-cc-dir: command_class_switch_color
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: SWITCH_COLOR_SUPPORTED_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccSwitchColorSwitchColorSupportedGetCommand:
+        name: SWITCH_COLOR_SUPPORTED_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccSwitchColorSwitchColorSupportedReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchColor/Report/SwitchColorSupportedReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_SWITCH_COLOR
+    x-cc-dir: command_class_switch_color
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: SWITCH_COLOR_SUPPORTED_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccSwitchColorSwitchColorSupportedReportReport:
+        name: SWITCH_COLOR_SUPPORTED_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              color_component_mask:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            color_component_mask: 7168
+  ccSwitchColorSwitchColorGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchColor/Command/SwitchColorGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_SWITCH_COLOR
+    x-cc-dir: command_class_switch_color
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: SWITCH_COLOR_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccSwitchColorSwitchColorGetCommand:
+        name: SWITCH_COLOR_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              color_component_id:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            color_component_id: '0x01'
+  ccSwitchColorSwitchColorReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchColor/Report/SwitchColorReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_SWITCH_COLOR
+    x-cc-dir: command_class_switch_color
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: SWITCH_COLOR_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccSwitchColorSwitchColorReportReport:
+        name: SWITCH_COLOR_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              color_component_id:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              current_value:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              target_value:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              duration:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            color_component_id: 2
+            current_value: 0
+            duration: 0
+            target_value: 0
+  ccSwitchColorSwitchColorSetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchColor/Command/SwitchColorSet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_SWITCH_COLOR
+    x-cc-dir: command_class_switch_color
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: SWITCH_COLOR_SET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccSwitchColorSwitchColorSetCommand:
+        name: SWITCH_COLOR_SET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  color_component_count:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              vg1:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    color_component_id:
+                      type: string
+                      description: Hex-encoded value as published on MQTT
+                    value:
+                      type: string
+                      description: Hex-encoded value as published on MQTT
+                  additionalProperties: true
+              duration:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            vg1:
+            - color_component_id: '0x03'
+              value: '0xFF'
+            duration: '0x00'
+  ccSwitchColorSwitchColorStartLevelChangeCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchColor/Command/SwitchColorStartLevelChange
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_SWITCH_COLOR
+    x-cc-dir: command_class_switch_color
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: SWITCH_COLOR_START_LEVEL_CHANGE
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccSwitchColorSwitchColorStartLevelChangeCommand:
+        name: SWITCH_COLOR_START_LEVEL_CHANGE
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  ignore_start_state:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  up_down:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              color_component_id:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              start_level:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              duration:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            properties1:
+              ignore_start_state: '0x00'
+              up_down: '0x00'
+            color_component_id: '0x02'
+            start_level: '0x00'
+            duration: '0x01'
+  ccSwitchColorSwitchColorStopLevelChangeCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchColor/Command/SwitchColorStopLevelChange
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_SWITCH_COLOR
+    x-cc-dir: command_class_switch_color
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: SWITCH_COLOR_STOP_LEVEL_CHANGE
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccSwitchColorSwitchColorStopLevelChangeCommand:
+        name: SWITCH_COLOR_STOP_LEVEL_CHANGE
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              color_component_id:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            color_component_id: '0x02'
+operations:
+  receiveSwitchColorSwitchColorSupportedGet:
+    action: receive
+    title: SWITCH_COLOR_SUPPORTED_GET
+    channel:
+      $ref: '#/channels/ccSwitchColorSwitchColorSupportedGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendSwitchColorSwitchColorSupportedReport:
+    action: send
+    title: SWITCH_COLOR_SUPPORTED_REPORT
+    channel:
+      $ref: '#/channels/ccSwitchColorSwitchColorSupportedReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveSwitchColorSwitchColorGet:
+    action: receive
+    title: SWITCH_COLOR_GET
+    channel:
+      $ref: '#/channels/ccSwitchColorSwitchColorGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendSwitchColorSwitchColorReport:
+    action: send
+    title: SWITCH_COLOR_REPORT
+    channel:
+      $ref: '#/channels/ccSwitchColorSwitchColorReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveSwitchColorSwitchColorSet:
+    action: receive
+    title: SWITCH_COLOR_SET
+    channel:
+      $ref: '#/channels/ccSwitchColorSwitchColorSetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveSwitchColorSwitchColorStartLevelChange:
+    action: receive
+    title: SWITCH_COLOR_START_LEVEL_CHANGE
+    channel:
+      $ref: '#/channels/ccSwitchColorSwitchColorStartLevelChangeCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveSwitchColorSwitchColorStopLevelChange:
+    action: receive
+    title: SWITCH_COLOR_STOP_LEVEL_CHANGE
+    channel:
+      $ref: '#/channels/ccSwitchColorSwitchColorStopLevelChangeCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

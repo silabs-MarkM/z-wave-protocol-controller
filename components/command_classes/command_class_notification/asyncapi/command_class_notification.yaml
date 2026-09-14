@@ -1,0 +1,382 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccNotificationNotificationGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Notification/Command/NotificationGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_NOTIFICATION
+    x-cc-dir: command_class_notification
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: NOTIFICATION_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccNotificationNotificationGetCommand:
+        name: NOTIFICATION_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              v1_alarm_type:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              notification_type:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              event:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            v1_alarm_type: '0x09'
+            notification_type: '0xFF'
+            event: '0x00'
+  ccNotificationNotificationReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Notification/Report/NotificationReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_NOTIFICATION
+    x-cc-dir: command_class_notification
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: NOTIFICATION_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccNotificationNotificationReportReport:
+        name: NOTIFICATION_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              v1_alarm_type:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              v1_alarm_level:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              notification_status:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              notification_type:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              event:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              properties1:
+                type: object
+                properties:
+                  event_parameters_length:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  reserved2:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  sequence:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              event_parameter:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+              sequence_number:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            event: 254
+            event_parameter: []
+            notification_status: 0
+            notification_type: 4
+            properties1:
+              event_parameters_length: 0
+              reserved2: 0
+              sequence: 0
+            reserved: 0
+            sequence_number: 0
+            v1_alarm_level: 0
+            v1_alarm_type: 0
+  ccNotificationNotificationSetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Notification/Command/NotificationSet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_NOTIFICATION
+    x-cc-dir: command_class_notification
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: NOTIFICATION_SET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccNotificationNotificationSetCommand:
+        name: NOTIFICATION_SET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              notification_type:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              notification_status:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            notification_type: '0x01'
+            notification_status: '0x01'
+  ccNotificationNotificationSupportedGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Notification/Command/NotificationSupportedGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_NOTIFICATION
+    x-cc-dir: command_class_notification
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: NOTIFICATION_SUPPORTED_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccNotificationNotificationSupportedGetCommand:
+        name: NOTIFICATION_SUPPORTED_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccNotificationNotificationSupportedReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Notification/Report/NotificationSupportedReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_NOTIFICATION
+    x-cc-dir: command_class_notification
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: NOTIFICATION_SUPPORTED_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccNotificationNotificationSupportedReportReport:
+        name: NOTIFICATION_SUPPORTED_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  number_of_bit_masks:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  v1_alarm:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              bit_mask:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            bit_mask:
+            - 80
+            - 226
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 1
+            properties1:
+              number_of_bit_masks: 25
+              reserved: 0
+              v1_alarm: 0
+  ccNotificationEventSupportedGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Notification/Command/EventSupportedGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_NOTIFICATION
+    x-cc-dir: command_class_notification
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: EVENT_SUPPORTED_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccNotificationEventSupportedGetCommand:
+        name: EVENT_SUPPORTED_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              notification_type:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            notification_type: '0x01'
+  ccNotificationEventSupportedReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Notification/Report/EventSupportedReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_NOTIFICATION
+    x-cc-dir: command_class_notification
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: EVENT_SUPPORTED_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccNotificationEventSupportedReportReport:
+        name: EVENT_SUPPORTED_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              notification_type:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              properties1:
+                type: object
+                properties:
+                  number_of_bit_masks:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              bit_mask:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            bit_mask:
+            - 68
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 0
+            - 128
+            notification_type: 4
+            properties1:
+              number_of_bit_masks: 15
+              reserved: 0
+operations:
+  receiveNotificationNotificationGet:
+    action: receive
+    title: NOTIFICATION_GET
+    channel:
+      $ref: '#/channels/ccNotificationNotificationGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendNotificationNotificationReport:
+    action: send
+    title: NOTIFICATION_REPORT
+    channel:
+      $ref: '#/channels/ccNotificationNotificationReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveNotificationNotificationSet:
+    action: receive
+    title: NOTIFICATION_SET
+    channel:
+      $ref: '#/channels/ccNotificationNotificationSetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveNotificationNotificationSupportedGet:
+    action: receive
+    title: NOTIFICATION_SUPPORTED_GET
+    channel:
+      $ref: '#/channels/ccNotificationNotificationSupportedGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendNotificationNotificationSupportedReport:
+    action: send
+    title: NOTIFICATION_SUPPORTED_REPORT
+    channel:
+      $ref: '#/channels/ccNotificationNotificationSupportedReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveNotificationEventSupportedGet:
+    action: receive
+    title: EVENT_SUPPORTED_GET
+    channel:
+      $ref: '#/channels/ccNotificationEventSupportedGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendNotificationEventSupportedReport:
+    action: send
+    title: EVENT_SUPPORTED_REPORT
+    channel:
+      $ref: '#/channels/ccNotificationEventSupportedReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

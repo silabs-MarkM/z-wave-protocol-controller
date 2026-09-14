@@ -1,0 +1,118 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccBasicBasicGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Basic/Command/BasicGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_BASIC
+    x-cc-dir: command_class_basic
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: BASIC_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccBasicBasicGetCommand:
+        name: BASIC_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccBasicBasicReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Basic/Report/BasicReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_BASIC
+    x-cc-dir: command_class_basic
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: BASIC_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccBasicBasicReportReport:
+        name: BASIC_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              current_value:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              target_value:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              duration:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            current_value: 0
+            duration: 0
+            target_value: 0
+  ccBasicBasicSetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Basic/Command/BasicSet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_BASIC
+    x-cc-dir: command_class_basic
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: BASIC_SET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccBasicBasicSetCommand:
+        name: BASIC_SET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              value:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            value: '0xFF'
+operations:
+  receiveBasicBasicGet:
+    action: receive
+    title: BASIC_GET
+    channel:
+      $ref: '#/channels/ccBasicBasicGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendBasicBasicReport:
+    action: send
+    title: BASIC_REPORT
+    channel:
+      $ref: '#/channels/ccBasicBasicReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveBasicBasicSet:
+    action: receive
+    title: BASIC_SET
+    channel:
+      $ref: '#/channels/ccBasicBasicSetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

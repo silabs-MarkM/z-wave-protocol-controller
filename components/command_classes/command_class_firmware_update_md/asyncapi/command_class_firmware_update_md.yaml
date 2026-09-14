@@ -1,0 +1,251 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccFirmwareUpdateMdFirmwareMdReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/FirmwareUpdateMd/Report/FirmwareMdReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_FIRMWARE_UPDATE_MD
+    x-cc-dir: command_class_firmware_update_md
+    x-mqtt-support: 'false'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: FIRMWARE_MD_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccFirmwareUpdateMdFirmwareMdReportReport:
+        name: FIRMWARE_MD_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              manufacturer_id:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              firmware_0_id:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              firmware_0_checksum:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              firmware_upgradable:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              number_of_firmware_targets:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              max_fragment_size:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              vg1:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    firmware_id:
+                      type: string
+                      description: Hex-encoded value as published on MQTT
+                  additionalProperties: true
+              hardware_version:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            manufacturer_id: '0x01'
+            firmware_0_id: '0x01'
+            firmware_0_checksum: '0x01'
+            firmware_upgradable: '0x01'
+            number_of_firmware_targets: '0x01'
+            max_fragment_size: '0x01'
+            vg1:
+            - firmware_id: '0x01'
+            hardware_version: '0x01'
+  ccFirmwareUpdateMdFirmwareUpdateMdRequestReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/FirmwareUpdateMd/Report/FirmwareUpdateMdRequestReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_FIRMWARE_UPDATE_MD
+    x-cc-dir: command_class_firmware_update_md
+    x-mqtt-support: 'false'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: FIRMWARE_UPDATE_MD_REQUEST_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccFirmwareUpdateMdFirmwareUpdateMdRequestReportReport:
+        name: FIRMWARE_UPDATE_MD_REQUEST_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              status:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            status: '0x01'
+  ccFirmwareUpdateMdFirmwareUpdateMdStatusReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/FirmwareUpdateMd/Report/FirmwareUpdateMdStatusReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_FIRMWARE_UPDATE_MD
+    x-cc-dir: command_class_firmware_update_md
+    x-mqtt-support: 'false'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: FIRMWARE_UPDATE_MD_STATUS_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccFirmwareUpdateMdFirmwareUpdateMdStatusReportReport:
+        name: FIRMWARE_UPDATE_MD_STATUS_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              status:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              waittime:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            status: '0x01'
+            waittime: '0x01'
+  ccFirmwareUpdateMdFirmwareUpdateActivationStatusReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/FirmwareUpdateMd/Report/FirmwareUpdateActivationStatusReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_FIRMWARE_UPDATE_MD
+    x-cc-dir: command_class_firmware_update_md
+    x-mqtt-support: 'false'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: FIRMWARE_UPDATE_ACTIVATION_STATUS_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccFirmwareUpdateMdFirmwareUpdateActivationStatusReportReport:
+        name: FIRMWARE_UPDATE_ACTIVATION_STATUS_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              manufacturer_id:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              firmware_id:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              checksum:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              firmware_target:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              firmware_update_status:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              hardware_version:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            manufacturer_id: '0x01'
+            firmware_id: '0x01'
+            checksum: '0x01'
+            firmware_target: '0x01'
+            firmware_update_status: '0x01'
+            hardware_version: '0x01'
+  ccFirmwareUpdateMdFirmwareUpdateMdPrepareReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/FirmwareUpdateMd/Report/FirmwareUpdateMdPrepareReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_FIRMWARE_UPDATE_MD
+    x-cc-dir: command_class_firmware_update_md
+    x-mqtt-support: 'false'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: FIRMWARE_UPDATE_MD_PREPARE_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccFirmwareUpdateMdFirmwareUpdateMdPrepareReportReport:
+        name: FIRMWARE_UPDATE_MD_PREPARE_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              status:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              firmware_checksum:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            status: '0x01'
+            firmware_checksum: '0x01'
+operations:
+  sendFirmwareUpdateMdFirmwareMdReport:
+    action: send
+    title: FIRMWARE_MD_REPORT
+    channel:
+      $ref: '#/channels/ccFirmwareUpdateMdFirmwareMdReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendFirmwareUpdateMdFirmwareUpdateMdRequestReport:
+    action: send
+    title: FIRMWARE_UPDATE_MD_REQUEST_REPORT
+    channel:
+      $ref: '#/channels/ccFirmwareUpdateMdFirmwareUpdateMdRequestReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendFirmwareUpdateMdFirmwareUpdateMdStatusReport:
+    action: send
+    title: FIRMWARE_UPDATE_MD_STATUS_REPORT
+    channel:
+      $ref: '#/channels/ccFirmwareUpdateMdFirmwareUpdateMdStatusReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendFirmwareUpdateMdFirmwareUpdateActivationStatusReport:
+    action: send
+    title: FIRMWARE_UPDATE_ACTIVATION_STATUS_REPORT
+    channel:
+      $ref: '#/channels/ccFirmwareUpdateMdFirmwareUpdateActivationStatusReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendFirmwareUpdateMdFirmwareUpdateMdPrepareReport:
+    action: send
+    title: FIRMWARE_UPDATE_MD_PREPARE_REPORT
+    channel:
+      $ref: '#/channels/ccFirmwareUpdateMdFirmwareUpdateMdPrepareReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

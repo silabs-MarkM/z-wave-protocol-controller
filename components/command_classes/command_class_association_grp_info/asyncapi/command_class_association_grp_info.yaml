@@ -1,0 +1,318 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccAssociationGrpInfoAssociationGroupNameGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/AssociationGrpInfo/Command/AssociationGroupNameGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_ASSOCIATION_GRP_INFO
+    x-cc-dir: command_class_association_grp_info
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: ASSOCIATION_GROUP_NAME_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccAssociationGrpInfoAssociationGroupNameGetCommand:
+        name: ASSOCIATION_GROUP_NAME_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              grouping_identifier:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            grouping_identifier: '0x01'
+  ccAssociationGrpInfoAssociationGroupNameReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/AssociationGrpInfo/Report/AssociationGroupNameReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_ASSOCIATION_GRP_INFO
+    x-cc-dir: command_class_association_grp_info
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: ASSOCIATION_GROUP_NAME_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccAssociationGrpInfoAssociationGroupNameReportReport:
+        name: ASSOCIATION_GROUP_NAME_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              grouping_identifier:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              length_of_name:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              name:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+        examples:
+        - payload:
+            grouping_identifier: 1
+            length_of_name: 8
+            name:
+            - 76
+            - 105
+            - 102
+            - 101
+            - 108
+            - 105
+            - 110
+            - 101
+  ccAssociationGrpInfoAssociationGroupInfoGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/AssociationGrpInfo/Command/AssociationGroupInfoGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_ASSOCIATION_GRP_INFO
+    x-cc-dir: command_class_association_grp_info
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: ASSOCIATION_GROUP_INFO_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccAssociationGrpInfoAssociationGroupInfoGetCommand:
+        name: ASSOCIATION_GROUP_INFO_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  list_mode:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  refresh_cache:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              grouping_identifier:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            properties1:
+              list_mode: '0x01'
+              refresh_cache: '0x01'
+            grouping_identifier: '0x01'
+  ccAssociationGrpInfoAssociationGroupInfoReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/AssociationGrpInfo/Report/AssociationGroupInfoReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_ASSOCIATION_GRP_INFO
+    x-cc-dir: command_class_association_grp_info
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: ASSOCIATION_GROUP_INFO_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccAssociationGrpInfoAssociationGroupInfoReportReport:
+        name: ASSOCIATION_GROUP_INFO_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  group_count:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  dynamic_info:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  list_mode:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              vg1:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    grouping_identifier:
+                      type: string
+                      description: Hex-encoded value as published on MQTT
+                    mode:
+                      type: string
+                      description: Hex-encoded value as published on MQTT
+                    profile1:
+                      type: string
+                      description: Hex-encoded value as published on MQTT
+                    profile2:
+                      type: string
+                      description: Hex-encoded value as published on MQTT
+                    event_code:
+                      type: string
+                      description: Hex-encoded value as published on MQTT
+                  additionalProperties: true
+        examples:
+        - payload:
+            properties1:
+              dynamic_info: 0
+              group_count: 1
+              list_mode: 0
+            vg1:
+            - event_code: 0
+              grouping_identifier: 1
+              mode: 0
+              profile1: 0
+              profile2: 1
+              reserved: 0
+  ccAssociationGrpInfoAssociationGroupCommandListGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/AssociationGrpInfo/Command/AssociationGroupCommandListGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_ASSOCIATION_GRP_INFO
+    x-cc-dir: command_class_association_grp_info
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: ASSOCIATION_GROUP_COMMAND_LIST_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccAssociationGrpInfoAssociationGroupCommandListGetCommand:
+        name: ASSOCIATION_GROUP_COMMAND_LIST_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  allow_cache:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              grouping_identifier:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            properties1:
+              allow_cache: '0x01'
+            grouping_identifier: '0x01'
+  ccAssociationGrpInfoAssociationGroupCommandListReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/AssociationGrpInfo/Report/AssociationGroupCommandListReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_ASSOCIATION_GRP_INFO
+    x-cc-dir: command_class_association_grp_info
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: ASSOCIATION_GROUP_COMMAND_LIST_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccAssociationGrpInfoAssociationGroupCommandListReportReport:
+        name: ASSOCIATION_GROUP_COMMAND_LIST_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              grouping_identifier:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              list_length:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              command:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+        examples:
+        - payload:
+            command:
+            - 90
+            - 1
+            grouping_identifier: 1
+            list_length: 2
+operations:
+  receiveAssociationGrpInfoAssociationGroupNameGet:
+    action: receive
+    title: ASSOCIATION_GROUP_NAME_GET
+    channel:
+      $ref: '#/channels/ccAssociationGrpInfoAssociationGroupNameGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendAssociationGrpInfoAssociationGroupNameReport:
+    action: send
+    title: ASSOCIATION_GROUP_NAME_REPORT
+    channel:
+      $ref: '#/channels/ccAssociationGrpInfoAssociationGroupNameReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveAssociationGrpInfoAssociationGroupInfoGet:
+    action: receive
+    title: ASSOCIATION_GROUP_INFO_GET
+    channel:
+      $ref: '#/channels/ccAssociationGrpInfoAssociationGroupInfoGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendAssociationGrpInfoAssociationGroupInfoReport:
+    action: send
+    title: ASSOCIATION_GROUP_INFO_REPORT
+    channel:
+      $ref: '#/channels/ccAssociationGrpInfoAssociationGroupInfoReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveAssociationGrpInfoAssociationGroupCommandListGet:
+    action: receive
+    title: ASSOCIATION_GROUP_COMMAND_LIST_GET
+    channel:
+      $ref: '#/channels/ccAssociationGrpInfoAssociationGroupCommandListGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendAssociationGrpInfoAssociationGroupCommandListReport:
+    action: send
+    title: ASSOCIATION_GROUP_COMMAND_LIST_REPORT
+    channel:
+      $ref: '#/channels/ccAssociationGrpInfoAssociationGroupCommandListReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

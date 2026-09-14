@@ -1,0 +1,185 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccManufacturerSpecificManufacturerSpecificGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ManufacturerSpecific/Command/ManufacturerSpecificGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MANUFACTURER_SPECIFIC
+    x-cc-dir: command_class_manufacturer_specific
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: MANUFACTURER_SPECIFIC_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccManufacturerSpecificManufacturerSpecificGetCommand:
+        name: MANUFACTURER_SPECIFIC_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccManufacturerSpecificManufacturerSpecificReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ManufacturerSpecific/Report/ManufacturerSpecificReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MANUFACTURER_SPECIFIC
+    x-cc-dir: command_class_manufacturer_specific
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: MANUFACTURER_SPECIFIC_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccManufacturerSpecificManufacturerSpecificReportReport:
+        name: MANUFACTURER_SPECIFIC_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              manufacturer_id:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              product_type_id:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              product_id:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            manufacturer_id: 19833
+            product_id: 10613
+            product_type_id: 20391
+  ccManufacturerSpecificDeviceSpecificGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ManufacturerSpecific/Command/DeviceSpecificGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MANUFACTURER_SPECIFIC
+    x-cc-dir: command_class_manufacturer_specific
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: DEVICE_SPECIFIC_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccManufacturerSpecificDeviceSpecificGetCommand:
+        name: DEVICE_SPECIFIC_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  device_id_type:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+        examples:
+        - payload:
+            properties1:
+              device_id_type: '0x01'
+  ccManufacturerSpecificDeviceSpecificReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ManufacturerSpecific/Report/DeviceSpecificReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MANUFACTURER_SPECIFIC
+    x-cc-dir: command_class_manufacturer_specific
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: DEVICE_SPECIFIC_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccManufacturerSpecificDeviceSpecificReportReport:
+        name: DEVICE_SPECIFIC_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  device_id_type:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              properties2:
+                type: object
+                properties:
+                  device_id_data_length_indicator:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  device_id_data_format:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              device_id_data:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+        examples:
+        - payload:
+            device_id_data: []
+            properties1:
+              device_id_type: 1
+              reserved: 0
+            properties2:
+              device_id_data_format: 0
+              device_id_data_length_indicator: 0
+operations:
+  receiveManufacturerSpecificManufacturerSpecificGet:
+    action: receive
+    title: MANUFACTURER_SPECIFIC_GET
+    channel:
+      $ref: '#/channels/ccManufacturerSpecificManufacturerSpecificGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendManufacturerSpecificManufacturerSpecificReport:
+    action: send
+    title: MANUFACTURER_SPECIFIC_REPORT
+    channel:
+      $ref: '#/channels/ccManufacturerSpecificManufacturerSpecificReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveManufacturerSpecificDeviceSpecificGet:
+    action: receive
+    title: DEVICE_SPECIFIC_GET
+    channel:
+      $ref: '#/channels/ccManufacturerSpecificDeviceSpecificGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendManufacturerSpecificDeviceSpecificReport:
+    action: send
+    title: DEVICE_SPECIFIC_REPORT
+    channel:
+      $ref: '#/channels/ccManufacturerSpecificDeviceSpecificReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

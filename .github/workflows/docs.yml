@@ -87,7 +87,7 @@ jobs:
             --out build/command_class_docs
           python3 scripts/mqtt_asyncapi/assemble_and_render.py \
             --root . \
-            --cc-yaml build/command_class_docs/doc/generated/command_classes.asyncapi.yaml \
+            --cc-root build/command_class_docs \
             --cc-md-root build/command_class_docs \
             --assembled-out build/asyncapi.assembled.yaml
 

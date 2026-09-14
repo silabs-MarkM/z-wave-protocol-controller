@@ -1,0 +1,319 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccAssociationAssociationGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Association/Command/AssociationGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_ASSOCIATION
+    x-cc-dir: command_class_association
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: ASSOCIATION_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccAssociationAssociationGetCommand:
+        name: ASSOCIATION_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              grouping_identifier:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            grouping_identifier: '0x01'
+  ccAssociationAssociationGroupingsGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Association/Command/AssociationGroupingsGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_ASSOCIATION
+    x-cc-dir: command_class_association
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: ASSOCIATION_GROUPINGS_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccAssociationAssociationGroupingsGetCommand:
+        name: ASSOCIATION_GROUPINGS_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccAssociationAssociationGroupingsReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Association/Report/AssociationGroupingsReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_ASSOCIATION
+    x-cc-dir: command_class_association
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: ASSOCIATION_GROUPINGS_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccAssociationAssociationGroupingsReportReport:
+        name: ASSOCIATION_GROUPINGS_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              supported_groupings:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            supported_groupings: 1
+  ccAssociationAssociationRemoveCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Association/Command/AssociationRemove
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_ASSOCIATION
+    x-cc-dir: command_class_association
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: ASSOCIATION_REMOVE
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccAssociationAssociationRemoveCommand:
+        name: ASSOCIATION_REMOVE
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              grouping_identifier:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              node_id:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+        examples:
+        - payload:
+            grouping_identifier: '0x01'
+            node_id:
+            - '0x01'
+  ccAssociationAssociationReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Association/Report/AssociationReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_ASSOCIATION
+    x-cc-dir: command_class_association
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: ASSOCIATION_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccAssociationAssociationReportReport:
+        name: ASSOCIATION_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              grouping_identifier:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              max_nodes_supported:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              reports_to_follow:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              nodeid:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+        examples:
+        - payload:
+            grouping_identifier: 1
+            max_nodes_supported: 5
+            nodeid: []
+            reports_to_follow: 0
+  ccAssociationAssociationSetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Association/Command/AssociationSet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_ASSOCIATION
+    x-cc-dir: command_class_association
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: ASSOCIATION_SET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccAssociationAssociationSetCommand:
+        name: ASSOCIATION_SET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              grouping_identifier:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              node_id:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+        examples:
+        - payload:
+            grouping_identifier: '0x01'
+            node_id:
+            - 2
+  ccAssociationAssociationSpecificGroupGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Association/Command/AssociationSpecificGroupGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_ASSOCIATION
+    x-cc-dir: command_class_association
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: ASSOCIATION_SPECIFIC_GROUP_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccAssociationAssociationSpecificGroupGetCommand:
+        name: ASSOCIATION_SPECIFIC_GROUP_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccAssociationAssociationSpecificGroupReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Association/Report/AssociationSpecificGroupReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_ASSOCIATION
+    x-cc-dir: command_class_association
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: ASSOCIATION_SPECIFIC_GROUP_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccAssociationAssociationSpecificGroupReportReport:
+        name: ASSOCIATION_SPECIFIC_GROUP_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              group:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            group: '0x01'
+operations:
+  receiveAssociationAssociationGet:
+    action: receive
+    title: ASSOCIATION_GET
+    channel:
+      $ref: '#/channels/ccAssociationAssociationGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveAssociationAssociationGroupingsGet:
+    action: receive
+    title: ASSOCIATION_GROUPINGS_GET
+    channel:
+      $ref: '#/channels/ccAssociationAssociationGroupingsGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendAssociationAssociationGroupingsReport:
+    action: send
+    title: ASSOCIATION_GROUPINGS_REPORT
+    channel:
+      $ref: '#/channels/ccAssociationAssociationGroupingsReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveAssociationAssociationRemove:
+    action: receive
+    title: ASSOCIATION_REMOVE
+    channel:
+      $ref: '#/channels/ccAssociationAssociationRemoveCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendAssociationAssociationReport:
+    action: send
+    title: ASSOCIATION_REPORT
+    channel:
+      $ref: '#/channels/ccAssociationAssociationReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveAssociationAssociationSet:
+    action: receive
+    title: ASSOCIATION_SET
+    channel:
+      $ref: '#/channels/ccAssociationAssociationSetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveAssociationAssociationSpecificGroupGet:
+    action: receive
+    title: ASSOCIATION_SPECIFIC_GROUP_GET
+    channel:
+      $ref: '#/channels/ccAssociationAssociationSpecificGroupGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendAssociationAssociationSpecificGroupReport:
+    action: send
+    title: ASSOCIATION_SPECIFIC_GROUP_REPORT
+    channel:
+      $ref: '#/channels/ccAssociationAssociationSpecificGroupReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

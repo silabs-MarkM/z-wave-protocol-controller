@@ -161,6 +161,8 @@ channels:
           schema:
             type: object
             additionalProperties: true
+        examples:
+          - payload: {}
   networkDskAccept:
     address: zpc/{homeId}/Network/DSK/Accept
     x-doc-group: network
@@ -455,6 +457,9 @@ channels:
               node_id:
                 type: integer
             additionalProperties: true
+        examples:
+          - payload:
+              node_id: 2
   networkNlsEnableReport:
     address: zpc/{homeId}/Network/NLS/Enable/Report
     x-doc-group: network
@@ -472,6 +477,10 @@ channels:
               status:
                 type: string
             additionalProperties: true
+        examples:
+          - payload:
+              node_id: 2
+              status: ok
   networkNlsState:
     address: zpc/{homeId}/Network/NLS/State
     x-doc-group: network
@@ -487,6 +496,9 @@ channels:
               node_id:
                 type: integer
             additionalProperties: true
+        examples:
+          - payload:
+              node_id: 2
   networkNlsStateReport:
     address: zpc/{homeId}/Network/NLS/State/Report
     x-doc-group: network
@@ -508,6 +520,12 @@ channels:
               status:
                 type: string
             additionalProperties: true
+        examples:
+          - payload:
+              node_id: 2
+              nls_support: true
+              nls_state: false
+              status: ok
 operations:
   receiveNetworkNodeAdd:
     action: receive

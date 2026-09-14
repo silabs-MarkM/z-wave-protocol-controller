@@ -1,0 +1,61 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccSupervisionSupervisionReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Supervision/Report/SupervisionReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_SUPERVISION
+    x-cc-dir: command_class_supervision
+    x-mqtt-support: 'false'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: SUPERVISION_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccSupervisionSupervisionReportReport:
+        name: SUPERVISION_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  session_id:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  wake_up_request:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  more_status_updates:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              status:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              duration:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            duration: 0
+            properties1:
+              more_status_updates: 0
+              session_id: 17
+              wake_up_request: 0
+            status: 255
+operations:
+  sendSupervisionSupervisionReport:
+    action: send
+    title: SUPERVISION_REPORT
+    channel:
+      $ref: '#/channels/ccSupervisionSupervisionReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

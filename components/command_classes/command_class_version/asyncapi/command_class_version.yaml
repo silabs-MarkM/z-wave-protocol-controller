@@ -1,0 +1,377 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccVersionVersionCommandClassGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Version/Command/VersionCommandClassGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_VERSION
+    x-cc-dir: command_class_version
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: VERSION_COMMAND_CLASS_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccVersionVersionCommandClassGetCommand:
+        name: VERSION_COMMAND_CLASS_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              requested_command_class:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            requested_command_class: '0x01'
+  ccVersionVersionCommandClassReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Version/Report/VersionCommandClassReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_VERSION
+    x-cc-dir: command_class_version
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: VERSION_COMMAND_CLASS_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccVersionVersionCommandClassReportReport:
+        name: VERSION_COMMAND_CLASS_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              requested_command_class:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              command_class_version:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            command_class_version: 2
+            requested_command_class: 85
+  ccVersionVersionGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Version/Command/VersionGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_VERSION
+    x-cc-dir: command_class_version
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: VERSION_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccVersionVersionGetCommand:
+        name: VERSION_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccVersionVersionReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Version/Report/VersionReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_VERSION
+    x-cc-dir: command_class_version
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: VERSION_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccVersionVersionReportReport:
+        name: VERSION_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              z_wave_library_type:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              z_wave_protocol_version:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              z_wave_protocol_sub_version:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              firmware_0_version:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              firmware_0_sub_version:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              hardware_version:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              number_of_firmware_targets:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              vg:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    firmware_version:
+                      type: string
+                      description: Hex-encoded value as published on MQTT
+                    firmware_sub_version:
+                      type: string
+                      description: Hex-encoded value as published on MQTT
+                  additionalProperties: true
+        examples:
+        - payload:
+            firmware_0_sub_version: 131
+            firmware_0_version: 243
+            hardware_version: 171
+            number_of_firmware_targets: 0
+            vg: []
+            z_wave_library_type: 7
+            z_wave_protocol_sub_version: 54
+            z_wave_protocol_version: 7
+  ccVersionVersionCapabilitiesGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Version/Command/VersionCapabilitiesGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_VERSION
+    x-cc-dir: command_class_version
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: VERSION_CAPABILITIES_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccVersionVersionCapabilitiesGetCommand:
+        name: VERSION_CAPABILITIES_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccVersionVersionCapabilitiesReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Version/Report/VersionCapabilitiesReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_VERSION
+    x-cc-dir: command_class_version
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: VERSION_CAPABILITIES_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccVersionVersionCapabilitiesReportReport:
+        name: VERSION_CAPABILITIES_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  version:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  command_class:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  z_wave_software:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  reserved1:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+        examples:
+        - payload:
+            properties1:
+              command_class: 2
+              reserved1: 0
+              version: 1
+              z_wave_software: 4
+  ccVersionVersionZwaveSoftwareGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Version/Command/VersionZwaveSoftwareGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_VERSION
+    x-cc-dir: command_class_version
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: VERSION_ZWAVE_SOFTWARE_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccVersionVersionZwaveSoftwareGetCommand:
+        name: VERSION_ZWAVE_SOFTWARE_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccVersionVersionZwaveSoftwareReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Version/Report/VersionZwaveSoftwareReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_VERSION
+    x-cc-dir: command_class_version
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: VERSION_ZWAVE_SOFTWARE_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccVersionVersionZwaveSoftwareReportReport:
+        name: VERSION_ZWAVE_SOFTWARE_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              sdk_version:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              application_framework_api_version:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              application_framework_build_number:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              host_interface_version:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              host_interface_build_number:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              z_wave_protocol_version:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              z_wave_protocol_build_number:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              application_version:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              application_build_number:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            application_build_number: 0
+            application_framework_api_version: 0
+            application_framework_build_number: 0
+            application_version: 15958867
+            host_interface_build_number: 0
+            host_interface_version: 0
+            sdk_version: 508476
+            z_wave_protocol_build_number: 0
+            z_wave_protocol_version: 472808
+operations:
+  receiveVersionVersionCommandClassGet:
+    action: receive
+    title: VERSION_COMMAND_CLASS_GET
+    channel:
+      $ref: '#/channels/ccVersionVersionCommandClassGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendVersionVersionCommandClassReport:
+    action: send
+    title: VERSION_COMMAND_CLASS_REPORT
+    channel:
+      $ref: '#/channels/ccVersionVersionCommandClassReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveVersionVersionGet:
+    action: receive
+    title: VERSION_GET
+    channel:
+      $ref: '#/channels/ccVersionVersionGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendVersionVersionReport:
+    action: send
+    title: VERSION_REPORT
+    channel:
+      $ref: '#/channels/ccVersionVersionReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveVersionVersionCapabilitiesGet:
+    action: receive
+    title: VERSION_CAPABILITIES_GET
+    channel:
+      $ref: '#/channels/ccVersionVersionCapabilitiesGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendVersionVersionCapabilitiesReport:
+    action: send
+    title: VERSION_CAPABILITIES_REPORT
+    channel:
+      $ref: '#/channels/ccVersionVersionCapabilitiesReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveVersionVersionZwaveSoftwareGet:
+    action: receive
+    title: VERSION_ZWAVE_SOFTWARE_GET
+    channel:
+      $ref: '#/channels/ccVersionVersionZwaveSoftwareGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendVersionVersionZwaveSoftwareReport:
+    action: send
+    title: VERSION_ZWAVE_SOFTWARE_REPORT
+    channel:
+      $ref: '#/channels/ccVersionVersionZwaveSoftwareReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

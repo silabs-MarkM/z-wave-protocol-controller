@@ -43,7 +43,18 @@ def _mqtt_examples_by_address(path: Path) -> dict:
             continue
         sample = message.get("examples") or []
         if sample and isinstance(sample[0], dict) and "payload" in sample[0]:
-            examples[address] = sample[0]["payload"]
+            examples[address] = sample[0]
+    return examples
+
+
+def _mqtt_examples_from_tree(output_dir: Path) -> dict:
+    examples = {}
+    paths = sorted(output_dir.glob("*/asyncapi/*.yaml"))
+    legacy = output_dir / "doc/generated/command_classes.asyncapi.yaml"
+    if legacy.is_file():
+        paths.append(legacy)
+    for path in paths:
+        examples.update(_mqtt_examples_by_address(path))
     return examples
 
 
@@ -136,16 +147,16 @@ class CommandClassGenerator:
         "+command_class+_mqtt.hpp.j2",
         "+command_class+_mqtt.cpp.j2",
     }
-    _MQTT_INTERFACE_DOC_TEMPLATE_NAME = "command_classes.asyncapi.yaml.j2"
+    _MQTT_ASYNCAPI_TEMPLATE_NAME = "+command_class+.yaml.j2"
 
     @classmethod
     def _should_render(cls, template_name, command_class):
+        if template_name == cls._MQTT_ASYNCAPI_TEMPLATE_NAME:
+            return command_class.has_mqtt_interface_doc
         if command_class.mqtt_support:
             return True
         if template_name in cls._MQTT_ONLY_TEMPLATE_NAMES:
             return False
-        if template_name == cls._MQTT_INTERFACE_DOC_TEMPLATE_NAME:
-            return True
         return True
 
     def _mqtt_interface_doc_path(self, command_class, output_dir: Path) -> Path:
@@ -165,6 +176,16 @@ class CommandClassGenerator:
             doc_path = self._mqtt_interface_doc_path(command_class, output_dir)
             if doc_path.exists():
                 doc_path.unlink()
+
+    def _cleanup_stale_mqtt_asyncapi(self, output_dir: Path) -> None:
+        keep = {
+            command_class.name.lower()
+            for command_class in self._command_classes
+            if command_class.has_mqtt_interface_doc
+        }
+        for path in output_dir.glob("*/asyncapi/*.yaml"):
+            if path.parent.parent.name not in keep:
+                path.unlink()
 
     def generate_sources(self):
         templateLoader = FileSystemLoader(searchpath=self._templates_dir)
@@ -207,9 +228,7 @@ class CommandClassGenerator:
         ]
 
         output_dir = self._output_dir if self._output_dir else Path("generated")
-        mqtt_examples = _mqtt_examples_by_address(
-            output_dir / "doc/generated/command_classes.asyncapi.yaml"
-        )
+        mqtt_examples = _mqtt_examples_from_tree(output_dir)
 
         for template in self._templates:
             if template.name in utility_templates:
@@ -268,8 +287,10 @@ class CommandClassGenerator:
                 output_file_path = output_dir / Path(output_file_name)
                 output_file_path.parent.mkdir(parents=True, exist_ok=True)
 
+                posix_path = output_file_path.as_posix()
                 if (
-                    "generated" in str(output_file_path)
+                    "generated" in posix_path
+                    or "/asyncapi/" in posix_path
                     or output_file_path.exists() is False
                 ):
                     with open(output_file_path, "w") as f:
@@ -277,3 +298,4 @@ class CommandClassGenerator:
 
         output_dir = self._output_dir if self._output_dir else Path("generated")
         self._cleanup_stale_mqtt_interface_docs(output_dir)
+        self._cleanup_stale_mqtt_asyncapi(output_dir)

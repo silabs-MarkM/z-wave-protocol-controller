@@ -1,0 +1,326 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccMultiChannelAssociationMultiChannelAssociationGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannelAssociation/Command/MultiChannelAssociationGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MULTI_CHANNEL_ASSOCIATION
+    x-cc-dir: command_class_multi_channel_association
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: MULTI_CHANNEL_ASSOCIATION_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccMultiChannelAssociationMultiChannelAssociationGetCommand:
+        name: MULTI_CHANNEL_ASSOCIATION_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              grouping_identifier:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            grouping_identifier: '0x01'
+  ccMultiChannelAssociationMultiChannelAssociationGroupingsGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannelAssociation/Command/MultiChannelAssociationGroupingsGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MULTI_CHANNEL_ASSOCIATION
+    x-cc-dir: command_class_multi_channel_association
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: MULTI_CHANNEL_ASSOCIATION_GROUPINGS_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccMultiChannelAssociationMultiChannelAssociationGroupingsGetCommand:
+        name: MULTI_CHANNEL_ASSOCIATION_GROUPINGS_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccMultiChannelAssociationMultiChannelAssociationGroupingsReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannelAssociation/Report/MultiChannelAssociationGroupingsReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MULTI_CHANNEL_ASSOCIATION
+    x-cc-dir: command_class_multi_channel_association
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: MULTI_CHANNEL_ASSOCIATION_GROUPINGS_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccMultiChannelAssociationMultiChannelAssociationGroupingsReportReport:
+        name: MULTI_CHANNEL_ASSOCIATION_GROUPINGS_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              supported_groupings:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            supported_groupings: 6
+  ccMultiChannelAssociationMultiChannelAssociationRemoveCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannelAssociation/Command/MultiChannelAssociationRemove
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MULTI_CHANNEL_ASSOCIATION
+    x-cc-dir: command_class_multi_channel_association
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: MULTI_CHANNEL_ASSOCIATION_REMOVE
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccMultiChannelAssociationMultiChannelAssociationRemoveCommand:
+        name: MULTI_CHANNEL_ASSOCIATION_REMOVE
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              grouping_identifier:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              node_id:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+              marker:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              vg:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    multi_channel_node_id:
+                      type: string
+                      description: Hex-encoded value as published on MQTT
+                    properties1:
+                      type: object
+                      properties:
+                        end_point:
+                          type: string
+                          description: Hex-encoded byte (e.g. 0x05)
+                        bit_address:
+                          type: string
+                          description: Hex-encoded byte (e.g. 0x05)
+                      additionalProperties: true
+                  additionalProperties: true
+        examples:
+        - payload:
+            grouping_identifier: '0x02'
+            node_id: []
+            marker: '0x00'
+            vg:
+            - multi_channel_node_id: '0x02'
+              properties1:
+                end_point: '0x01'
+                bit_address: '0x00'
+  ccMultiChannelAssociationMultiChannelAssociationReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannelAssociation/Report/MultiChannelAssociationReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MULTI_CHANNEL_ASSOCIATION
+    x-cc-dir: command_class_multi_channel_association
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: MULTI_CHANNEL_ASSOCIATION_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccMultiChannelAssociationMultiChannelAssociationReportReport:
+        name: MULTI_CHANNEL_ASSOCIATION_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              grouping_identifier:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              max_nodes_supported:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              reports_to_follow:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              node_id:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+              marker:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              vg:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    multi_channel_node_id:
+                      type: string
+                      description: Hex-encoded value as published on MQTT
+                    properties1:
+                      type: object
+                      properties:
+                        end_point:
+                          type: string
+                          description: Hex-encoded byte (e.g. 0x05)
+                        bit_address:
+                          type: string
+                          description: Hex-encoded byte (e.g. 0x05)
+                      additionalProperties: true
+                  additionalProperties: true
+        examples:
+        - payload:
+            grouping_identifier: 1
+            max_nodes_supported: 5
+            node_id: []
+            reports_to_follow: 0
+            vg: []
+  ccMultiChannelAssociationMultiChannelAssociationSetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannelAssociation/Command/MultiChannelAssociationSet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MULTI_CHANNEL_ASSOCIATION
+    x-cc-dir: command_class_multi_channel_association
+    x-mqtt-support: 'true'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: MULTI_CHANNEL_ASSOCIATION_SET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccMultiChannelAssociationMultiChannelAssociationSetCommand:
+        name: MULTI_CHANNEL_ASSOCIATION_SET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              grouping_identifier:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              node_id:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+              marker:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              vg:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    multi_channel_node_id:
+                      type: string
+                      description: Hex-encoded value as published on MQTT
+                    properties1:
+                      type: object
+                      properties:
+                        end_point:
+                          type: string
+                          description: Hex-encoded byte (e.g. 0x05)
+                        bit_address:
+                          type: string
+                          description: Hex-encoded byte (e.g. 0x05)
+                      additionalProperties: true
+                  additionalProperties: true
+        examples:
+        - payload:
+            grouping_identifier: '0x02'
+            node_id: []
+            marker: '0x00'
+            vg:
+            - multi_channel_node_id: '0x02'
+              properties1:
+                end_point: '0x01'
+                bit_address: '0x00'
+operations:
+  receiveMultiChannelAssociationMultiChannelAssociationGet:
+    action: receive
+    title: MULTI_CHANNEL_ASSOCIATION_GET
+    channel:
+      $ref: '#/channels/ccMultiChannelAssociationMultiChannelAssociationGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveMultiChannelAssociationMultiChannelAssociationGroupingsGet:
+    action: receive
+    title: MULTI_CHANNEL_ASSOCIATION_GROUPINGS_GET
+    channel:
+      $ref: '#/channels/ccMultiChannelAssociationMultiChannelAssociationGroupingsGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendMultiChannelAssociationMultiChannelAssociationGroupingsReport:
+    action: send
+    title: MULTI_CHANNEL_ASSOCIATION_GROUPINGS_REPORT
+    channel:
+      $ref: '#/channels/ccMultiChannelAssociationMultiChannelAssociationGroupingsReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveMultiChannelAssociationMultiChannelAssociationRemove:
+    action: receive
+    title: MULTI_CHANNEL_ASSOCIATION_REMOVE
+    channel:
+      $ref: '#/channels/ccMultiChannelAssociationMultiChannelAssociationRemoveCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendMultiChannelAssociationMultiChannelAssociationReport:
+    action: send
+    title: MULTI_CHANNEL_ASSOCIATION_REPORT
+    channel:
+      $ref: '#/channels/ccMultiChannelAssociationMultiChannelAssociationReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveMultiChannelAssociationMultiChannelAssociationSet:
+    action: receive
+    title: MULTI_CHANNEL_ASSOCIATION_SET
+    channel:
+      $ref: '#/channels/ccMultiChannelAssociationMultiChannelAssociationSetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

@@ -1,0 +1,625 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccMultiChannelMultiChannelCapabilityGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannel/Command/MultiChannelCapabilityGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MULTI_CHANNEL
+    x-cc-dir: command_class_multi_channel
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: MULTI_CHANNEL_CAPABILITY_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccMultiChannelMultiChannelCapabilityGetCommand:
+        name: MULTI_CHANNEL_CAPABILITY_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  end_point:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+        examples:
+        - payload:
+            properties1:
+              end_point: '0x01'
+  ccMultiChannelMultiChannelCapabilityReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannel/Report/MultiChannelCapabilityReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MULTI_CHANNEL
+    x-cc-dir: command_class_multi_channel
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: MULTI_CHANNEL_CAPABILITY_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccMultiChannelMultiChannelCapabilityReportReport:
+        name: MULTI_CHANNEL_CAPABILITY_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  end_point:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  dynamic:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              generic_device_class:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              specific_device_class:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              command_class:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+        examples:
+        - payload:
+            command_class:
+            - 94
+            - 159
+            - 108
+            generic_device_class: 16
+            properties1:
+              dynamic: 0
+              end_point: 1
+            specific_device_class: 0
+  ccMultiChannelMultiChannelCmdEncapCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannel/Command/MultiChannelCmdEncap
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MULTI_CHANNEL
+    x-cc-dir: command_class_multi_channel
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: MULTI_CHANNEL_CMD_ENCAP
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccMultiChannelMultiChannelCmdEncapCommand:
+        name: MULTI_CHANNEL_CMD_ENCAP
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  source_end_point:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              properties2:
+                type: object
+                properties:
+                  destination_end_point:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  bit_address:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              command_class:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              command:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              parameter:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+        examples:
+        - payload:
+            properties1:
+              source_end_point: '0x01'
+            properties2:
+              destination_end_point: '0x01'
+              bit_address: '0x01'
+            command_class: '0x01'
+            command: '0x01'
+            parameter:
+            - '0x01'
+  ccMultiChannelMultiChannelEndPointFindCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannel/Command/MultiChannelEndPointFind
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MULTI_CHANNEL
+    x-cc-dir: command_class_multi_channel
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: MULTI_CHANNEL_END_POINT_FIND
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccMultiChannelMultiChannelEndPointFindCommand:
+        name: MULTI_CHANNEL_END_POINT_FIND
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              generic_device_class:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              specific_device_class:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            generic_device_class: '0x01'
+            specific_device_class: '0x01'
+  ccMultiChannelMultiChannelEndPointFindReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannel/Report/MultiChannelEndPointFindReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MULTI_CHANNEL
+    x-cc-dir: command_class_multi_channel
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: MULTI_CHANNEL_END_POINT_FIND_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccMultiChannelMultiChannelEndPointFindReportReport:
+        name: MULTI_CHANNEL_END_POINT_FIND_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              reports_to_follow:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              generic_device_class:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              specific_device_class:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              vg:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    properties1:
+                      type: object
+                      properties:
+                        end_point:
+                          type: string
+                          description: Hex-encoded byte (e.g. 0x05)
+                      additionalProperties: true
+                  additionalProperties: true
+        examples:
+        - payload:
+            generic_device_class: 255
+            reports_to_follow: 0
+            specific_device_class: 255
+            vg:
+            - properties1:
+                end_point: 1
+                res: 0
+            - properties1:
+                end_point: 2
+                res: 0
+            - properties1:
+                end_point: 3
+                res: 0
+            - properties1:
+                end_point: 5
+                res: 0
+            - properties1:
+                end_point: 7
+                res: 0
+  ccMultiChannelMultiChannelEndPointGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannel/Command/MultiChannelEndPointGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MULTI_CHANNEL
+    x-cc-dir: command_class_multi_channel
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: MULTI_CHANNEL_END_POINT_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccMultiChannelMultiChannelEndPointGetCommand:
+        name: MULTI_CHANNEL_END_POINT_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccMultiChannelMultiChannelEndPointReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannel/Report/MultiChannelEndPointReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MULTI_CHANNEL
+    x-cc-dir: command_class_multi_channel
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: MULTI_CHANNEL_END_POINT_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccMultiChannelMultiChannelEndPointReportReport:
+        name: MULTI_CHANNEL_END_POINT_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  identical:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  dynamic:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              properties2:
+                type: object
+                properties:
+                  individual_end_points:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              properties3:
+                type: object
+                properties:
+                  aggregated_end_points:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+        examples:
+        - payload:
+            properties1:
+              dynamic: 128
+              identical: 0
+              res1: 0
+            properties2:
+              individual_end_points: 5
+              res2: 0
+            properties3:
+              aggregated_end_points: 0
+              res3: 0
+  ccMultiChannelMultiInstanceCmdEncapCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannel/Command/MultiInstanceCmdEncap
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MULTI_CHANNEL
+    x-cc-dir: command_class_multi_channel
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: MULTI_INSTANCE_CMD_ENCAP
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccMultiChannelMultiInstanceCmdEncapCommand:
+        name: MULTI_INSTANCE_CMD_ENCAP
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  instance:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              command_class:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              command:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              parameter:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+        examples:
+        - payload:
+            properties1:
+              instance: '0x01'
+            command_class: '0x01'
+            command: '0x01'
+            parameter:
+            - '0x01'
+  ccMultiChannelMultiInstanceGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannel/Command/MultiInstanceGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MULTI_CHANNEL
+    x-cc-dir: command_class_multi_channel
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: MULTI_INSTANCE_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccMultiChannelMultiInstanceGetCommand:
+        name: MULTI_INSTANCE_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              command_class:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            command_class: '0x01'
+  ccMultiChannelMultiInstanceReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannel/Report/MultiInstanceReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MULTI_CHANNEL
+    x-cc-dir: command_class_multi_channel
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: MULTI_INSTANCE_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccMultiChannelMultiInstanceReportReport:
+        name: MULTI_INSTANCE_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              command_class:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              properties1:
+                type: object
+                properties:
+                  instances:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+        examples:
+        - payload:
+            command_class: '0x01'
+            properties1:
+              instances: '0x01'
+  ccMultiChannelMultiChannelAggregatedMembersGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannel/Command/MultiChannelAggregatedMembersGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MULTI_CHANNEL
+    x-cc-dir: command_class_multi_channel
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: MULTI_CHANNEL_AGGREGATED_MEMBERS_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccMultiChannelMultiChannelAggregatedMembersGetCommand:
+        name: MULTI_CHANNEL_AGGREGATED_MEMBERS_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  aggregated_end_point:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+        examples:
+        - payload:
+            properties1:
+              aggregated_end_point: '0x01'
+  ccMultiChannelMultiChannelAggregatedMembersReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannel/Report/MultiChannelAggregatedMembersReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_MULTI_CHANNEL
+    x-cc-dir: command_class_multi_channel
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: MULTI_CHANNEL_AGGREGATED_MEMBERS_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccMultiChannelMultiChannelAggregatedMembersReportReport:
+        name: MULTI_CHANNEL_AGGREGATED_MEMBERS_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  aggregated_end_point:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              number_of_bit_masks:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              aggregated_members_bit_mask:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            properties1:
+              aggregated_end_point: '0x01'
+            number_of_bit_masks: '0x01'
+            aggregated_members_bit_mask: '0x01'
+operations:
+  receiveMultiChannelMultiChannelCapabilityGet:
+    action: receive
+    title: MULTI_CHANNEL_CAPABILITY_GET
+    channel:
+      $ref: '#/channels/ccMultiChannelMultiChannelCapabilityGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendMultiChannelMultiChannelCapabilityReport:
+    action: send
+    title: MULTI_CHANNEL_CAPABILITY_REPORT
+    channel:
+      $ref: '#/channels/ccMultiChannelMultiChannelCapabilityReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveMultiChannelMultiChannelCmdEncap:
+    action: receive
+    title: MULTI_CHANNEL_CMD_ENCAP
+    channel:
+      $ref: '#/channels/ccMultiChannelMultiChannelCmdEncapCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveMultiChannelMultiChannelEndPointFind:
+    action: receive
+    title: MULTI_CHANNEL_END_POINT_FIND
+    channel:
+      $ref: '#/channels/ccMultiChannelMultiChannelEndPointFindCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendMultiChannelMultiChannelEndPointFindReport:
+    action: send
+    title: MULTI_CHANNEL_END_POINT_FIND_REPORT
+    channel:
+      $ref: '#/channels/ccMultiChannelMultiChannelEndPointFindReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveMultiChannelMultiChannelEndPointGet:
+    action: receive
+    title: MULTI_CHANNEL_END_POINT_GET
+    channel:
+      $ref: '#/channels/ccMultiChannelMultiChannelEndPointGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendMultiChannelMultiChannelEndPointReport:
+    action: send
+    title: MULTI_CHANNEL_END_POINT_REPORT
+    channel:
+      $ref: '#/channels/ccMultiChannelMultiChannelEndPointReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveMultiChannelMultiInstanceCmdEncap:
+    action: receive
+    title: MULTI_INSTANCE_CMD_ENCAP
+    channel:
+      $ref: '#/channels/ccMultiChannelMultiInstanceCmdEncapCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveMultiChannelMultiInstanceGet:
+    action: receive
+    title: MULTI_INSTANCE_GET
+    channel:
+      $ref: '#/channels/ccMultiChannelMultiInstanceGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendMultiChannelMultiInstanceReport:
+    action: send
+    title: MULTI_INSTANCE_REPORT
+    channel:
+      $ref: '#/channels/ccMultiChannelMultiInstanceReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveMultiChannelMultiChannelAggregatedMembersGet:
+    action: receive
+    title: MULTI_CHANNEL_AGGREGATED_MEMBERS_GET
+    channel:
+      $ref: '#/channels/ccMultiChannelMultiChannelAggregatedMembersGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendMultiChannelMultiChannelAggregatedMembersReport:
+    action: send
+    title: MULTI_CHANNEL_AGGREGATED_MEMBERS_REPORT
+    channel:
+      $ref: '#/channels/ccMultiChannelMultiChannelAggregatedMembersReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

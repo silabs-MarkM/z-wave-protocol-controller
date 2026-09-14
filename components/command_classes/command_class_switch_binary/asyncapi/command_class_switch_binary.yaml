@@ -1,0 +1,122 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccSwitchBinarySwitchBinaryGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchBinary/Command/SwitchBinaryGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_SWITCH_BINARY
+    x-cc-dir: command_class_switch_binary
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: SWITCH_BINARY_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccSwitchBinarySwitchBinaryGetCommand:
+        name: SWITCH_BINARY_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccSwitchBinarySwitchBinaryReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchBinary/Report/SwitchBinaryReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_SWITCH_BINARY
+    x-cc-dir: command_class_switch_binary
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: SWITCH_BINARY_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccSwitchBinarySwitchBinaryReportReport:
+        name: SWITCH_BINARY_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              current_value:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              target_value:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              duration:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            current_value: 0
+            duration: 0
+            target_value: 0
+  ccSwitchBinarySwitchBinarySetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchBinary/Command/SwitchBinarySet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_SWITCH_BINARY
+    x-cc-dir: command_class_switch_binary
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: SWITCH_BINARY_SET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccSwitchBinarySwitchBinarySetCommand:
+        name: SWITCH_BINARY_SET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              target_value:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              duration:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            target_value: '0xFF'
+            duration: '0x00'
+operations:
+  receiveSwitchBinarySwitchBinaryGet:
+    action: receive
+    title: SWITCH_BINARY_GET
+    channel:
+      $ref: '#/channels/ccSwitchBinarySwitchBinaryGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendSwitchBinarySwitchBinaryReport:
+    action: send
+    title: SWITCH_BINARY_REPORT
+    channel:
+      $ref: '#/channels/ccSwitchBinarySwitchBinaryReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveSwitchBinarySwitchBinarySet:
+    action: receive
+    title: SWITCH_BINARY_SET
+    channel:
+      $ref: '#/channels/ccSwitchBinarySwitchBinarySetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

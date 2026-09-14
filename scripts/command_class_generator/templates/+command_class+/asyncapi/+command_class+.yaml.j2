@@ -1,9 +1,8 @@
 {% import "utils.j2" as utils with context %}
-{# Generated command-class MQTT channels. Message examples are preserved from the previous output. #}
-channels:
-{% for command_class in command_classes if command_class.has_mqtt_interface_doc %}
+{# Generated MQTT channels for this command class. Message examples are preserved from the previous output. #}
 {% set cc_token = utils.convert_command_name_to_mqtt_topic_token(command_class.name.replace("COMMAND_CLASS_", "")) %}
 {% set cc_dir = command_class.name | lower %}
+channels:
 {% for command in command_class.commands %}
 {% set is_tx = command.is_tx() %}
 {% if command_class.mqtt_support or is_tx %}
@@ -36,18 +35,21 @@ channels:
           schema:
 {{ command | mqtt_payload_schema | as_json(indent=2) | indent(12, first=true) }}
 {% set example = mqtt_examples.get("zpc/{homeId}/{nodeId}/ep{endpointId}/" ~ cc_token ~ "/" ~ frame_type ~ "/" ~ cmd_token) if mqtt_examples is defined else none %}
-{% if example is not none %}
+{% if example is mapping %}
         examples:
+{% if example.name %}
+          - name: {{ example.name }}
+            payload:
+{{ example.payload | as_json(indent=2) | indent(14, first=true) }}
+{% else %}
           - payload:
-{{ example | as_json(indent=2) | indent(14, first=true) }}
+{{ example.payload | as_json(indent=2) | indent(14, first=true) }}
 {% endif %}
 {% endif %}
 {% endif %}
-{% endfor %}
+{% endif %}
 {% endfor %}
 operations:
-{% for command_class in command_classes if command_class.has_mqtt_interface_doc %}
-{% set cc_token = utils.convert_command_name_to_mqtt_topic_token(command_class.name.replace("COMMAND_CLASS_", "")) %}
 {% for command in command_class.commands %}
 {% set is_tx = command.is_tx() %}
 {% if command_class.mqtt_support or is_tx %}
@@ -67,5 +69,4 @@ operations:
       - $ref: "#/components/operationTraits/mqttQos0"
 {% endif %}
 {% endif %}
-{% endfor %}
 {% endfor %}

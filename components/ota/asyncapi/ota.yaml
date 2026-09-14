@@ -64,6 +64,8 @@ channels:
           schema:
             type: object
             additionalProperties: true
+        examples:
+          - payload: {}
   otaListImagesReport:
     address: zpc/{homeId}/OTA/ListImages/Report
     x-doc-group: ota
@@ -81,6 +83,10 @@ channels:
                 items:
                   type: string
             additionalProperties: true
+        examples:
+          - payload:
+              images:
+              - zwave_soc_switch_on_off-brd4205b_v255_v255.gbl
   otaRemoveImage:
     address: zpc/{homeId}/OTA/RemoveImage
     x-doc-group: ota
@@ -96,6 +102,9 @@ channels:
               image_name:
                 type: string
             additionalProperties: true
+        examples:
+          - payload:
+              image_name: zwave_soc_switch_on_off-brd4205b_v255_v255.gbl
   otaRemoveImageReport:
     address: zpc/{homeId}/OTA/RemoveImage/Report
     x-doc-group: ota
@@ -113,6 +122,9 @@ channels:
               reason:
                 type: string
             additionalProperties: true
+        examples:
+          - payload:
+              status: ok
   otaStartFirmwareUpload:
     address: zpc/{homeId}/OTA/StartFirmwareUpload
     x-doc-group: ota
@@ -228,6 +240,9 @@ channels:
               node_id:
                 type: integer
             additionalProperties: true
+        examples:
+          - payload:
+              node_id: 2
   otaActivate:
     address: zpc/{homeId}/OTA/Activate
     x-doc-group: ota
@@ -263,6 +278,9 @@ channels:
               reason:
                 type: string
             additionalProperties: true
+        examples:
+          - payload:
+              status: ok
 operations:
   receiveOtaUploadImage:
     action: receive

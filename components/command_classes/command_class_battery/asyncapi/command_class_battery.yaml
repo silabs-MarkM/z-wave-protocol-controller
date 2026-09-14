@@ -1,0 +1,213 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccBatteryBatteryGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Battery/Command/BatteryGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_BATTERY
+    x-cc-dir: command_class_battery
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: BATTERY_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccBatteryBatteryGetCommand:
+        name: BATTERY_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccBatteryBatteryReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Battery/Report/BatteryReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_BATTERY
+    x-cc-dir: command_class_battery
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: BATTERY_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccBatteryBatteryReportReport:
+        name: BATTERY_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              battery_level:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              properties1:
+                type: object
+                properties:
+                  replace_recharge:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  low_fluid:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  overheating:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  backup_battery:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  rechargeable:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  charging_status:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              properties2:
+                type: object
+                properties:
+                  disconnected:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  low_temperature_status:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  reserved1:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+        examples:
+        - payload:
+            battery_level: 88
+            properties1:
+              backup_battery: 0
+              charging_status: 0
+              low_fluid: 0
+              overheating: 0
+              rechargeable: 0
+              replace_recharge: 0
+            properties2:
+              disconnected: 0
+              low_temperature_status: 0
+              reserved1: 0
+  ccBatteryBatteryHealthGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Battery/Command/BatteryHealthGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_BATTERY
+    x-cc-dir: command_class_battery
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: BATTERY_HEALTH_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccBatteryBatteryHealthGetCommand:
+        name: BATTERY_HEALTH_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccBatteryBatteryHealthReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Battery/Report/BatteryHealthReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_BATTERY
+    x-cc-dir: command_class_battery
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: BATTERY_HEALTH_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccBatteryBatteryHealthReportReport:
+        name: BATTERY_HEALTH_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              maximum_capacity:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              properties1:
+                type: object
+                properties:
+                  size:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  scale:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  precision:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+              battery_temperature:
+                type: array
+                items:
+                  type: string
+                description: Hex-encoded bytes
+        examples:
+        - payload:
+            maximum_capacity: '0x01'
+            properties1:
+              size: '0x01'
+              scale: '0x01'
+              precision: '0x01'
+            battery_temperature:
+            - '0x01'
+operations:
+  receiveBatteryBatteryGet:
+    action: receive
+    title: BATTERY_GET
+    channel:
+      $ref: '#/channels/ccBatteryBatteryGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendBatteryBatteryReport:
+    action: send
+    title: BATTERY_REPORT
+    channel:
+      $ref: '#/channels/ccBatteryBatteryReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveBatteryBatteryHealthGet:
+    action: receive
+    title: BATTERY_HEALTH_GET
+    channel:
+      $ref: '#/channels/ccBatteryBatteryHealthGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendBatteryBatteryHealthReport:
+    action: send
+    title: BATTERY_HEALTH_REPORT
+    channel:
+      $ref: '#/channels/ccBatteryBatteryHealthReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

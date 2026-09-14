@@ -1,0 +1,89 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccPowerlevelPowerlevelReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Powerlevel/Report/PowerlevelReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_POWERLEVEL
+    x-cc-dir: command_class_powerlevel
+    x-mqtt-support: 'false'
+    x-support: 'true'
+    x-control: 'false'
+    x-command-name: POWERLEVEL_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccPowerlevelPowerlevelReportReport:
+        name: POWERLEVEL_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              power_level:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              timeout:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            power_level: '0x01'
+            timeout: '0x01'
+  ccPowerlevelPowerlevelTestNodeReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/Powerlevel/Report/PowerlevelTestNodeReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_POWERLEVEL
+    x-cc-dir: command_class_powerlevel
+    x-mqtt-support: 'false'
+    x-support: 'true'
+    x-control: 'false'
+    x-command-name: POWERLEVEL_TEST_NODE_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccPowerlevelPowerlevelTestNodeReportReport:
+        name: POWERLEVEL_TEST_NODE_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              test_nodeid:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              status_of_operation:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              test_frame_count:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            test_nodeid: '0x01'
+            status_of_operation: '0x01'
+            test_frame_count: '0x01'
+operations:
+  sendPowerlevelPowerlevelReport:
+    action: send
+    title: POWERLEVEL_REPORT
+    channel:
+      $ref: '#/channels/ccPowerlevelPowerlevelReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendPowerlevelPowerlevelTestNodeReport:
+    action: send
+    title: POWERLEVEL_TEST_NODE_REPORT
+    channel:
+      $ref: '#/channels/ccPowerlevelPowerlevelTestNodeReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

@@ -1,0 +1,198 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccThermostatFanModeThermostatFanModeGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatFanMode/Command/ThermostatFanModeGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_THERMOSTAT_FAN_MODE
+    x-cc-dir: command_class_thermostat_fan_mode
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: THERMOSTAT_FAN_MODE_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccThermostatFanModeThermostatFanModeGetCommand:
+        name: THERMOSTAT_FAN_MODE_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccThermostatFanModeThermostatFanModeReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatFanMode/Report/ThermostatFanModeReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_THERMOSTAT_FAN_MODE
+    x-cc-dir: command_class_thermostat_fan_mode
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: THERMOSTAT_FAN_MODE_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccThermostatFanModeThermostatFanModeReportReport:
+        name: THERMOSTAT_FAN_MODE_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  fan_mode:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  'off':
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+        examples:
+        - payload:
+            properties1:
+              fan_mode: '0x01'
+              'off': '0x01'
+  ccThermostatFanModeThermostatFanModeSetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatFanMode/Command/ThermostatFanModeSet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_THERMOSTAT_FAN_MODE
+    x-cc-dir: command_class_thermostat_fan_mode
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: THERMOSTAT_FAN_MODE_SET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccThermostatFanModeThermostatFanModeSetCommand:
+        name: THERMOSTAT_FAN_MODE_SET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              properties1:
+                type: object
+                properties:
+                  fan_mode:
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                  'off':
+                    type: string
+                    description: Hex-encoded byte (e.g. 0x05)
+                additionalProperties: true
+        examples:
+        - payload:
+            properties1:
+              fan_mode: '0x01'
+              'off': '0x01'
+  ccThermostatFanModeThermostatFanModeSupportedGetCommand:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatFanMode/Command/ThermostatFanModeSupportedGet
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_THERMOSTAT_FAN_MODE
+    x-cc-dir: command_class_thermostat_fan_mode
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: THERMOSTAT_FAN_MODE_SUPPORTED_GET
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccThermostatFanModeThermostatFanModeSupportedGetCommand:
+        name: THERMOSTAT_FAN_MODE_SUPPORTED_GET
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties: {}
+        examples:
+        - payload: {}
+  ccThermostatFanModeThermostatFanModeSupportedReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatFanMode/Report/ThermostatFanModeSupportedReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_THERMOSTAT_FAN_MODE
+    x-cc-dir: command_class_thermostat_fan_mode
+    x-mqtt-support: 'true'
+    x-support: 'false'
+    x-control: 'true'
+    x-command-name: THERMOSTAT_FAN_MODE_SUPPORTED_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccThermostatFanModeThermostatFanModeSupportedReportReport:
+        name: THERMOSTAT_FAN_MODE_SUPPORTED_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              bit_mask:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            bit_mask: '0x01'
+operations:
+  receiveThermostatFanModeThermostatFanModeGet:
+    action: receive
+    title: THERMOSTAT_FAN_MODE_GET
+    channel:
+      $ref: '#/channels/ccThermostatFanModeThermostatFanModeGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendThermostatFanModeThermostatFanModeReport:
+    action: send
+    title: THERMOSTAT_FAN_MODE_REPORT
+    channel:
+      $ref: '#/channels/ccThermostatFanModeThermostatFanModeReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveThermostatFanModeThermostatFanModeSet:
+    action: receive
+    title: THERMOSTAT_FAN_MODE_SET
+    channel:
+      $ref: '#/channels/ccThermostatFanModeThermostatFanModeSetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  receiveThermostatFanModeThermostatFanModeSupportedGet:
+    action: receive
+    title: THERMOSTAT_FAN_MODE_SUPPORTED_GET
+    channel:
+      $ref: '#/channels/ccThermostatFanModeThermostatFanModeSupportedGetCommand'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'
+  sendThermostatFanModeThermostatFanModeSupportedReport:
+    action: send
+    title: THERMOSTAT_FAN_MODE_SUPPORTED_REPORT
+    channel:
+      $ref: '#/channels/ccThermostatFanModeThermostatFanModeSupportedReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

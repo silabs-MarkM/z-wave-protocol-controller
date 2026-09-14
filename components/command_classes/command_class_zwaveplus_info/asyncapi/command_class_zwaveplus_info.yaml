@@ -1,0 +1,56 @@
+# Generated MQTT channels for this command class. Message examples are preserved across regeneration.
+channels:
+  ccZwaveplusInfoZwaveplusInfoReportReport:
+    address: zpc/{homeId}/{nodeId}/ep{endpointId}/ZwaveplusInfo/Report/ZwaveplusInfoReport
+    x-doc-group: command_class
+    x-cc-name: COMMAND_CLASS_ZWAVEPLUS_INFO
+    x-cc-dir: command_class_zwaveplus_info
+    x-mqtt-support: 'false'
+    x-support: 'true'
+    x-control: 'true'
+    x-command-name: ZWAVEPLUS_INFO_REPORT
+    parameters:
+      homeId:
+        $ref: '#/components/parameters/homeId'
+      nodeId:
+        $ref: '#/components/parameters/nodeId'
+      endpointId:
+        $ref: '#/components/parameters/endpointId'
+    messages:
+      ccZwaveplusInfoZwaveplusInfoReportReport:
+        name: ZWAVEPLUS_INFO_REPORT
+        payload:
+          schema:
+            type: object
+            additionalProperties: true
+            properties:
+              z_wave_plus_version:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              role_type:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              node_type:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              installer_icon_type:
+                type: string
+                description: Hex-encoded value as published on MQTT
+              user_icon_type:
+                type: string
+                description: Hex-encoded value as published on MQTT
+        examples:
+        - payload:
+            installer_icon_type: 256
+            node_type: 0
+            role_type: 0
+            user_icon_type: 256
+            z_wave_plus_version: 2
+operations:
+  sendZwaveplusInfoZwaveplusInfoReport:
+    action: send
+    title: ZWAVEPLUS_INFO_REPORT
+    channel:
+      $ref: '#/channels/ccZwaveplusInfoZwaveplusInfoReportReport'
+    traits:
+    - $ref: '#/components/operationTraits/mqttQos0'

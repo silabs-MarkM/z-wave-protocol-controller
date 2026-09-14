@@ -13,6 +13,8 @@ channels:
 {% set channel_id = "cc" ~ cc_token ~ cmd_token ~ frame_type %}
   {{ channel_id }}:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/{{ cc_token }}/{{ frame_type }}/{{ cmd_token }}
+    tags:
+      - name: {{ cc_token }}
     x-doc-group: command_class
     x-cc-name: {{ command_class.name }}
     x-cc-dir: {{ cc_dir }}
@@ -51,6 +53,8 @@ operations:
   {{ op_id }}:
     action: {{ "send" if is_tx else "receive" }}
     title: {{ command.name }}
+    tags:
+      - name: {{ cc_token }}
     channel:
       $ref: "#/channels/{{ channel_id }}"
     traits:

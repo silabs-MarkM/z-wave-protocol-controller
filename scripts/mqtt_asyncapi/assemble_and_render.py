@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import re
 import sys
@@ -90,7 +91,100 @@ def assemble(root: dict, fragments: list[dict], cc_doc: dict) -> tuple[dict, dic
             meta_by_group[meta["group"]] = meta
         assembled = deep_merge(assembled, strip_extension_keys(fragment))
     assembled = deep_merge(assembled, strip_extension_keys(cc_doc))
+    apply_topic_tags(assembled)
+    apply_ctt_examples(assembled)
     return assembled, meta_by_group
+
+
+_PARAM_SEGMENT = re.compile(r"^\{[^}]+\}$")
+_ENDPOINT_SEGMENT = re.compile(r"^ep\{[^}]+\}$")
+
+
+def tag_from_address(address: str) -> str | None:
+    """First topic token after zpc and MQTT path parameters (homeId, nodeId, ep{endpointId})."""
+    for part in address.split("/"):
+        if not part or part == "zpc":
+            continue
+        if _PARAM_SEGMENT.match(part) or _ENDPOINT_SEGMENT.match(part):
+            continue
+        return part
+    return None
+
+
+def apply_topic_tags(document: dict) -> None:
+    """Set AsyncAPI tags from the MQTT address so HTML (byTags) groups Indicator, DoorLock, Network, …"""
+    channels = document.get("channels") or {}
+    tag_by_channel: dict[str, str] = {}
+    tag_names: set[str] = set()
+    for channel_id, channel in channels.items():
+        if not isinstance(channel, dict):
+            continue
+        tag = tag_from_address(channel.get("address") or "")
+        if not tag:
+            continue
+        tag_by_channel[channel_id] = tag
+        tag_names.add(tag)
+        if "tags" not in channel:
+            channel["tags"] = [{"name": tag}]
+    for operation in (document.get("operations") or {}).values():
+        if not isinstance(operation, dict):
+            continue
+        existing = operation.get("tags")
+        if existing:
+            for item in existing:
+                if isinstance(item, dict) and item.get("name"):
+                    tag_names.add(item["name"])
+            continue
+        ref = (operation.get("channel") or {}).get("$ref") if isinstance(operation.get("channel"), dict) else None
+        channel_id = ref.rsplit("/", 1)[-1] if ref else None
+        tag = tag_by_channel.get(channel_id or "")
+        if tag:
+            operation["tags"] = [{"name": tag}]
+    if tag_names:
+        named = {
+            item.get("name"): item
+            for item in (document.get("tags") or [])
+            if isinstance(item, dict) and item.get("name")
+        }
+        tag_list = [named.get(name, {"name": name}) for name in sorted(tag_names)]
+        # AsyncAPI 3: tags live on info (and on operations/channels), not at document root
+        info = document.setdefault("info", {})
+        if isinstance(info, dict):
+            info["tags"] = tag_list
+        document.pop("tags", None)
+
+
+CTT_EXAMPLES_PATH = Path(__file__).resolve().parent / "ctt_mqtt_examples.yaml"
+
+
+def apply_ctt_examples(document: dict, examples_path: Path | None = None) -> None:
+    """Attach CTT MQTT payloads as AsyncAPI 3 message examples (HTML ignores schema example:)."""
+    path = examples_path or CTT_EXAMPLES_PATH
+    if not path.is_file():
+        return
+    examples = load_yaml(path)
+    if not examples:
+        return
+    for channel in (document.get("channels") or {}).values():
+        if not isinstance(channel, dict):
+            continue
+        payload = examples.get(channel.get("address") or "")
+        if payload is None:
+            continue
+        messages = channel.get("messages")
+        if not isinstance(messages, dict) or not messages:
+            continue
+        first_id = next(iter(messages))
+        message = messages[first_id]
+        if isinstance(message, dict) and "$ref" in message:
+            resolved = _resolve_ref(document, message["$ref"])
+            if not isinstance(resolved, dict):
+                continue
+            message = copy.deepcopy(resolved)
+            messages[first_id] = message
+        if not isinstance(message, dict) or message.get("examples"):
+            continue
+        message["examples"] = [{"name": "CTT", "payload": copy.deepcopy(payload)}]
 
 
 def _resolve_ref(document: dict, ref: str):

@@ -15,5 +15,6 @@ npx --yes @asyncapi/cli@6.0.2 generate fromTemplate \
   --output docs/asyncapi \
   --force-write \
   --param singleFile=true \
-  --param sidebarOrganization=byTags
+  --param sidebarOrganization=byTagsNoRoot \
+  --param config='{"show":{"messages":false},"expand":{"messageExamples":true}}'
 cp "$ASSEMBLED" docs/asyncapi.yaml

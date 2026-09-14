@@ -19,6 +19,8 @@ channels:
           schema:
             type: object
             additionalProperties: true
+        examples:
+          - payload: {}
   networkNodeAddReport:
     address: zpc/{homeId}/Network/Node/Add/Report
     x-doc-group: network
@@ -42,6 +44,11 @@ channels:
               activity:
                 type: string
             additionalProperties: true
+        examples:
+          - payload:
+              dsk: 51033-12056-08663-56209-06095-04862-35970-18051
+              node_id: 2
+              status: success
   networkNodeAddAbort:
     address: zpc/{homeId}/Network/Node/Add/Abort
     x-doc-group: network
@@ -54,6 +61,8 @@ channels:
           schema:
             type: object
             additionalProperties: true
+        examples:
+          - payload: {}
   networkNodeRemove:
     address: zpc/{homeId}/Network/Node/Remove
     x-doc-group: network
@@ -66,6 +75,8 @@ channels:
           schema:
             type: object
             additionalProperties: true
+        examples:
+          - payload: {}
   networkNodeRemoveReport:
     address: zpc/{homeId}/Network/Node/Remove/Report
     x-doc-group: network
@@ -89,6 +100,11 @@ channels:
               activity:
                 type: string
             additionalProperties: true
+        examples:
+          - payload:
+              dsk: 51535-47759-51469-29800-42275-26962-49601-57742
+              node_id: 11
+              status: success
   networkNodeRemoveFailed:
     address: zpc/{homeId}/Network/Node/RemoveFailed
     x-doc-group: network
@@ -105,6 +121,9 @@ channels:
                 type: integer
             additionalProperties: true
             example:
+              node_id: 2
+        examples:
+          - payload:
               node_id: 2
   networkNodeRemoveFailedReport:
     address: zpc/{homeId}/Network/Node/RemoveFailed/Report
@@ -125,6 +144,11 @@ channels:
               reason:
                 type: string
             additionalProperties: true
+        examples:
+          - payload:
+              node_id: 10
+              reason: operation_successful
+              status: ok
   networkNodeRemoveAbort:
     address: zpc/{homeId}/Network/Node/Remove/Abort
     x-doc-group: network
@@ -152,6 +176,9 @@ channels:
               dsk:
                 type: string
             additionalProperties: true
+        examples:
+          - payload:
+              dsk: 51033-12056-08663-56209-06095-04862-35970-18051
   networkRequestedKeysReport:
     address: zpc/{homeId}/Network/RequestedKeys/Report
     x-doc-group: network
@@ -172,6 +199,10 @@ channels:
             example:
               Keys: "0x7"
               CSA: false
+        examples:
+          - payload:
+              CSA: false
+              Keys: '0x87'
   networkGrantKeys:
     address: zpc/{homeId}/Network/GrantKeys
     x-doc-group: network
@@ -195,6 +226,11 @@ channels:
               Accept: true
               Keys: 7
               CSA: false
+        examples:
+          - payload:
+              Accept: true
+              Keys: '0x87'
+              CSA: false
   networkRequestedDskReport:
     address: zpc/{homeId}/Network/RequestedDSK/Report
     x-doc-group: network
@@ -210,6 +246,9 @@ channels:
               DSK:
                 type: string
             additionalProperties: true
+        examples:
+          - payload:
+              DSK: xxxxx-12056-08663-56209-06095-04862-35970-18051
   networkNodeList:
     address: zpc/{homeId}/Network/Node/List
     x-doc-group: network
@@ -222,6 +261,8 @@ channels:
           schema:
             type: object
             additionalProperties: true
+        examples:
+          - payload: {}
   networkNodeListReport:
     address: zpc/{homeId}/Network/Node/List/Report
     x-doc-group: network
@@ -236,6 +277,64 @@ channels:
             items:
               type: object
               additionalProperties: true
+        examples:
+          - payload:
+            - node_information:
+                basic_device_class: 2
+                command_class_list:
+                - 94
+                - 86
+                - 116
+                - 152
+                - 159
+                - 85
+                generic_device_class: 1
+                granted_keys: 135
+                inclusion_protocol: 0
+                listening_protocol: 211
+                node_id: 2
+                optional_protocol: 150
+                s0_command_class_list: []
+                s2_command_class_list: []
+                specific_device_class: 0
+              version_report:
+                firmware_0_sub_version: null
+                firmware_0_version: null
+                hardware_version: null
+                number_of_firmware_targets: null
+                z_wave_library_type: null
+                z_wave_protocol_sub_version: null
+                z_wave_protocol_version: null
+            - node_information:
+                basic_device_class: 4
+                command_class_list:
+                - 94
+                - 159
+                - 152
+                - 108
+                - 85
+                generic_device_class: 119
+                granted_keys: 129
+                inclusion_protocol: 0
+                listening_protocol: 211
+                node_id: 4
+                optional_protocol: 156
+                s0_command_class_list: []
+                s2_command_class_list:
+                - 134
+                - 133
+                - 89
+                - 192
+                - 114
+                specific_device_class: 0
+              version_report:
+                firmware_0_sub_version: 224
+                firmware_0_version: 183
+                hardware_version: 169
+                number_of_firmware_targets: 0
+                z_wave_library_type: 3
+                z_wave_protocol_sub_version: 80
+                z_wave_protocol_version: 7
   networkNodeProperties:
     address: zpc/{homeId}/Network/Node/Properties
     x-doc-group: network
@@ -253,6 +352,9 @@ channels:
             additionalProperties: true
             example:
               node_id: 2
+        examples:
+          - payload:
+              node_id: 2
   networkNodePropertiesReport:
     address: zpc/{homeId}/Network/Node/Properties/Report
     x-doc-group: network
@@ -265,6 +367,23 @@ channels:
           schema:
             type: object
             additionalProperties: true
+        examples:
+          - payload:
+              granted_keys: 0
+              inclusion_protocol: 0
+              last_number_of_repeaters: 0
+              last_routing_path:
+              - 0
+              - 0
+              - 0
+              - 0
+              last_rx_rssi: null
+              last_rx_tx_timestamp: 1789339102
+              last_tx_power: 127
+              last_tx_ticks: 1
+              network_status: unknown
+              node_id: 2
+              s2_capability: true
   networkNodeInterview:
     address: zpc/{homeId}/Network/Node/Interview
     x-doc-group: network
@@ -282,6 +401,9 @@ channels:
             additionalProperties: true
             example:
               node_id: 2
+        examples:
+          - payload:
+              node_id: 37
   networkFactoryReset:
     address: zpc/{homeId}/Network/FactoryReset
     x-doc-group: network
@@ -294,6 +416,8 @@ channels:
           schema:
             type: object
             additionalProperties: true
+        examples:
+          - payload: {}
   networkFactoryResetReport:
     address: zpc/Network/FactoryReset/Report
     x-doc-group: network
@@ -312,6 +436,10 @@ channels:
             example:
               status: ready
               home_id: AABBCCDD
+        examples:
+          - payload:
+              home_id: F858F0B8
+              status: ready
   networkNlsEnable:
     address: zpc/{homeId}/Network/NLS/Enable
     x-doc-group: network

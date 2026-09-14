@@ -32,6 +32,11 @@ channels:
               node_id: 2
               endpoint_id: 0
               status: 0
+        examples:
+          - payload:
+              endpoint_id: 0
+              node_id: 2
+              status: 0
 operations:
   sendInterviewReport:
     action: send

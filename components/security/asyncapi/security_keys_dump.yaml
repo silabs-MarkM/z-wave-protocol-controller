@@ -20,6 +20,8 @@ channels:
             type: object
             additionalProperties: true
             description: Empty request body
+        examples:
+          - payload: {}
   dumpSecurityKeysReport:
     address: zpc/{homeId}/Network/DumpSecurityKeys/Report
     x-doc-group: security_keys_dump
@@ -40,6 +42,9 @@ channels:
                   4 collect_failed, 5 seal_failed, 6 file_write_failed
             additionalProperties: true
             example:
+              status: 0
+        examples:
+          - payload:
               status: 0
 operations:
   receiveDumpSecurityKeys:

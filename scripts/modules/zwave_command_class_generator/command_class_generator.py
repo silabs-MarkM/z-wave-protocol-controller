@@ -16,6 +16,7 @@ import json
 import logging
 import subprocess
 import sys
+import yaml
 from itertools import chain
 from jinja2 import Environment, FileSystemLoader
 
@@ -23,6 +24,27 @@ _SCRIPTS_DIR = Path(__file__).resolve().parents[2]
 if str(_SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(_SCRIPTS_DIR))
 from mqtt_asyncapi.mqtt_schema import command_payload_schema
+
+
+def _mqtt_examples_by_address(path: Path) -> dict:
+    if not path.is_file():
+        return {}
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    examples = {}
+    for channel in (data.get("channels") or {}).values():
+        if not isinstance(channel, dict):
+            continue
+        address = channel.get("address")
+        messages = channel.get("messages") or {}
+        if not address or not isinstance(messages, dict) or not messages:
+            continue
+        message = next(iter(messages.values()))
+        if not isinstance(message, dict):
+            continue
+        sample = message.get("examples") or []
+        if sample and isinstance(sample[0], dict) and "payload" in sample[0]:
+            examples[address] = sample[0]["payload"]
+    return examples
 
 
 class ClangFormat:
@@ -184,6 +206,11 @@ class CommandClassGenerator:
             "config.j2",
         ]
 
+        output_dir = self._output_dir if self._output_dir else Path("generated")
+        mqtt_examples = _mqtt_examples_by_address(
+            output_dir / "doc/generated/command_classes.asyncapi.yaml"
+        )
+
         for template in self._templates:
             if template.name in utility_templates:
                 continue
@@ -215,6 +242,7 @@ class CommandClassGenerator:
                 output = loaded.render(
                     command_classes=self._command_classes,
                     command_class=command_class,
+                    mqtt_examples=mqtt_examples,
                 )
 
                 output_file_name = (
@@ -236,11 +264,6 @@ class CommandClassGenerator:
                     formatted_output = output
                 else:
                     formatted_output = self._clang_format.format(output)
-
-                if self._output_dir:
-                    output_dir = self._output_dir
-                else:
-                    output_dir = Path("generated")
 
                 output_file_path = output_dir / Path(output_file_name)
                 output_file_path.parent.mkdir(parents=True, exist_ok=True)

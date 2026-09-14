@@ -25,6 +25,8 @@ channels:
           schema:
             type: object
             additionalProperties: true
+        examples:
+          - payload: {}
   discoveryReport:
     address: zpc/Discovery/Report
     x-doc-group: discovery
@@ -42,6 +44,9 @@ channels:
             additionalProperties: true
             example:
               home_id: CAFECAFE
+        examples:
+          - payload:
+              home_id: E30FC2EC
 operations:
   receiveDiscovery:
     action: receive

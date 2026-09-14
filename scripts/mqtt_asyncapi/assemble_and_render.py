@@ -92,7 +92,7 @@ def assemble(root: dict, fragments: list[dict], cc_doc: dict) -> tuple[dict, dic
         assembled = deep_merge(assembled, strip_extension_keys(fragment))
     assembled = deep_merge(assembled, strip_extension_keys(cc_doc))
     apply_topic_tags(assembled)
-    apply_ctt_examples(assembled)
+    inline_message_refs(assembled)
     return assembled, meta_by_group
 
 
@@ -154,39 +154,6 @@ def apply_topic_tags(document: dict) -> None:
         document.pop("tags", None)
 
 
-CTT_EXAMPLES_PATH = Path(__file__).resolve().parent / "ctt_mqtt_examples.yaml"
-
-
-def apply_ctt_examples(document: dict, examples_path: Path | None = None) -> None:
-    """Attach CTT MQTT payloads as AsyncAPI 3 message examples (HTML ignores schema example:)."""
-    path = examples_path or CTT_EXAMPLES_PATH
-    if not path.is_file():
-        return
-    examples = load_yaml(path)
-    if not examples:
-        return
-    for channel in (document.get("channels") or {}).values():
-        if not isinstance(channel, dict):
-            continue
-        payload = examples.get(channel.get("address") or "")
-        if payload is None:
-            continue
-        messages = channel.get("messages")
-        if not isinstance(messages, dict) or not messages:
-            continue
-        first_id = next(iter(messages))
-        message = messages[first_id]
-        if isinstance(message, dict) and "$ref" in message:
-            resolved = _resolve_ref(document, message["$ref"])
-            if not isinstance(resolved, dict):
-                continue
-            message = copy.deepcopy(resolved)
-            messages[first_id] = message
-        if not isinstance(message, dict) or message.get("examples"):
-            continue
-        message["examples"] = [{"name": "CTT", "payload": copy.deepcopy(payload)}]
-
-
 def _resolve_ref(document: dict, ref: str):
     if not ref.startswith("#/"):
         return None
@@ -196,6 +163,22 @@ def _resolve_ref(document: dict, ref: str):
             return None
         node = node[part]
     return node
+
+
+def inline_message_refs(document: dict) -> None:
+    """Copy referenced messages onto channels so HTML can show their examples."""
+    for channel in (document.get("channels") or {}).values():
+        if not isinstance(channel, dict):
+            continue
+        messages = channel.get("messages")
+        if not isinstance(messages, dict):
+            continue
+        for message_id, message in list(messages.items()):
+            if not (isinstance(message, dict) and "$ref" in message):
+                continue
+            resolved = _resolve_ref(document, message["$ref"])
+            if isinstance(resolved, dict):
+                messages[message_id] = copy.deepcopy(resolved)
 
 
 def channel_payload_schema(document: dict, channel: dict) -> dict | None:

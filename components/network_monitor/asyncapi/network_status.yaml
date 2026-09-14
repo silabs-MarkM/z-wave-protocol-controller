@@ -36,6 +36,10 @@ channels:
             example:
               node_id: 2
               status: online
+        examples:
+          - payload:
+              node_id: 2
+              status: online
 operations:
   sendNetworkStatusReport:
     action: send

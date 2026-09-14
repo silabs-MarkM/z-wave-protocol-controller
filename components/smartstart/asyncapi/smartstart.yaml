@@ -56,6 +56,8 @@ channels:
           schema:
             type: object
             additionalProperties: true
+        examples:
+          - payload: {}
   smartStartList:
     address: zpc/{homeId}/Network/SmartStart/List
     x-doc-group: smartstart
@@ -68,6 +70,8 @@ channels:
           schema:
             type: object
             additionalProperties: true
+        examples:
+          - payload: {}
   smartStartListReport:
     address: zpc/{homeId}/Network/SmartStart/List/Report
     x-doc-group: smartstart
@@ -156,5 +160,11 @@ components:
           example:
             value:
               - DSK: "06743-56104-10648-10659-64918-00784-01021-46920"
+                PreferredProtocols:
+                  - Z-Wave
+      examples:
+        - payload:
+            value:
+              - DSK: "24387-01575-31185-49112-09809-35772-19872-53233"
                 PreferredProtocols:
                   - Z-Wave

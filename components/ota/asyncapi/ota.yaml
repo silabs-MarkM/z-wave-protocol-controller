@@ -28,6 +28,9 @@ channels:
                 items:
                   type: integer
             additionalProperties: true
+        examples:
+          - payload:
+              image_name: zwave_soc_switch_on_off-brd4205b_v255_v255.gbl
   otaUploadImageReport:
     address: zpc/{homeId}/OTA/UploadImage/Report
     x-doc-group: ota
@@ -45,6 +48,10 @@ channels:
               reason:
                 type: string
             additionalProperties: true
+        examples:
+          - payload:
+              image_name: zwave_soc_switch_on_off-brd4205b_v255_v255.gbl
+              status: ok
   otaListImages:
     address: zpc/{homeId}/OTA/ListImages
     x-doc-group: ota
@@ -125,6 +132,11 @@ channels:
               wait_for_activation:
                 type: boolean
             additionalProperties: true
+        examples:
+          - payload:
+              node_id: 2
+              image_name: zwave_soc_switch_on_off-brd4205b_v255_v255.gbl
+              wait_for_activation: true
   otaStartFirmwareUploadReport:
     address: zpc/{homeId}/OTA/StartFirmwareUpload/Report
     x-doc-group: ota
@@ -143,6 +155,11 @@ channels:
               reason:
                 type: string
             additionalProperties: true
+        examples:
+          - payload:
+              node_id: 2
+              image_name: zwave_soc_switch_on_off-brd4205b_v255_v255.gbl
+              status: accepted
   otaProgress:
     address: zpc/{homeId}/OTA/Progress
     x-doc-group: ota
@@ -156,6 +173,8 @@ channels:
             type: object
             additionalProperties: true
             description: Payload ignored
+        examples:
+          - payload: {}
   otaProgressReport:
     address: zpc/{homeId}/OTA/Progress/Report
     x-doc-group: ota
@@ -188,6 +207,12 @@ channels:
               image_size: 65536
               current_sent: 32768
               percentage: 50
+        examples:
+          - payload:
+              node_id: 2
+              image_size: 160548
+              status: waiting_for_activation
+              waittime: 0
   otaAbort:
     address: zpc/{homeId}/OTA/Abort
     x-doc-group: ota
@@ -218,6 +243,9 @@ channels:
               node_id:
                 type: integer
             additionalProperties: true
+        examples:
+          - payload:
+              node_id: 2
   otaActivateReport:
     address: zpc/{homeId}/OTA/Activate/Report
     x-doc-group: ota

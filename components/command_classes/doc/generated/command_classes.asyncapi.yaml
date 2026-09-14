@@ -38,6 +38,11 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              v1_alarm_type: '0x09'
+              notification_type: '0xFF'
+              event: '0x00'
   ccNotificationNotificationReportReport:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/Notification/Report/NotificationReport
     x-doc-group: command_class
@@ -114,6 +119,20 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              event: 254
+              event_parameter: []
+              notification_status: 0
+              notification_type: 4
+              properties1:
+                event_parameters_length: 0
+                reserved2: 0
+                sequence: 0
+              reserved: 0
+              sequence_number: 0
+              v1_alarm_level: 0
+              v1_alarm_type: 0
   ccNotificationNotificationSetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/Notification/Command/NotificationSet
     x-doc-group: command_class
@@ -220,6 +239,38 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              bit_mask:
+              - 80
+              - 226
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 1
+              properties1:
+                number_of_bit_masks: 25
+                reserved: 0
+                v1_alarm: 0
   ccNotificationEventSupportedGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/Notification/Command/EventSupportedGet
     x-doc-group: command_class
@@ -296,6 +347,28 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              bit_mask:
+              - 68
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 0
+              - 128
+              notification_type: 4
+              properties1:
+                number_of_bit_masks: 15
+                reserved: 0
   ccAssociationAssociationGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/Association/Command/AssociationGet
     x-doc-group: command_class
@@ -384,6 +457,9 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              supported_groupings: 1
   ccAssociationAssociationRemoveCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/Association/Command/AssociationRemove
     x-doc-group: command_class
@@ -468,6 +544,12 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              grouping_identifier: 1
+              max_nodes_supported: 5
+              nodeid: []
+              reports_to_follow: 0
   ccAssociationAssociationSetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/Association/Command/AssociationSet
     x-doc-group: command_class
@@ -506,6 +588,11 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              grouping_identifier: '0x01'
+              node_id:
+              - 2
   ccAssociationAssociationSpecificGroupGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/Association/Command/AssociationSpecificGroupGet
     x-doc-group: command_class
@@ -589,6 +676,8 @@ channels:
               "additionalProperties": true,
               "properties": {}
             }
+        examples:
+          - payload: {}
   ccBasicBasicReportReport:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/Basic/Report/BasicReport
     x-doc-group: command_class
@@ -628,6 +717,11 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              current_value: 0
+              duration: 0
+              target_value: 0
   ccBasicBasicSetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/Basic/Command/BasicSet
     x-doc-group: command_class
@@ -659,6 +753,9 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              value: '0xFF'
   ccBatteryBatteryGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/Battery/Command/BatteryGet
     x-doc-group: command_class
@@ -764,6 +861,20 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              battery_level: 88
+              properties1:
+                backup_battery: 0
+                charging_status: 0
+                low_fluid: 0
+                overheating: 0
+                rechargeable: 0
+                replace_recharge: 0
+              properties2:
+                disconnected: 0
+                low_temperature_status: 0
+                reserved1: 0
   ccBatteryBatteryHealthGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/Battery/Command/BatteryHealthGet
     x-doc-group: command_class
@@ -951,6 +1062,20 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              auto_relock_time: 0
+              hold_and_release_time: 0
+              lock_timeout_minutes: 0
+              lock_timeout_seconds: 0
+              operation_type: 1
+              properties1:
+                inside_door_handles_enabled: 15
+                outside_door_handles_enabled: 240
+              properties2:
+                btb: 2
+                reserved1: 0
+                ta: 1
   ccDoorLockDoorLockConfigurationSetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/DoorLock/Command/DoorLockConfigurationSet
     x-doc-group: command_class
@@ -1030,6 +1155,19 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              operation_type: '0x02'
+              properties1:
+                inside_door_handles_enabled: '0x01'
+                outside_door_handles_enabled: '0x08'
+              lock_timeout_minutes: '0x00'
+              lock_timeout_seconds: '0x05'
+              auto_relock_time: '0x0A'
+              hold_and_release_time: '0x14'
+              properties2:
+                ta: '0x01'
+                btb: '0x00'
   ccDoorLockDoorLockOperationGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/DoorLock/Command/DoorLockOperationGet
     x-doc-group: command_class
@@ -1121,6 +1259,17 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              current_door_lock_mode: 255
+              door_condition: 1
+              duration: 0
+              properties1:
+                inside_door_handles_mode: 15
+                outside_door_handles_mode: 240
+              remaining_lock_time_minutes: 254
+              remaining_lock_time_seconds: 254
+              target_door_lock_mode: 255
   ccDoorLockDoorLockOperationSetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/DoorLock/Command/DoorLockOperationSet
     x-doc-group: command_class
@@ -1152,6 +1301,9 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              door_lock_mode: '0x01'
   ccDoorLockDoorLockCapabilitiesGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/DoorLock/Command/DoorLockCapabilitiesGet
     x-doc-group: command_class
@@ -1273,6 +1425,32 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              properties1:
+                reserved: 0
+                supported_operation_type_bit_mask_length: 1
+              properties2:
+                supported_inside_handle_modes_bitmask: 15
+                supported_outside_handle_modes_bitmask: 240
+              properties3:
+                ars: 8
+                btbs: 1
+                hrs: 4
+                reserved: 0
+                tas: 2
+              supported_door_components: 6
+              supported_door_lock_mode:
+              - 0
+              - 1
+              - 16
+              - 17
+              - 32
+              - 33
+              - 255
+              supported_door_lock_mode_list_length: 7
+              supported_operation_type_bit_mask:
+              - 6
   ccFirmwareUpdateMdFirmwareMdReportReport:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/FirmwareUpdateMd/Report/FirmwareMdReport
     x-doc-group: command_class
@@ -1586,6 +1764,16 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              indicator_0_value: 0
+              properties1:
+                indicator_object_count: 1
+                reserved: 0
+              vg1:
+              - indicator_id: 5
+                property_id: 1
+                value: 0
   ccIndicatorIndicatorSetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/Indicator/Command/IndicatorSet
     x-doc-group: command_class
@@ -1648,6 +1836,21 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              indicator_0_value: '0x00'
+              properties1:
+                indicator_object_count: '0x03'
+              vg1:
+              - indicator_id: '0x50'
+                property_id: '0x03'
+                value: '0x08'
+              - indicator_id: '0x50'
+                property_id: '0x04'
+                value: '0x03'
+              - indicator_id: '0x50'
+                property_id: '0x05'
+                value: '0x06'
   ccIndicatorIndicatorSupportedGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/Indicator/Command/IndicatorSupportedGet
     x-doc-group: command_class
@@ -1728,6 +1931,15 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              indicator_id: 5
+              next_indicator_id: 80
+              properties1:
+                property_supported_bit_mask_length: 1
+                reserved: 0
+              property_supported_bit_mask:
+              - 2
   ccIndicatorIndicatorDescriptionGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/Indicator/Command/IndicatorDescriptionGet
     x-doc-group: command_class
@@ -1866,6 +2078,11 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              manufacturer_id: 19833
+              product_id: 10613
+              product_type_id: 20391
   ccManufacturerSpecificDeviceSpecificGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/ManufacturerSpecific/Command/DeviceSpecificGet
     x-doc-group: command_class
@@ -1961,6 +2178,15 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              device_id_data: []
+              properties1:
+                device_id_type: 1
+                reserved: 0
+              properties2:
+                device_id_data_format: 0
+                device_id_data_length_indicator: 0
   ccMultiChannelAssociationMultiChannelAssociationGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannelAssociation/Command/MultiChannelAssociationGet
     x-doc-group: command_class
@@ -2049,6 +2275,9 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              supported_groupings: 6
   ccMultiChannelAssociationMultiChannelAssociationRemoveCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannelAssociation/Command/MultiChannelAssociationRemove
     x-doc-group: command_class
@@ -2118,6 +2347,16 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              grouping_identifier: '0x02'
+              node_id: []
+              marker: '0x00'
+              vg:
+              - multi_channel_node_id: '0x02'
+                properties1:
+                  end_point: '0x01'
+                  bit_address: '0x00'
   ccMultiChannelAssociationMultiChannelAssociationReportReport:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannelAssociation/Report/MultiChannelAssociationReport
     x-doc-group: command_class
@@ -2195,6 +2434,13 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              grouping_identifier: 1
+              max_nodes_supported: 5
+              node_id: []
+              reports_to_follow: 0
+              vg: []
   ccMultiChannelAssociationMultiChannelAssociationSetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannelAssociation/Command/MultiChannelAssociationSet
     x-doc-group: command_class
@@ -2264,6 +2510,16 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              grouping_identifier: '0x02'
+              node_id: []
+              marker: '0x00'
+              vg:
+              - multi_channel_node_id: '0x02'
+                properties1:
+                  end_point: '0x01'
+                  bit_address: '0x00'
   ccMultiChannelMultiChannelCapabilityGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannel/Command/MultiChannelCapabilityGet
     x-doc-group: command_class
@@ -2301,6 +2557,10 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              properties1:
+                end_point: '0x01'
   ccMultiChannelMultiChannelCapabilityReportReport:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannel/Report/MultiChannelCapabilityReport
     x-doc-group: command_class
@@ -2357,6 +2617,17 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              command_class:
+              - 94
+              - 159
+              - 108
+              generic_device_class: 16
+              properties1:
+                dynamic: 0
+                end_point: 1
+              specific_device_class: 0
   ccMultiChannelMultiChannelCmdEncapCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannel/Command/MultiChannelCmdEncap
     x-doc-group: command_class
@@ -2516,6 +2787,27 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              generic_device_class: 255
+              reports_to_follow: 0
+              specific_device_class: 255
+              vg:
+              - properties1:
+                  end_point: 1
+                  res: 0
+              - properties1:
+                  end_point: 2
+                  res: 0
+              - properties1:
+                  end_point: 3
+                  res: 0
+              - properties1:
+                  end_point: 5
+                  res: 0
+              - properties1:
+                  end_point: 7
+                  res: 0
   ccMultiChannelMultiChannelEndPointGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannel/Command/MultiChannelEndPointGet
     x-doc-group: command_class
@@ -2603,6 +2895,18 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              properties1:
+                dynamic: 128
+                identical: 0
+                res1: 0
+              properties2:
+                individual_end_points: 5
+                res2: 0
+              properties3:
+                aggregated_end_points: 0
+                res3: 0
   ccMultiChannelMultiInstanceCmdEncapCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/MultiChannel/Command/MultiInstanceCmdEncap
     x-doc-group: command_class
@@ -2909,6 +3213,8 @@ channels:
               "additionalProperties": true,
               "properties": {}
             }
+        examples:
+          - payload: {}
   ccSwitchBinarySwitchBinaryReportReport:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchBinary/Report/SwitchBinaryReport
     x-doc-group: command_class
@@ -2948,6 +3254,11 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              current_value: 0
+              duration: 0
+              target_value: 0
   ccSwitchBinarySwitchBinarySetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchBinary/Command/SwitchBinarySet
     x-doc-group: command_class
@@ -2983,6 +3294,10 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              target_value: '0xFF'
+              duration: '0x00'
   ccSwitchMultilevelSwitchMultilevelGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchMultilevel/Command/SwitchMultilevelGet
     x-doc-group: command_class
@@ -3048,6 +3363,11 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              current_value: 0
+              duration: 0
+              target_value: 0
   ccSwitchMultilevelSwitchMultilevelSetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchMultilevel/Command/SwitchMultilevelSet
     x-doc-group: command_class
@@ -3083,6 +3403,10 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              value: '0'
+              duration: '0'
   ccSwitchMultilevelSwitchMultilevelStartLevelChangeCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchMultilevel/Command/SwitchMultilevelStartLevelChange
     x-doc-group: command_class
@@ -3140,6 +3464,15 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              properties1:
+                ignore_start_level: '0x00'
+                up_down: '0x00'
+                inc_dec: '0x00'
+              start_level: '0x05'
+              dimming_duration: '0x14'
+              step_size: '0x00'
   ccSwitchMultilevelSwitchMultilevelStopLevelChangeCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchMultilevel/Command/SwitchMultilevelStopLevelChange
     x-doc-group: command_class
@@ -3166,6 +3499,8 @@ channels:
               "additionalProperties": true,
               "properties": {}
             }
+        examples:
+          - payload: {}
   ccSwitchMultilevelSwitchMultilevelSupportedGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchMultilevel/Command/SwitchMultilevelSupportedGet
     x-doc-group: command_class
@@ -3247,6 +3582,14 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              properties1:
+                primary_switch_type: 2
+                reserved1: 0
+              properties2:
+                reserved2: 0
+                secondary_switch_type: 3
   ccThermostatFanModeThermostatFanModeGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatFanMode/Command/ThermostatFanModeGet
     x-doc-group: command_class
@@ -3486,6 +3829,12 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              level:
+                mode: 0
+                no_of_manufacturer_data_fields: 0
+              manufacturer_data: []
   ccThermostatModeThermostatModeSetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatMode/Command/ThermostatModeSet
     x-doc-group: command_class
@@ -3534,6 +3883,12 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              level:
+                mode: '0x01'
+                no_of_manufacturer_data_fields: '0x00'
+              manufacturer_data: []
   ccThermostatModeThermostatModeSupportedGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatMode/Command/ThermostatModeSupportedGet
     x-doc-group: command_class
@@ -3591,6 +3946,13 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              bit_mask:
+              - 3
+              - 32
+              - 0
+              - 128
   ccThermostatSetpointThermostatSetpointGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatSetpoint/Command/ThermostatSetpointGet
     x-doc-group: command_class
@@ -3628,6 +3990,10 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              level:
+                setpoint_type: '0x0F'
   ccThermostatSetpointThermostatSetpointReportReport:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatSetpoint/Report/ThermostatSetpointReport
     x-doc-group: command_class
@@ -3690,6 +4056,17 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              level:
+                reserved: 0
+                setpoint_type: 0
+              level2:
+                precision: 0
+                scale: 0
+                size: 1
+              value:
+              - 0
   ccThermostatSetpointThermostatSetpointSetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatSetpoint/Command/ThermostatSetpointSet
     x-doc-group: command_class
@@ -3752,6 +4129,16 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              level:
+                setpoint_type: '0x02'
+              level2:
+                size: '0x01'
+                scale: '0x00'
+                precision: '0x00'
+              value:
+              - '0x16'
   ccThermostatSetpointThermostatSetpointSupportedGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatSetpoint/Command/ThermostatSetpointSupportedGet
     x-doc-group: command_class
@@ -3809,6 +4196,11 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              bit_mask:
+              - 20
+              - 8
   ccThermostatSetpointThermostatSetpointCapabilitiesGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/ThermostatSetpoint/Command/ThermostatSetpointCapabilitiesGet
     x-doc-group: command_class
@@ -3933,6 +4325,29 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              maxvalue:
+              - 0
+              - 0
+              - 1
+              - 104
+              min_value:
+              - 0
+              - 0
+              - 0
+              - 100
+              properties1:
+                reserved: 0
+                setpoint_type: 2
+              properties2:
+                precision1: 32
+                scale1: 0
+                size1: 4
+              properties3:
+                precision2: 32
+                scale2: 0
+                size2: 4
   ccTimeDateReportReport:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/Time/Report/DateReport
     x-doc-group: command_class
@@ -4174,6 +4589,10 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              command_class_version: 2
+              requested_command_class: 85
   ccVersionVersionGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/Version/Command/VersionGet
     x-doc-group: command_class
@@ -4272,6 +4691,16 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              firmware_0_sub_version: 131
+              firmware_0_version: 243
+              hardware_version: 171
+              number_of_firmware_targets: 0
+              vg: []
+              z_wave_library_type: 7
+              z_wave_protocol_sub_version: 54
+              z_wave_protocol_version: 7
   ccVersionVersionCapabilitiesGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/Version/Command/VersionCapabilitiesGet
     x-doc-group: command_class
@@ -4347,6 +4776,13 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              properties1:
+                command_class: 2
+                reserved1: 0
+                version: 1
+                z_wave_software: 4
   ccVersionVersionZwaveSoftwareGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/Version/Command/VersionZwaveSoftwareGet
     x-doc-group: command_class
@@ -4373,6 +4809,8 @@ channels:
               "additionalProperties": true,
               "properties": {}
             }
+        examples:
+          - payload: {}
   ccVersionVersionZwaveSoftwareReportReport:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/Version/Report/VersionZwaveSoftwareReport
     x-doc-group: command_class
@@ -4436,6 +4874,17 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              application_build_number: 0
+              application_framework_api_version: 0
+              application_framework_build_number: 0
+              application_version: 15958867
+              host_interface_build_number: 0
+              host_interface_version: 0
+              sdk_version: 508476
+              z_wave_protocol_build_number: 0
+              z_wave_protocol_version: 472808
   ccWakeUpWakeUpIntervalCapabilitiesGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/WakeUp/Command/WakeUpIntervalCapabilitiesGet
     x-doc-group: command_class
@@ -4515,6 +4964,15 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              default_wake_up_interval_seconds: 60
+              maximum_wake_up_interval_seconds: 100000
+              minimum_wake_up_interval_seconds: 5
+              properties1:
+                reserved: 0
+                wake_up_on_demand: 0
+              wake_up_interval_step_seconds: 1
   ccWakeUpWakeUpIntervalGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/WakeUp/Command/WakeUpIntervalGet
     x-doc-group: command_class
@@ -4576,6 +5034,10 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              nodeid: 1
+              seconds: 4200
   ccWakeUpWakeUpIntervalSetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/WakeUp/Command/WakeUpIntervalSet
     x-doc-group: command_class
@@ -4663,6 +5125,8 @@ channels:
               "additionalProperties": true,
               "properties": {}
             }
+        examples:
+          - payload: {}
   ccSwitchColorSwitchColorSupportedGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchColor/Command/SwitchColorSupportedGet
     x-doc-group: command_class
@@ -4720,6 +5184,9 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              color_component_mask: 7168
   ccSwitchColorSwitchColorGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchColor/Command/SwitchColorGet
     x-doc-group: command_class
@@ -4794,6 +5261,12 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              color_component_id: 2
+              current_value: 0
+              duration: 0
+              target_value: 0
   ccSwitchColorSwitchColorSetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchColor/Command/SwitchColorSet
     x-doc-group: command_class
@@ -4852,6 +5325,12 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              vg1:
+              - color_component_id: '0x03'
+                value: '0xFF'
+              duration: '0x00'
   ccSwitchColorSwitchColorStartLevelChangeCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchColor/Command/SwitchColorStartLevelChange
     x-doc-group: command_class
@@ -4905,6 +5384,14 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              properties1:
+                ignore_start_state: '0x00'
+                up_down: '0x00'
+              color_component_id: '0x02'
+              start_level: '0x00'
+              duration: '0x01'
   ccSwitchColorSwitchColorStopLevelChangeCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/SwitchColor/Command/SwitchColorStopLevelChange
     x-doc-group: command_class
@@ -4936,6 +5423,9 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              color_component_id: '0x02'
   ccAssociationGrpInfoAssociationGroupNameGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/AssociationGrpInfo/Command/AssociationGroupNameGet
     x-doc-group: command_class
@@ -5009,6 +5499,19 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              grouping_identifier: 1
+              length_of_name: 8
+              name:
+              - 76
+              - 105
+              - 102
+              - 101
+              - 108
+              - 105
+              - 110
+              - 101
   ccAssociationGrpInfoAssociationGroupInfoGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/AssociationGrpInfo/Command/AssociationGroupInfoGet
     x-doc-group: command_class
@@ -5128,6 +5631,19 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              properties1:
+                dynamic_info: 0
+                group_count: 1
+                list_mode: 0
+              vg1:
+              - event_code: 0
+                grouping_identifier: 1
+                mode: 0
+                profile1: 0
+                profile2: 1
+                reserved: 0
   ccAssociationGrpInfoAssociationGroupCommandListGetCommand:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/AssociationGrpInfo/Command/AssociationGroupCommandListGet
     x-doc-group: command_class
@@ -5211,6 +5727,13 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              command:
+              - 90
+              - 1
+              grouping_identifier: 1
+              list_length: 2
   ccDeviceResetLocallyDeviceResetLocallyNotificationReport:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/DeviceResetLocally/Report/DeviceResetLocallyNotification
     x-doc-group: command_class
@@ -5237,6 +5760,8 @@ channels:
               "additionalProperties": true,
               "properties": {}
             }
+        examples:
+          - payload: {}
   ccZwaveplusInfoZwaveplusInfoReportReport:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/ZwaveplusInfo/Report/ZwaveplusInfoReport
     x-doc-group: command_class
@@ -5284,6 +5809,13 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              installer_icon_type: 256
+              node_type: 0
+              role_type: 0
+              user_icon_type: 256
+              z_wave_plus_version: 2
   ccSupervisionSupervisionReportReport:
     address: zpc/{homeId}/{nodeId}/ep{endpointId}/Supervision/Report/SupervisionReport
     x-doc-group: command_class
@@ -5337,6 +5869,14 @@ channels:
                 }
               }
             }
+        examples:
+          - payload:
+              duration: 0
+              properties1:
+                more_status_updates: 0
+                session_id: 17
+                wake_up_request: 0
+              status: 255
 operations:
   receiveNotificationNotificationGet:
     action: receive

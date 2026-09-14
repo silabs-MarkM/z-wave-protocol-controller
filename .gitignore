@@ -90,6 +90,8 @@ site/
 
 # Assembled MQTT AsyncAPI (generated; source is per-component asyncapi/*.yaml)
 components/**/asyncapi.assembled.yaml
+docs/asyncapi/
+docs/asyncapi.yaml
 
 # Logs
 logs/

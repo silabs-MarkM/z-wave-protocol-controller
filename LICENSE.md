@@ -62,7 +62,8 @@ distributed under the Apache License, Version 2.0
 (https://www.apache.org/licenses/LICENSE-2.0):
 
 - **OpenSSL** (https://www.openssl.org/) — runtime
-- **@asyncapi/cli** (https://github.com/asyncapi/cli, pinned in `.github/workflows/docs.yml`) — CI-only validator for the MQTT AsyncAPI document; not linked into ZPC
+- **@asyncapi/cli** (https://github.com/asyncapi/cli, pinned in `scripts/mqtt_asyncapi/generate_html.sh` and `.github/workflows/docs.yml`) — CI-only validator/generator for the MQTT AsyncAPI document; not linked into ZPC
+- **@asyncapi/html-template** (https://github.com/asyncapi/html-template, pinned in `scripts/mqtt_asyncapi/generate_html.sh`) — CI-only HTML renderer for the MQTT AsyncAPI document; not linked into ZPC
 
 ---
 

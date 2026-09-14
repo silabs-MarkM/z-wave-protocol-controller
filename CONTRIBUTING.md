@@ -305,11 +305,15 @@ When adding new features or modifying existing functionality:
      --cc-md-root build/command_class_docs \
      --assembled-out build/asyncapi.assembled.yaml
 
+   SUPPRESS_NO_CONFIG_WARNING=true bash scripts/mqtt_asyncapi/generate_html.sh
+
    GENERATED_CC_DOCS=build/command_class_docs \
      python3 scripts/mkdocs/prepare_docs_for_mkdocs.py
 
    mkdocs build --strict
    # optional: mkdocs serve
+   # HTML: http://127.0.0.1:8000/z-wave-protocol-controller/asyncapi/index.html
+   # YAML: http://127.0.0.1:8000/z-wave-protocol-controller/asyncapi.yaml
    ```
 
    - The canonical command class implementation guide is [docs/command_class_implementation_guide.md](docs/command_class_implementation_guide.md) — edit it directly there.
@@ -318,6 +322,7 @@ When adding new features or modifying existing functionality:
 4. **MQTT API Documentation**
    - MQTT topics and payloads are defined in AsyncAPI: a root spec in [`components/mqtt_api/asyncapi/asyncapi.yaml`](components/mqtt_api/asyncapi/asyncapi.yaml), per-component YAML under `components/<module>/asyncapi/`, and command-class channels generated from `zwave.xml`
    - The assembled spec is written to `build/asyncapi.assembled.yaml` (not committed)
+   - Docs CI renders HTML into `docs/asyncapi/` (gitignored) via `scripts/mqtt_asyncapi/generate_html.sh`
    - Do **not** edit `doc/generated/` MQTT markdown or `mqtt_api_index.md` — they are rendered by `scripts/mqtt_asyncapi/assemble_and_render.py`
    - Keep [MQTT API Overview](components/mqtt_api/doc/mqtt_api_overview.md) and [MQTT API Interface](components/mqtt_api/doc/mqtt_api_interface.md) in sync when changing `MqttApiBase` or topic naming rules
 

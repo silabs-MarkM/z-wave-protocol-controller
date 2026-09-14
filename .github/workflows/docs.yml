@@ -101,6 +101,11 @@ jobs:
           SUPPRESS_NO_CONFIG_WARNING: 'true'
         run: npx --yes @asyncapi/cli@6.0.2 validate build/asyncapi.assembled.yaml
 
+      - name: Generate AsyncAPI HTML
+        env:
+          SUPPRESS_NO_CONFIG_WARNING: 'true'
+        run: bash scripts/mqtt_asyncapi/generate_html.sh build/asyncapi.assembled.yaml
+
       - name: Prepare docs for MkDocs
         env:
           GENERATED_CC_DOCS: build/command_class_docs

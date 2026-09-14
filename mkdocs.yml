@@ -74,6 +74,7 @@ nav:
     - Inclusion Flow: sequences/inclusion_flow.md
     - Exclusion Flow: sequences/exclusion_flow.md
   - API Reference:
+    - MQTT AsyncAPI: asyncapi.md
     - MQTT API: '!include ./components/mqtt_api/mkdocs.yml'
     - Network Management: '!include ./components/network_manager/mkdocs.yml'
     - Device Interviewer: '!include ./components/device_interviewer/mkdocs.yml'

@@ -18,7 +18,7 @@ Example: `zpc/CAFECAFE/0004/ep3/ZWaveCC/Command/SwitchBinarySet` targets endpoin
 | Command Class | MQTT Support | Support | Control |
 |---------------|--------------|---------|---------|
 {% for command_class in command_classes if command_class.has_mqtt_interface_doc %}
-| [{{ command_class.name }}]({{ command_class.name | lower }}/doc/generated/{{ command_class.name | lower }}_mqtt_interface.md) | {{ "true" if command_class.mqtt_support else "false" }} | {{ "true" if command_class.support else "false" }} | {{ "true" if command_class.control else "false" }} |
+| [{{ command_class.name }}]({{ command_class.output_name }}/doc/generated/{{ command_class.output_name }}_mqtt_interface.md) | {{ "true" if command_class.mqtt_support else "false" }} | {{ "true" if command_class.support else "false" }} | {{ "true" if command_class.control else "false" }} |
 {% endfor %}
 
 > When MQTT Support is `false`, the linked documentation lists only TX (report/notification) commands. ZPC publishes those reports to MQTT but does not handle `Command/*` topics for that command class.
@@ -26,5 +26,5 @@ Example: `zpc/CAFECAFE/0004/ep3/ZWaveCC/Command/SwitchBinarySet` targets endpoin
 ### Command Classes 
 
 {% for command_class in command_classes if command_class.has_mqtt_interface_doc %}
-- [{{ command_class.name }}]({{ command_class.name | lower }}/doc/generated/{{ command_class.name | lower }}_mqtt_interface.md)
+- [{{ command_class.name }}]({{ command_class.output_name }}/doc/generated/{{ command_class.output_name }}_mqtt_interface.md)
 {% endfor %}

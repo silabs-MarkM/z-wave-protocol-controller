@@ -1,6 +1,6 @@
 {% import "utils.j2" as utils with context %}
 {# COMMAND_CLASS_XX_YY -> command_class_xx_yy #}
-{% set command_class_name_cc_lower = command_class.name | lower %}
+{% set command_class_name_cc_lower = command_class.output_name %}
 {# COMMAND_CLASS_XX_YY -> COMMAND_CLASS_XX_YY #}
 {% set command_class_name_cc_upper = command_class.name | upper %}
 {# command_class_xx_yy -> xx_yy #}

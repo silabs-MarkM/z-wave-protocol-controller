@@ -4,14 +4,14 @@
 {% set header_guard_name = command_class.name | upper + "_CONSTANTS" %}
 {{ utils.header_guard(header_guard_name) }}
 
-#include "{{command_class.name | lower}}_generated_types.hpp"
+#include "{{command_class.output_name}}_generated_types.hpp"
 
 namespace zwave_command_class
 {
-    namespace {{command_class.name | lower}}_constants
+    namespace {{command_class.output_name}}_constants
     {
 
-    } // namespace {{command_class.name | lower}}_constants
+    } // namespace {{command_class.output_name}}_constants
 } // namespace zwave_command_class
 
 {{ utils.footer_guard(header_guard_name) }}

@@ -16,19 +16,23 @@
 
 namespace zwave_command_class
 {
-    namespace {{command_class.name | lower}}_types
+    namespace {{command_class.output_name}}_types
     {
     // Commands for the command class
-    enum class {{command_class.name | lower}}_commands_t : uint8_t {
+    enum class {{command_class.output_name}}_commands_t : uint8_t {
+        {% if command_class.commands %}
         {% for command in command_class.commands %}
             {{command_class.name | upper}}_{{command.name | upper}} = {{command.id}},
         {% endfor %}
+        {% else %}
+            UNUSED = 0,
+        {% endif %}
     };
 
     {% set attribute_counter = namespace(value=2) %}
 
     // Attributes for the command class
-    enum class {{command_class.name | lower}}_attributes_t : attribute_store_type_t {
+    enum class {{command_class.output_name}}_attributes_t : attribute_store_type_t {
         supported_version = ZWAVE_CC_VERSION_ATTRIBUTE({{command_class.id}}),
     };
 
@@ -54,7 +58,7 @@ namespace zwave_command_class
         {% endif +%}
     {% endfor %}
 
-    constexpr attribute_store_type_t {{command_class.name | lower}}_user_attribute_start = ( {{command_class.id}} << 8) | {{ 0xFFFF }};
+    constexpr attribute_store_type_t {{command_class.output_name}}_user_attribute_start = ( {{command_class.id}} << 8) | {{ 0xFFFF }};
 
     {% for command in command_class.commands %}
         {% for attribute in command.params %}
@@ -178,12 +182,12 @@ namespace zwave_command_class
     {% endfor %}
 
     // Flexible value type that can hold int, vector, or string
-    using {{command_class.name | lower}}_flexible_map_value_t = std::variant<int, uint8_t, uint16_t, uint32_t, std::vector<uint8_t>, std::string {% if complex_types.value | length > 0 %}, {{ complex_types.value | join(', ') }}{% endif %}>;
+    using {{command_class.output_name}}_flexible_map_value_t = std::variant<int, uint8_t, uint16_t, uint32_t, std::vector<uint8_t>, std::string {% if complex_types.value | length > 0 %}, {{ complex_types.value | join(', ') }}{% endif %}>;
 
     // Map type that can hold different value types
-    using {{command_class.name | lower}}_attribute_map_t = std::map<std::string, {{command_class.name | lower}}_flexible_map_value_t>;
+    using {{command_class.output_name}}_attribute_map_t = std::map<std::string, {{command_class.output_name}}_flexible_map_value_t>;
 
-    }  // namespace {{command_class.name | lower}}
+    }  // namespace {{command_class.output_name}}
 }  // namespace zwave_command_class
 {{ utils.footer_guard(header_guard_name) }}
 

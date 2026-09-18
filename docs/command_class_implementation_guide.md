@@ -68,6 +68,10 @@ supported_command_classes:
     minimal_scheme: ZWAVE_CONTROLLER_ENCAPSULATION_NONE # Security scheme
 ```
 
+Folder and C++ names default from the XML `name`: if it already starts with `COMMAND_CLASS_`, the generator uses `name.lower()`; otherwise it prefixes `command_class_`. Override with `output_name` when needed.
+
+For transport-layer / protocol command classes, set `protocol: true` (with `mqtt_support: false`). That skips attribute-resolver GET/SET rules in the generated constructor. `generate_commands` is then required: listed XML `<cmd>` names are generated; an empty list produces a registration shell only. Override `control_handler` / `support_handler` on the leaf when the generated switch is not enough (for example tunneling to `zwapi_transfer_protocol_cc`, or logging that Transport Service frames must not reach the application layer).
+
 For Multilevel Switch, `support: false` and `control: true` means ZPC controls multilevel switch devices on the network but does not expose this command class as a supporting device.
 
 ---

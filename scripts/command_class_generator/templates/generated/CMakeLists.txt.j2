@@ -9,6 +9,6 @@ target_include_directories(command_class_common_generated
 target_link_libraries(
   command_class_common_generated
   INTERFACE {% for command_class in command_classes %}
-           {{command_class.name | lower}}
+           {{command_class.output_name}}
            {% endfor %}
 )

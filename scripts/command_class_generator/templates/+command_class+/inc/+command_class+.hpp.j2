@@ -5,7 +5,7 @@
 {% set header_guard_name = command_class.name | upper %}
 {{ utils.header_guard(header_guard_name) }}
 
-{% set command_class_name_lower = command_class.name | lower %}
+{% set command_class_name_lower = command_class.output_name %}
 
 {% if command_class.mqtt_support %}
 #include "{{command_class_name_lower}}_mqtt.hpp"

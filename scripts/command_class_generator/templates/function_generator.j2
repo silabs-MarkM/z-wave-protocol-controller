@@ -2,7 +2,7 @@
 {% import "config.j2" as config with context %}
 
 {% macro generate_report_received_function(command_class, command) %}
-{% set command_class_name_lower = command_class.name | lower %}
+{% set command_class_name_lower = command_class.output_name %}
 sl_status_t {{command_class_name_lower}}_core::on_{{command.name | lower}}_received(const report_received_args &args)
 {
     [[maybe_unused]] auto endpoint_node    = args.endpoint_node;
@@ -46,7 +46,7 @@ sl_status_t {{command_class_name_lower}}_core::on_{{command.name | lower}}_recei
         {% endfor %}
     {% endfor %}
 
-    {% if command_class.name | lower == "command_class_version" and command.name | lower == "version_command_class_report" %}
+    {% if command_class.output_name == "command_class_version" and command.name | lower == "version_command_class_report" %}
     /* If zero is returned, it means that the command class version is not yet requested from the end node */
     {% endif %}
     {% for version in range(1, command_class.supported_version + 1) %}
@@ -238,7 +238,7 @@ sl_status_t {{command_class_name_lower}}_core::on_{{command.name | lower}}_recei
 {% endmacro %}
 
 {% macro generate_get_received_function(command_class, command) %}
-{% set command_class_name_lower = command_class.name | lower %}
+{% set command_class_name_lower = command_class.output_name %}
 {{command_class_name_lower}}_attribute_map_t {{command_class_name_lower}}_core::on_{{command.name | lower}}_received(const get_received_args& args)
 {
     [[maybe_unused]] auto endpoint_node    = args.endpoint_node;
@@ -318,7 +318,7 @@ sl_status_t {{command_class_name_lower}}_core::on_{{command.name | lower}}_recei
 {% endmacro %}
 
 {% macro generate_set_received_function(command_class, command) %}
-{% set command_class_name_lower = command_class.name | lower %}
+{% set command_class_name_lower = command_class.output_name %}
 {{command_class_name_lower}}_attribute_map_t {{command_class_name_lower}}_core::on_{{command.name | lower}}_received(const set_received_args& args)
 {
     [[maybe_unused]] auto endpoint_node    = args.endpoint_node;

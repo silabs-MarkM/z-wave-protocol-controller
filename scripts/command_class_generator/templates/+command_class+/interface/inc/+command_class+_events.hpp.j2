@@ -6,7 +6,7 @@
 
 #include <stdint.h>
 
-enum class {{command_class.name | lower}}_events_t : uint32_t {
+enum class {{command_class.output_name}}_events_t : uint32_t {
     {{command_class.name | upper}}_BASE_EVENT = ( {{command_class.id}} << 8)
 };
 

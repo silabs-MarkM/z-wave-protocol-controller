@@ -121,7 +121,7 @@ class CommandClassGenerator:
         return True
 
     def _mqtt_interface_doc_path(self, command_class, output_dir: Path) -> Path:
-        cc_name = command_class.name.lower()
+        cc_name = command_class.output_name
         return (
             output_dir
             / cc_name
@@ -205,7 +205,7 @@ class CommandClassGenerator:
                     .replace(".jinja2", "")
                 )
                 output_file_name = output_file_name.replace(
-                    "+command_class+", f"{command_class.name.lower()}"
+                    "+command_class+", f"{command_class.output_name}"
                 )
 
                 if not template.name.endswith(".txt.j2") and not template.name.endswith(".md.j2"):

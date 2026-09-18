@@ -195,6 +195,56 @@ supported_command_classes:
     interview_attributes: []
     minimal_scheme: ZWAVE_CONTROLLER_ENCAPSULATION_NONE
 
+  - name: "COMMAND_CLASS_SECURITY"
+    version: 1
+    mqtt_support: false
+    protocol: true
+    support: true
+    control: true
+    manual_security_validation: true
+    generate_commands:
+      - SECURITY_COMMANDS_SUPPORTED_GET
+      - SECURITY_COMMANDS_SUPPORTED_REPORT
+    minimal_scheme: ZWAVE_CONTROLLER_ENCAPSULATION_NONE
+
+  - name: "COMMAND_CLASS_SECURITY_2"
+    version: 2
+    mqtt_support: false
+    protocol: true
+    support: true
+    control: true
+    generate_commands:
+      - SECURITY_2_COMMANDS_SUPPORTED_GET
+      - SECURITY_2_COMMANDS_SUPPORTED_REPORT
+    minimal_scheme: ZWAVE_CONTROLLER_ENCAPSULATION_NONE
+
+  - name: "ZWAVE_CMD_CLASS"
+    version: 1
+    mqtt_support: false
+    protocol: true
+    support: true
+    control: false
+    generate_commands: []
+    minimal_scheme: ZWAVE_CONTROLLER_ENCAPSULATION_NETWORK_SCHEME
+
+  - name: "COMMAND_CLASS_ZWAVE_LONG_RANGE"
+    version: 1
+    mqtt_support: false
+    protocol: true
+    support: true
+    control: false
+    generate_commands: []
+    minimal_scheme: ZWAVE_CONTROLLER_ENCAPSULATION_NETWORK_SCHEME
+
+  - name: "COMMAND_CLASS_TRANSPORT_SERVICE"
+    version: 2
+    mqtt_support: false
+    protocol: true
+    support: true
+    control: true
+    generate_commands: []
+    minimal_scheme: ZWAVE_CONTROLLER_ENCAPSULATION_NONE
+
 optional_param_overrides:
   - command_class: "COMMAND_CLASS_NOTIFICATION"
     command: "NOTIFICATION_REPORT"

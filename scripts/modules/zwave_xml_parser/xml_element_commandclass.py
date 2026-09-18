@@ -5,6 +5,15 @@ from modules.zwave_xml_parser.xml_element_command import Command
 from modules.zwave_xml_parser.xml_element_version_tracker import XMLElementVersionTracker
 
 
+def compute_output_name(xml_name: str, yaml_override: str | None = None) -> str:
+    if yaml_override:
+        return yaml_override.lower()
+    name = xml_name.lower()
+    if name.startswith("command_class_"):
+        return name
+    return f"command_class_{name}"
+
+
 @dataclass
 class CommandClass:
     name: str | None
@@ -18,11 +27,12 @@ class CommandClass:
     manual_security_validation: bool = False
     interview_attributes: List[str] = field(default_factory=list)
     commands: List[Command] = field(default_factory=list)
+    protocol: bool = False
+    generate_commands: list[str] | None = None
+    output_name: str = ""
 
     @property
     def has_mqtt_interface_doc(self) -> bool:
-        # Full MQTT docs when mqtt_support is enabled. Otherwise document only
-        # when the CC publishes reports via mqtt_publish_report (TX commands).
         if self.mqtt_support:
             return True
         return any(command.is_tx() for command in self.commands)
@@ -33,7 +43,6 @@ class CommandClass:
         name = element.attrib.get("name", "UNDEFINED_COMMANDCLASS_NAME")
         id = int(element.attrib.get("key", "0x00"), 16)
         version = int(element.attrib.get("version", "0"))
-        support_mode = supported_command_class.get('support_mode', None)
         mqtt_support = supported_command_class.get('mqtt_support', False)
         minimal_scheme = supported_command_class.get('minimal_scheme', None)
         manual_security_validation = supported_command_class.get('manual_security_validation', False)
@@ -42,6 +51,15 @@ class CommandClass:
         has_endpoints = supported_command_class.get('has_endpoints', False)
         interview_attributes = supported_command_class.get(
             'interview_attributes', [])
+        protocol = bool(supported_command_class.get('protocol', False))
+        output_name = compute_output_name(
+            name, supported_command_class.get('output_name'))
+
+        if protocol and 'generate_commands' not in supported_command_class:
+            raise ValueError(
+                f"{name}: protocol command classes must set generate_commands (use [] for a shell-only CC)")
+
+        generate_commands = supported_command_class.get('generate_commands')
 
         for child in element:
             if child.tag == "cmd":
@@ -59,5 +77,8 @@ class CommandClass:
             control=control,
             has_endpoints=has_endpoints,
             interview_attributes=interview_attributes,
-            commands=commands
+            commands=commands,
+            protocol=protocol,
+            generate_commands=generate_commands,
+            output_name=output_name,
         )

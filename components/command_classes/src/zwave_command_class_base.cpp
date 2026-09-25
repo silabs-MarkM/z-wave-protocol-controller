@@ -20,6 +20,7 @@
 // Attribute
 #include "attribute_store_defined_attribute_types.h"
 #include "attribute_callbacks.hpp"
+#include "attribute_store_helper.h"
 #include "zpc_attribute_store_network_helper.h"
 
 // Component Connector
@@ -34,6 +35,7 @@
 #include "zwave_command_class_utils.hpp"
 
 #include <algorithm>
+#include <mutex>
 #include <vector>
 
 namespace zwave_command_class
@@ -41,6 +43,7 @@ namespace zwave_command_class
     constexpr char LOG_TAG[] = "zwave_command_class_base";
 
     std::map<int, int> zwave_command_class_base::supported_command_class_versions = {};
+    static std::once_flag cc_interview_action_handler_registered;
 
     zwave_command_class_base::zwave_command_class_base(command_class_properties cc_properties, const std::vector<attribute_schema_t> &attributes, const std::string &mqtt_cc_name) :
       properties(cc_properties), mqtt_command_class_namespace(mqtt_cc_name), m_frame_generator(cc_properties.command_class_id)
@@ -58,6 +61,35 @@ namespace zwave_command_class
         component_connector connector;
         connector.connect_typed<component_connector_common_events_t, component_connector_interview_done_payload_t>(component_connector_common_events_t::COMPONENT_CONNECTOR_INTERVIEW_DONE,
                                                                                                                    [this](const component_connector_interview_done_payload_t &payload) { return this->interview(payload.endpoint_node); });
+
+        std::call_once(cc_interview_action_handler_registered, [&connector] {
+            connector.connect_typed<component_connector_common_events_t, component_connector_cc_interview_action_payload_t>(component_connector_common_events_t::COMPONENT_CONNECTOR_CC_INTERVIEW_ACTION_REQUESTED, [](const component_connector_cc_interview_action_payload_t &payload) {
+                attribute_store::attribute endpoint(payload.endpoint_node);
+                if (!endpoint.is_valid()) {
+                    return SL_STATUS_FAIL;
+                }
+                switch (payload.action) {
+                    case component_connector_cc_interview_action_t::seed:
+                        if (payload.command_classes.empty()) {
+                            zwave_command_class_base::seed_cc_interview_state(endpoint);
+                        } else {
+                            zwave_command_class_base::seed_cc_interview_state(endpoint, payload.command_classes);
+                        }
+                        return SL_STATUS_OK;
+                    case component_connector_cc_interview_action_t::check:
+                        zwave_command_class_base::check_cc_interview_state(endpoint);
+                        return SL_STATUS_OK;
+                    case component_connector_cc_interview_action_t::cancel:
+                        if (!zwave_command_class_base::cancel_cc_interview_state(endpoint)) {
+                            component_connector connector;
+                            component_connector_interview_done_payload_t failure {.endpoint_node = endpoint, .status = SL_STATUS_FAIL};
+                            connector.fire_event(static_cast<uint32_t>(component_connector_common_events_t::COMPONENT_CONNECTOR_INTERVIEW_FULLY_RESOLVED), failure);
+                        }
+                        return SL_STATUS_OK;
+                }
+                return SL_STATUS_FAIL;
+            });
+        });
     }
 
     sl_status_t zwave_command_class_base::register_attribute_types(const attribute_list_registration_t &attributes)
@@ -221,6 +253,7 @@ namespace zwave_command_class
 
         const uint8_t version_for_callback = (supporting_node_version != 0) ? supporting_node_version : 1;
         m_interview_resolution_options     = {.retry_count = 5};
+        m_interview_endpoint               = endpoint;
         this->on_interview(endpoint, version_for_callback);
         return SL_STATUS_OK;
     }
@@ -254,7 +287,146 @@ namespace zwave_command_class
         zpc_mqtt::register_command(this->mqtt_command_class_namespace, [this](attribute_store::attribute endpoint_node, const std::string &command_name, const std::string &payload) { this->mqtt_command_handler(endpoint_node, command_name, payload); });
     }
 
-    void zwave_command_class_base::on_interview(attribute_store::attribute endpoint_node, uint8_t supported_version) {}
+    void zwave_command_class_base::on_interview([[maybe_unused]] attribute_store::attribute endpoint_node, [[maybe_unused]] uint8_t supported_version)
+    {
+        set_cc_interview_state(cc_interview_state::done);
+    }
+
+    static attribute_store::attribute cc_interview_published_group(const attribute_store::attribute &endpoint)
+    {
+        auto device = endpoint.parent();
+        auto ep0    = device.emplace_node(ATTRIBUTE_ENDPOINT_ID, 0);
+        return ep0.emplace_node(CC_INTERVIEW_ONGOING_GROUP);
+    }
+
+    void zwave_command_class_base::seed_cc_interview_state(attribute_store::attribute endpoint, const std::vector<uint8_t> &command_classes)
+    {
+        auto group = endpoint.emplace_node(CC_INTERVIEW_ONGOING_GROUP);
+        // A reported value on the empty ep0 group is the device-wide "published"
+        // latch. A new interview must clear it before any CC can complete.
+        attribute_store_undefine_reported(cc_interview_published_group(endpoint));
+
+        std::vector<uint16_t> ids;
+        const auto normal   = command_class_utils::get_normal_command_classes(command_classes);
+        const auto extended = command_class_utils::get_extended_command_classes(command_classes);
+        ids.insert(ids.end(), normal.begin(), normal.end());
+        ids.insert(ids.end(), extended.begin(), extended.end());
+        ids.push_back(COMMAND_CLASS_BASIC);
+        std::sort(ids.begin(), ids.end());
+        ids.erase(std::unique(ids.begin(), ids.end()), ids.end());
+        for (const auto id: ids) {
+            if (id == 0) {
+                continue;
+            }
+            auto cc = group.emplace_node(COMMAND_CLASS, id);
+            cc.emplace_node(::interview_state).set_reported<uint8_t>(static_cast<uint8_t>(cc_interview_state::ongoing));
+        }
+    }
+
+    void zwave_command_class_base::seed_cc_interview_state(attribute_store::attribute endpoint)
+    {
+        using s2_t = command_class_security_2_types::security_2_commands_supported_report_group_attributes_t;
+        using s0_t = command_class_security_types::security_commands_supported_report_group_attributes_t;
+        std::vector<uint8_t> command_classes;
+        const auto append = [&endpoint, &command_classes](attribute_store_type_t group_type, attribute_store_type_t list_type) {
+            auto group = endpoint.child_by_type(group_type);
+            if (!group.is_valid()) {
+                return;
+            }
+            auto list = group.child_by_type(list_type);
+            if (list.is_valid() && list.reported_exists()) {
+                const auto values = list.reported<std::vector<uint8_t>>();
+                command_classes.insert(command_classes.end(), values.begin(), values.end());
+            }
+        };
+        append(static_cast<attribute_store_type_t>(s2_t::SECURITY_2_COMMANDS_SUPPORTED_REPORT_GROUP), static_cast<attribute_store_type_t>(s2_t::command_class));
+        append(static_cast<attribute_store_type_t>(s0_t::SECURITY_COMMANDS_SUPPORTED_REPORT_GROUP), static_cast<attribute_store_type_t>(s0_t::command_class_support));
+        seed_cc_interview_state(endpoint, command_classes);
+    }
+
+    void zwave_command_class_base::set_cc_interview_state(cc_interview_state state)
+    {
+        if (m_interview_endpoint.is_valid()) {
+            set_cc_interview_state(m_interview_endpoint, properties.command_class_id, state);
+        }
+    }
+
+    void zwave_command_class_base::set_cc_interview_state(attribute_store::attribute endpoint, zwave_command_class_t cc_id, cc_interview_state state)
+    {
+        auto state_node = endpoint.emplace_node(CC_INTERVIEW_ONGOING_GROUP).emplace_node(COMMAND_CLASS, static_cast<uint16_t>(cc_id)).emplace_node(::interview_state);
+        state_node.set_reported<uint8_t>(static_cast<uint8_t>(state));
+        if (state != cc_interview_state::ongoing) {
+            check_cc_interview_state(endpoint);
+        }
+    }
+
+    void zwave_command_class_base::check_cc_interview_state(attribute_store::attribute endpoint)
+    {
+        auto device = endpoint.parent();
+        if (!device.is_valid()) {
+            return;
+        }
+        auto published_group = cc_interview_published_group(endpoint);
+        if (published_group.reported_exists()) {
+            return;
+        }
+        for (const auto &ep: device.children(ATTRIBUTE_ENDPOINT_ID)) {
+            auto group = ep.child_by_type(CC_INTERVIEW_ONGOING_GROUP);
+            if (!group.is_valid()) {
+                continue;
+            }
+            for (const auto &cc: group.children(COMMAND_CLASS)) {
+                auto state = cc.child_by_type(::interview_state);
+                if (state.is_valid() && state.reported_exists() && state.reported<uint8_t>() == static_cast<uint8_t>(cc_interview_state::ongoing)) {
+                    return;
+                }
+            }
+        }
+        // Empty storage provides an atomic store-owned latch without adding a
+        // fourth schema type. It prevents late reports from publishing success twice.
+        attribute_store_set_reported(published_group, nullptr, 0);
+        component_connector connector;
+        for (const auto &ep: device.children(ATTRIBUTE_ENDPOINT_ID)) {
+            component_connector_interview_done_payload_t payload {.endpoint_node = ep, .status = SL_STATUS_OK};
+            connector.fire_event(static_cast<uint32_t>(component_connector_common_events_t::COMPONENT_CONNECTOR_INTERVIEW_FULLY_RESOLVED), payload);
+        }
+    }
+
+    bool zwave_command_class_base::cancel_cc_interview_state(attribute_store::attribute endpoint)
+    {
+        auto device = endpoint.parent();
+        if (!device.is_valid()) {
+            return false;
+        }
+        auto published_group = cc_interview_published_group(endpoint);
+        if (published_group.reported_exists()) {
+            return false;
+        }
+        bool found = false;
+        for (const auto &ep: device.children(ATTRIBUTE_ENDPOINT_ID)) {
+            auto group = ep.child_by_type(CC_INTERVIEW_ONGOING_GROUP);
+            if (!group.is_valid()) {
+                continue;
+            }
+            found = true;
+            for (const auto &cc: group.children(COMMAND_CLASS)) {
+                auto state = cc.child_by_type(::interview_state);
+                if (state.is_valid() && state.reported_exists() && state.reported<uint8_t>() == static_cast<uint8_t>(cc_interview_state::ongoing)) {
+                    state.set_reported<uint8_t>(static_cast<uint8_t>(cc_interview_state::cancelled));
+                }
+            }
+        }
+        if (!found) {
+            return false;
+        }
+        attribute_store_set_reported(published_group, nullptr, 0);
+        component_connector connector;
+        for (const auto &ep: device.children(ATTRIBUTE_ENDPOINT_ID)) {
+            component_connector_interview_done_payload_t payload {.endpoint_node = ep, .status = SL_STATUS_FAIL};
+            connector.fire_event(static_cast<uint32_t>(component_connector_common_events_t::COMPONENT_CONNECTOR_INTERVIEW_FULLY_RESOLVED), payload);
+        }
+        return true;
+    }
 
     bool zwave_command_class_base::is_supported_on_node(attribute_store::attribute endpoint_node) const
     {

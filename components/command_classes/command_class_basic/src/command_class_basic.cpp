@@ -100,14 +100,15 @@ namespace zwave_command_class
             return;
         }
 
-        const uint8_t basic_version = version_node.reported<uint8_t>();
-        if (basic_version == 0) {
-            sl_log_debug(LOG_TAG.data(), "Basic CC version is 0; skipping Basic Get");
+        auto endpoint_node = attribute_store::attribute(attribute_store_get_first_parent_with_type(version_node_id, ATTRIBUTE_ENDPOINT_ID));
+        if (!endpoint_node.is_valid()) {
             return;
         }
 
-        auto endpoint_node = attribute_store::attribute(attribute_store_get_first_parent_with_type(version_node_id, ATTRIBUTE_ENDPOINT_ID));
-        if (!endpoint_node.is_valid()) {
+        const uint8_t basic_version = version_node.reported<uint8_t>();
+        if (basic_version == 0) {
+            sl_log_debug(LOG_TAG.data(), "Basic CC version is 0; skipping Basic Get");
+            set_cc_interview_state(endpoint_node, COMMAND_CLASS_BASIC, cc_interview_state::done);
             return;
         }
 
@@ -134,6 +135,7 @@ namespace zwave_command_class
 
         // Add custom logic here (e.g., logging, validation, notifications)
         sl_log_debug(LOG_TAG.data(), "Basic current_value received: %d", current_value);
+        set_cc_interview_state(endpoint, cc_properties.command_class_id, cc_interview_state::done);
 
         return SL_STATUS_OK;
     }

@@ -35,6 +35,9 @@ namespace zwave_command_class
         COMPONENT_CONNECTOR_NODE_DELETED,
         COMPONENT_CONNECTOR_FAILED_NODE_DELETED,
         COMPONENT_CONNECTOR_INTERVIEW_DONE,
+        // Request a command-class interview-state operation. The command class
+        // base owns the corresponding attribute-store mutations.
+        COMPONENT_CONNECTOR_CC_INTERVIEW_ACTION_REQUESTED,
         COMPONENT_CONNECTOR_INTERVIEW_FULLY_RESOLVED,
         COMPONENT_CONNECTOR_NETWORK_ADDRESS_UPDATED,
         COMPONENT_CONNECTOR_NEW_NETWORK_ENTERED,

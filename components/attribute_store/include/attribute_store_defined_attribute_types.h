@@ -116,6 +116,12 @@ DEFINE_ATTRIBUTE(ATTRIBUTE_ZWAVE_GENERIC_DEVICE_CLASS, 0xA504)
 DEFINE_ATTRIBUTE(ATTRIBUTE_ZWAVE_SPECIFIC_DEVICE_CLASS, 0xA505)
 ///< This represent a zwave_key_protocol_combination_t
 DEFINE_ATTRIBUTE(ATTRIBUTE_ZWAVE_KEY_AND_PROTOCOL_TO_DISCOVER, 0xA506)
+/** Per-endpoint bookkeeping for post-interview command class work. */
+DEFINE_ATTRIBUTE(CC_INTERVIEW_ONGOING_GROUP, 0xA507)
+/** A command class ID in CC_INTERVIEW_ONGOING_GROUP. */
+DEFINE_ATTRIBUTE(COMMAND_CLASS, 0xA508)
+/** interview_state (done, ongoing, or cancelled) for a command class. */
+DEFINE_ATTRIBUTE(interview_state, 0xA509)
 
 // This macro definition allows for auto-generated attributes to co-exists with old definitions
 #ifndef ATTRIBUTE_AUTO_GENERATED

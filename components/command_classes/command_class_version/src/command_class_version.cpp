@@ -124,6 +124,14 @@ namespace zwave_command_class
 
     sl_status_t command_class_version::on_version_get_interview_requested(command_class_version_types::command_class_version_get_payload_t payload)
     {
+        // Version Get is mandatory in Version CC v1. The interviewer emits this
+        // event only after the NIF/S0/S2 capability lists confirm Version CC
+        // support, so record that known lower bound before starting resolution.
+        auto version_node = payload.device_endpoint_node.emplace_node(ZWAVE_CC_VERSION_ATTRIBUTE(COMMAND_CLASS_VERSION));
+        if (!version_node.reported_exists()) {
+            version_node.set_reported<uint8_t>(1);
+        }
+
         auto version_get_group_node = payload.device_endpoint_node.emplace_node(static_cast<attribute_store_type_t>(version_get_group_attributes_t::VERSION_GET_GROUP));
         command_class_version_core::start_group_resolution(version_get_group_node);
         return SL_STATUS_OK;

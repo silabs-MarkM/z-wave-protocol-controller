@@ -134,6 +134,38 @@ namespace zwave_command_class
         return version;
     }
 
+    sl_status_t zwave_command_class_base::validate_command_version(attribute_store::attribute group_node, uint8_t command, uint8_t min_version) const
+    {
+        for (auto node = group_node; node.is_valid(); node = node.parent()) {
+            if (node.type() == ATTRIBUTE_ENDPOINT_ID) {
+                const uint8_t supported_version = endpoint_supported_version(node);
+                if (supported_version >= min_version) {
+                    return SL_STATUS_OK;
+                }
+
+                const auto status = attribute_store_set_reported_as_desired(group_node);
+                if (status != SL_STATUS_OK) {
+                    return status;
+                }
+
+                sl_log_warning(LOG_TAG, "Ignoring unsupported command 0x%02X for command class 0x%02X: endpoint version %u, required version %u", command, properties.command_class_id, supported_version, min_version);
+                // The resolver interprets ALREADY_EXISTS as a successful
+                // no-frame completion. The group was settled above, so this
+                // prevents it from being retried.
+                return SL_STATUS_ALREADY_EXISTS;
+            }
+        }
+
+        const auto status = attribute_store_set_reported_as_desired(group_node);
+        if (status != SL_STATUS_OK) {
+            return status;
+        }
+
+        sl_log_warning(LOG_TAG, "Ignoring command 0x%02X for command class 0x%02X: resolver group has no endpoint", command, properties.command_class_id);
+        // See above: this completes the resolver group without transmitting.
+        return SL_STATUS_ALREADY_EXISTS;
+    }
+
     bool zwave_command_class_base::endpoint_supports_command_class(const attribute_store::attribute &endpoint_node) const
     {
         using s2_t           = command_class_security_2_types::security_2_commands_supported_report_group_attributes_t;
@@ -255,10 +287,5 @@ namespace zwave_command_class
     }
 
     void zwave_command_class_base::on_interview(attribute_store::attribute endpoint_node, uint8_t supported_version) {}
-
-    bool zwave_command_class_base::is_supported_on_node(attribute_store::attribute endpoint_node) const
-    {
-        return endpoint_supported_version(endpoint_node) > 0;
-    }
 
 }  // namespace zwave_command_class

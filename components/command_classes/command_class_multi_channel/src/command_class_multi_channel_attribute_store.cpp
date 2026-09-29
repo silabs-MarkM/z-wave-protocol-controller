@@ -20,6 +20,7 @@
 #include "command_class_multi_channel.hpp"
 
 #include "command_class_multi_channel_attribute_store.hpp"
+#include "zwave_command_class_utils.hpp"
 
 namespace zwave_command_class
 {
@@ -94,7 +95,7 @@ namespace zwave_command_class
         auto command_class_node = group_node.emplace_node(static_cast<attribute_store_type_t>(multi_channel_capability_report_group_attributes_t::command_class));
         command_class_node.set_reported<multi_channel_capability_report_command_class_t>(command_class);
 
-        return SL_STATUS_OK;
+        return command_class_utils::initialize_supported_command_class_versions(target_endpoint_node, command_class);
     }
 
     sl_status_t command_class_multi_channel_attribute_store::on_multi_channel_end_point_find_report_received_store(attribute_store::attribute endpoint_node, command_class_multi_channel_attribute_map_t attribute_map)

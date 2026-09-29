@@ -108,6 +108,11 @@ namespace zwave_command_class
         cc_node.set_reported(supported_cc_list);
 
         if (reports_to_follow == 0) {
+            const sl_status_t version_status = command_class_utils::initialize_supported_command_class_versions(endpoint_node, supported_cc_list);
+            if (version_status != SL_STATUS_OK) {
+                return version_status;
+            }
+
             component_connector connector;
             command_class_security_types::s0_supported_report_payload_t report_payload;
             memcpy(&report_payload.connection_info, connection_info, sizeof(zwave_controller_connection_info_t));

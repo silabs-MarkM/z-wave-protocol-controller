@@ -117,6 +117,42 @@ namespace zwave_command_class
         return extended_command_classes;
     }
 
+    sl_status_t command_class_utils::initialize_supported_command_class_versions(attribute_store_node_t endpoint_node, const std::vector<uint8_t> &command_classes)
+    {
+        if (endpoint_node == ATTRIBUTE_STORE_INVALID_NODE) {
+            return SL_STATUS_INVALID_PARAMETER;
+        }
+
+        const attribute_store_node_t node_id_node    = attribute_store_get_first_parent_with_type(endpoint_node, ATTRIBUTE_NODE_ID);
+        const attribute_store_node_t endpoint_0_node = attribute_store_get_endpoint_0_node(node_id_node);
+        if (endpoint_0_node == ATTRIBUTE_STORE_INVALID_NODE) {
+            return SL_STATUS_INVALID_PARAMETER;
+        }
+
+        constexpr uint8_t minimum_supported_version = 1;
+        for (const uint8_t command_class: get_normal_command_classes(command_classes)) {
+            // Basic is not advertised according to the specification. ZPC probes
+            // it explicitly after the normal Version CC sequence instead.
+            if (command_class == 0 || command_class == COMMAND_CLASS_BASIC) {
+                continue;
+            }
+
+            const attribute_store_node_t version_node = attribute_store_create_child_if_missing(endpoint_0_node, ZWAVE_CC_VERSION_ATTRIBUTE(command_class));
+            if (version_node == ATTRIBUTE_STORE_INVALID_NODE) {
+                return SL_STATUS_FAIL;
+            }
+
+            if (!attribute_store_is_value_defined(version_node, REPORTED_ATTRIBUTE)) {
+                const sl_status_t status = attribute_store_set_reported(version_node, &minimum_supported_version, sizeof(minimum_supported_version));
+                if (status != SL_STATUS_OK) {
+                    return status;
+                }
+            }
+        }
+
+        return SL_STATUS_OK;
+    }
+
     void command_class_utils::strip_controlled_command_classes(std::vector<uint8_t> &command_classes)
     {
         size_t index = 0;

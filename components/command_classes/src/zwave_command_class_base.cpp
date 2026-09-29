@@ -138,12 +138,13 @@ namespace zwave_command_class
     {
         for (auto node = group_node; node.is_valid(); node = node.parent()) {
             if (node.type() == ATTRIBUTE_ENDPOINT_ID) {
-                const auto version_node = node.child_by_type(ZWAVE_CC_VERSION_ATTRIBUTE(properties.command_class_id));
-                if (!version_node.reported_exists()) {
-                    return SL_STATUS_OK;
+                uint8_t supported_version = endpoint_supported_version(node);
+                if (supported_version == 0) {
+                    const auto endpoint_0 = attribute_store::attribute(attribute_store_get_endpoint_0_node(node.parent()));
+                    if (endpoint_0.is_valid()) {
+                        supported_version = endpoint_supported_version(endpoint_0);
+                    }
                 }
-
-                const uint8_t supported_version = version_node.reported<uint8_t>();
                 if (supported_version >= min_version) {
                     return SL_STATUS_OK;
                 }

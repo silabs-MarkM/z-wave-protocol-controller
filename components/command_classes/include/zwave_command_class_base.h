@@ -273,10 +273,9 @@ namespace zwave_command_class
             /**
              * @brief Validates that a resolver group may send a command.
              *
-             * If the endpoint has a reported command-class version below
+             * If the endpoint's reported command-class version is below
              * @p min_version, completes the group without transmitting a frame
-             * and returns SL_STATUS_ALREADY_EXISTS. Commands with no reported
-             * version are allowed so their support can be discovered.
+             * and returns SL_STATUS_ALREADY_EXISTS.
              */
             sl_status_t validate_command_version(attribute_store::attribute group_node, uint8_t command, uint8_t min_version) const;
 

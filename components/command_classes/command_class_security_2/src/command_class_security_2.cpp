@@ -140,6 +140,11 @@ namespace zwave_command_class
         auto cc_node    = group_node.emplace_node(static_cast<attribute_store_type_t>(security_2_commands_supported_report_group_attributes_t::command_class));
         cc_node.set_reported(supported_cc_list);
 
+        const sl_status_t version_status = command_class_utils::initialize_supported_command_class_versions(endpoint_node, supported_cc_list);
+        if (version_status != SL_STATUS_OK) {
+            return version_status;
+        }
+
         command_class_security_2_types::s2_supported_report_payload_t report_payload;
         memcpy(&report_payload.connection_info, connection_info, sizeof(zwave_controller_connection_info_t));
         report_payload.supported_cc_list = supported_cc_list;

@@ -88,6 +88,26 @@ namespace zwave_command_class
             static std::vector<uint16_t> get_extended_command_classes(const std::vector<uint8_t> &command_classes);
 
             /**
+             * @brief Record the minimum known version for advertised Command Classes.
+             *
+             * A Command Class present in a NIF, Security Commands Supported report,
+             * or Multi Channel Capability report supports at least version 1. This
+             * initializes missing Version attributes to 1 without overwriting a
+             * version already obtained from Version Command Class.
+             *
+             * Basic is intentionally ignored because it is not advertised and is
+             * probed separately through Version Command Class.
+             *
+             * The Version attributes are stored on endpoint 0 because Version CC
+             * versions are node-wide, including CCs advertised by sub-endpoints.
+             *
+             * @param endpoint_node Endpoint that advertised the Command Classes.
+             * @param command_classes Mixed normal/extended Command Class list.
+             * @return SL_STATUS_OK, or the first attribute-store error.
+             */
+            static sl_status_t initialize_supported_command_class_versions(attribute_store_node_t endpoint_node, const std::vector<uint8_t> &command_classes);
+
+            /**
              * @brief Truncate a supported-CC list at COMMAND_CLASS_MARK (0xEF).
              *
              * Bytes before the mark are supported; the mark and following

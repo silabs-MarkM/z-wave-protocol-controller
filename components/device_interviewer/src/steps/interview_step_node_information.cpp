@@ -21,6 +21,7 @@
 #include "attribute_store_defined_attribute_types.h"
 #include "command_class_zwave_cmd_class_events.hpp"
 #include "command_class_zwave_cmd_class_types.hpp"
+#include "zwave_command_class_utils.hpp"
 #include "zwave_controller_utils.h"
 #include "log.h"
 #include <any>
@@ -71,6 +72,11 @@ namespace zwave_command_class
             command_class_list_node.set_reported<std::vector<uint8_t>>(command_class_list);
 
             session.node_information_command_class_list = command_class_list;
+
+            if (command_class_utils::initialize_supported_command_class_versions(endpoint_0_node, command_class_list) != SL_STATUS_OK) {
+                sl_log_error(LOG_TAG.data(), "Failed to initialize advertised Command Class versions for node %d", session.node_id);
+                return fail();
+            }
 
             auto listening_protocol_node = endpoint_0_node_information_group.emplace_node(static_cast<attribute_store_type_t>(node_information_group_attributes_t::listening_protocol));
             listening_protocol_node.set_reported<uint8_t>(payload.node_info.listening_protocol);

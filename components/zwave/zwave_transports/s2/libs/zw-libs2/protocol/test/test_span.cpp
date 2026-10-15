@@ -24,15 +24,18 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdbool.h>
-#include "unity.h"
+#include <gtest/gtest.h>
 
-// Include necessary headers for S2 SPAN testing
+extern "C" {
 #include "S2.h"
 #include "s2_protocol.h"
 #include "S2_external.h"
+#include "s2_inclusion.h"
+#include "s2_keystore.h"
 #include "nextnonce.h"
 #include "ccm.h"
 #include "ctr_drbg.h"
+}
 
 /*******************************************************************************
  * External Function Stubs
@@ -70,6 +73,7 @@ static sos_event_reason_t g_resync_reason;
  * This is called by S2_command_handler after successful decryption.
  * We capture the decrypted message for test verification.
  */
+extern "C" {
 void S2_msg_received_event(struct S2 *ctxt, s2_connection_t *peer, uint8_t *buf, uint16_t len)
 {
     if (len <= sizeof(g_received_msg)) {
@@ -159,9 +163,9 @@ void S2_get_hw_random(uint8_t *buf, uint8_t len)
  */
 void S2_get_commands_supported(node_t lnode, uint8_t class_id, const uint8_t **cmdClasses, uint8_t *length)
 {
-    static const uint8_t empty_list[] = {};
-    *cmdClasses                       = empty_list;
-    *length                           = 0;
+    static const uint8_t empty_list[1] = {0};
+    *cmdClasses                        = empty_list;
+    *length                            = 0;
 }
 
 /**
@@ -216,6 +220,61 @@ unsigned long clock_time(void)
     return 0;
 }
 
+uint8_t s2_inclusion_set_timeout(struct S2 *ctxt, uint32_t timeout)
+{
+    (void)ctxt;
+    (void)timeout;
+    return 1;
+}
+
+void s2_inclusion_stop_timeout(void) {}
+
+void keystore_public_key_read(uint8_t *buf)
+{
+    memset(buf, 0, 32);
+}
+
+void keystore_dynamic_public_key_read(uint8_t *buf)
+{
+    memset(buf, 0, 32);
+}
+
+void keystore_private_key_read(uint8_t *buf)
+{
+    memset(buf, 0, 32);
+}
+
+void keystore_dynamic_private_key_read(uint8_t *buf)
+{
+    memset(buf, 0, 32);
+}
+
+bool keystore_network_key_read(uint8_t keyclass, uint8_t *buf)
+{
+    (void)keyclass;
+    memset(buf, 0, 16);
+    return true;
+}
+
+bool keystore_network_key_write(uint8_t keyclass, const uint8_t *keybuf)
+{
+    (void)keyclass;
+    (void)keybuf;
+    return true;
+}
+
+bool keystore_network_key_clear(uint8_t keyclass)
+{
+    (void)keyclass;
+    return true;
+}
+
+void S2_dbg_printf(const char *format, ...)
+{
+    (void)format;
+}
+}
+
 /*******************************************************************************
  * Test Helper Functions
  ******************************************************************************/
@@ -242,22 +301,21 @@ static void reset_test_state(void)
 
     g_resync_event_received = false;
     g_resync_remote_node    = 0;
-    g_resync_reason         = 0;
+    g_resync_reason         = SOS_EVENT_REASON_UNANSWERED;
 }
 
 /*******************************************************************************
  * Test Setup and Teardown
  ******************************************************************************/
 
-void setUp(void)
+class SpanTest : public ::testing::Test
 {
-    reset_test_state();
-}
-
-void tearDown(void)
-{
-    // Called after each test
-}
+    protected:
+        void SetUp() override
+        {
+            reset_test_state();
+        }
+};
 
 /*******************************************************************************
  * Test Data - Static test vectors
@@ -295,7 +353,7 @@ static uint8_t test_rei_max[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
  *
  * Spec reference: Z-Wave Spec 2025A, Page 881, Step 4.b
  */
-void test_span_instantiation_valid_entropy(void)
+TEST_F(SpanTest, test_span_instantiation_valid_entropy)
 {
     CTR_DRBG_CTX span_rng_1;
     CTR_DRBG_CTX span_rng_2;
@@ -309,7 +367,7 @@ void test_span_instantiation_valid_entropy(void)
     // Test 2: Generate a nonce from the instantiated generator
     // This validates that the DRBG is properly initialized
     int result = next_nonce_generate(&span_rng_1, nonce_1);
-    TEST_ASSERT_EQUAL_INT(1, result);
+    EXPECT_EQ(1, result);
 
     // Test 3: Verify that the same inputs produce the same initial DRBG state
     // by instantiating a second generator with identical inputs
@@ -317,26 +375,26 @@ void test_span_instantiation_valid_entropy(void)
 
     // Test 4: Generate nonce from second generator
     result = next_nonce_generate(&span_rng_2, nonce_2);
-    TEST_ASSERT_EQUAL_INT(1, result);
+    EXPECT_EQ(1, result);
 
     // Test 5: Verify both generators produce identical first nonce
     // This confirms deterministic behavior required for SPAN synchronization
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(nonce_1, nonce_2, 16);
+    EXPECT_EQ(0, memcmp(nonce_1, nonce_2, 16));
 
     // Test 6: Generate second nonce from first generator
     uint8_t nonce_1_second[16];
     result = next_nonce_generate(&span_rng_1, nonce_1_second);
-    TEST_ASSERT_EQUAL_INT(1, result);
+    EXPECT_EQ(1, result);
 
     // Test 7: Verify second nonce is different from first (uniqueness)
     // This ensures the DRBG advances its internal state
     int nonces_identical = (memcmp(nonce_1, nonce_1_second, 16) == 0);
-    TEST_ASSERT_FALSE(nonces_identical);
+    EXPECT_FALSE(nonces_identical);
 
     // Test 8: Verify the nonce is non-zero (basic sanity check)
     uint8_t zero_nonce[16] = {0};
     int nonce_is_zero      = (memcmp(nonce_1, zero_nonce, 16) == 0);
-    TEST_ASSERT_FALSE(nonce_is_zero);
+    EXPECT_FALSE(nonce_is_zero);
 }
 
 /**
@@ -347,7 +405,7 @@ void test_span_instantiation_valid_entropy(void)
  * - CTR_DRBG instantiation with minimal entropy
  * - SPAN state machine handling of degenerate case
  */
-void test_span_instantiation_zero_entropy(void)
+TEST_F(SpanTest, test_span_instantiation_zero_entropy)
 {
     CTR_DRBG_CTX span_rng_1;
     CTR_DRBG_CTX span_rng_2;
@@ -361,27 +419,27 @@ void test_span_instantiation_zero_entropy(void)
 
     // Test 2: Generate a nonce from the zero-entropy generator
     int result = next_nonce_generate(&span_rng_1, nonce_1);
-    TEST_ASSERT_EQUAL_INT(1, result);
+    EXPECT_EQ(1, result);
 
     // Test 3: Verify output is non-zero (nonce_key should provide entropy)
     // Even with zero EI, the personalization string (nonce_key) ensures non-zero output
     uint8_t zero_nonce[16] = {0};
     int nonce_is_zero      = (memcmp(nonce_1, zero_nonce, 16) == 0);
-    TEST_ASSERT_FALSE(nonce_is_zero);
+    EXPECT_FALSE(nonce_is_zero);
 
     // Test 4: Verify deterministic behavior with zero entropy
     // Same zero inputs should produce same output
     next_nonce_instantiate(&span_rng_2, test_sei_zero, test_rei_zero, test_nonce_key);
     result = next_nonce_generate(&span_rng_2, nonce_2);
-    TEST_ASSERT_EQUAL_INT(1, result);
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(nonce_1, nonce_2, 16);
+    EXPECT_EQ(1, result);
+    EXPECT_EQ(0, memcmp(nonce_1, nonce_2, 16));
 
     // Test 5: Verify second nonce is different from first
     uint8_t nonce_1_second[16];
     result = next_nonce_generate(&span_rng_1, nonce_1_second);
-    TEST_ASSERT_EQUAL_INT(1, result);
+    EXPECT_EQ(1, result);
     int nonces_identical = (memcmp(nonce_1, nonce_1_second, 16) == 0);
-    TEST_ASSERT_FALSE(nonces_identical);
+    EXPECT_FALSE(nonces_identical);
 }
 
 /**
@@ -392,7 +450,7 @@ void test_span_instantiation_zero_entropy(void)
  * - Proper handling of edge case entropy values
  * - No overflow or wrap-around issues
  */
-void test_span_instantiation_max_entropy(void)
+TEST_F(SpanTest, test_span_instantiation_max_entropy)
 {
     CTR_DRBG_CTX span_rng_1;
     CTR_DRBG_CTX span_rng_2;
@@ -405,33 +463,33 @@ void test_span_instantiation_max_entropy(void)
 
     // Test 2: Generate a nonce from the max-entropy generator
     int result = next_nonce_generate(&span_rng_1, nonce_1);
-    TEST_ASSERT_EQUAL_INT(1, result);
+    EXPECT_EQ(1, result);
 
     // Test 3: Verify output is not all 0xFF (proper mixing occurred)
     // The CKDF and DRBG operations should produce well-distributed output
     uint8_t max_nonce[16];
     memset(max_nonce, 0xFF, 16);
     int nonce_is_max = (memcmp(nonce_1, max_nonce, 16) == 0);
-    TEST_ASSERT_FALSE(nonce_is_max);
+    EXPECT_FALSE(nonce_is_max);
 
     // Test 4: Verify output is not all zeros
     uint8_t zero_nonce[16] = {0};
     int nonce_is_zero      = (memcmp(nonce_1, zero_nonce, 16) == 0);
-    TEST_ASSERT_FALSE(nonce_is_zero);
+    EXPECT_FALSE(nonce_is_zero);
 
     // Test 5: Verify deterministic behavior with max entropy
     // Same maximum inputs should produce same output
     next_nonce_instantiate(&span_rng_2, test_sei_max, test_rei_max, test_nonce_key);
     result = next_nonce_generate(&span_rng_2, nonce_2);
-    TEST_ASSERT_EQUAL_INT(1, result);
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(nonce_1, nonce_2, 16);
+    EXPECT_EQ(1, result);
+    EXPECT_EQ(0, memcmp(nonce_1, nonce_2, 16));
 
     // Test 6: Verify second nonce is different from first (no wrap-around issues)
     uint8_t nonce_1_second[16];
     result = next_nonce_generate(&span_rng_1, nonce_1_second);
-    TEST_ASSERT_EQUAL_INT(1, result);
+    EXPECT_EQ(1, result);
     int nonces_identical = (memcmp(nonce_1, nonce_1_second, 16) == 0);
-    TEST_ASSERT_FALSE(nonces_identical);
+    EXPECT_FALSE(nonces_identical);
 
     // Test 7: Verify no overflow - generate multiple nonces
     // If there were overflow issues, this would likely expose them
@@ -440,11 +498,11 @@ void test_span_instantiation_max_entropy(void)
     for (int i = 0; i < 10; i++) {
         uint8_t nonce_next[16];
         result = next_nonce_generate(&span_rng_1, nonce_next);
-        TEST_ASSERT_EQUAL_INT(1, result);
+        EXPECT_EQ(1, result);
 
         // Each nonce should be different
         int same = (memcmp(nonce_prev, nonce_next, 16) == 0);
-        TEST_ASSERT_FALSE(same);
+        EXPECT_FALSE(same);
 
         memcpy(nonce_prev, nonce_next, 16);
     }
@@ -462,7 +520,7 @@ void test_span_instantiation_max_entropy(void)
  * - Deterministic behavior of CTR_DRBG
  * - SPAN synchronization can be maintained between nodes
  */
-void test_nextnonce_sequence_reproducible(void)
+TEST_F(SpanTest, test_nextnonce_sequence_reproducible)
 {
     CTR_DRBG_CTX span_rng_1;
     CTR_DRBG_CTX span_rng_2;
@@ -475,7 +533,7 @@ void test_nextnonce_sequence_reproducible(void)
     // Test 2: Generate sequence of 5 nonces from first generator
     for (int i = 0; i < 5; i++) {
         int result = next_nonce_generate(&span_rng_1, nonce_seq_1[i]);
-        TEST_ASSERT_EQUAL_INT(1, result);
+        EXPECT_EQ(1, result);
     }
 
     // Test 3: Instantiate second SPAN generator with identical inputs
@@ -484,20 +542,20 @@ void test_nextnonce_sequence_reproducible(void)
     // Test 4: Generate sequence of 5 nonces from second generator
     for (int i = 0; i < 5; i++) {
         int result = next_nonce_generate(&span_rng_2, nonce_seq_2[i]);
-        TEST_ASSERT_EQUAL_INT(1, result);
+        EXPECT_EQ(1, result);
     }
 
     // Test 5: Verify both generators produce identical sequences
     // This confirms deterministic behavior required for SPAN synchronization
     for (int i = 0; i < 5; i++) {
-        TEST_ASSERT_EQUAL_UINT8_ARRAY(nonce_seq_1[i], nonce_seq_2[i], 16);
+        EXPECT_EQ(0, memcmp(nonce_seq_1[i], nonce_seq_2[i], 16));
     }
 
     // Test 6: Verify nonces within each sequence are unique
     for (int i = 0; i < 5; i++) {
         for (int j = i + 1; j < 5; j++) {
             int nonces_identical = (memcmp(nonce_seq_1[i], nonce_seq_1[j], 16) == 0);
-            TEST_ASSERT_FALSE(nonces_identical);
+            EXPECT_FALSE(nonces_identical);
         }
     }
 
@@ -507,13 +565,13 @@ void test_nextnonce_sequence_reproducible(void)
     uint8_t nonce_2_next[16];
 
     int result = next_nonce_generate(&span_rng_1, nonce_1_next);
-    TEST_ASSERT_EQUAL_INT(1, result);
+    EXPECT_EQ(1, result);
 
     result = next_nonce_generate(&span_rng_2, nonce_2_next);
-    TEST_ASSERT_EQUAL_INT(1, result);
+    EXPECT_EQ(1, result);
 
     // Both generators should still be synchronized
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(nonce_1_next, nonce_2_next, 16);
+    EXPECT_EQ(0, memcmp(nonce_1_next, nonce_2_next, 16));
 }
 
 /*******************************************************************************
@@ -532,7 +590,7 @@ void test_nextnonce_sequence_reproducible(void)
  *
  * Spec reference: Z-Wave Spec 2025A, Page 881, Steps 3-5
  */
-void test_span_decrypt_success_first_attempt(void)
+TEST_F(SpanTest, test_span_decrypt_success_first_attempt)
 {
     struct S2 s2_context;
     s2_connection_t connection;
@@ -616,11 +674,11 @@ void test_span_decrypt_success_first_attempt(void)
     // Step 9: Encrypt plaintext with CCM using SPAN nonce
     memcpy(&frame_buffer[hdr_len], plaintext, sizeof(plaintext));
     ciphertext_len = CCM_encrypt_and_auth(encryption_key, sender_nonce, aad, aad_len, &frame_buffer[hdr_len], sizeof(plaintext));
-    TEST_ASSERT_GREATER_THAN(0, ciphertext_len);
+    EXPECT_GT(ciphertext_len, 0);
 
     // Total frame length: header + ciphertext (includes auth tag)
     uint16_t frame_len = hdr_len + ciphertext_len;
-    TEST_ASSERT_EQUAL_UINT16(total_msg_len, frame_len);
+    EXPECT_EQ(total_msg_len, frame_len);
 
     // Step 10: Set up connection parameters for receiving
     connection.l_node     = LOCAL_NODE_ID;
@@ -633,15 +691,15 @@ void test_span_decrypt_success_first_attempt(void)
     S2_application_command_handler(&s2_context, &connection, frame_buffer, frame_len);
 
     // Step 12: Verify decrypted message was received via S2_msg_received_event callback
-    TEST_ASSERT_TRUE_MESSAGE(g_msg_received, "S2_msg_received_event was not called - decryption may have failed");
-    TEST_ASSERT_EQUAL_UINT16(sizeof(plaintext), g_received_msg_len);
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(plaintext, g_received_msg, sizeof(plaintext));
+    EXPECT_TRUE(g_msg_received) << "S2_msg_received_event was not called - decryption may have failed";
+    EXPECT_EQ(sizeof(plaintext), g_received_msg_len);
+    EXPECT_EQ(0, memcmp(plaintext, g_received_msg, sizeof(plaintext)));
 
     // Step 13: Verify connection class_id was set correctly
-    TEST_ASSERT_EQUAL_UINT8(0, g_received_connection.class_id);  // Security class 0
+    EXPECT_EQ(0, g_received_connection.class_id);  // Security class 0
 
     // Step 14: Verify SPAN state remains NEGOTIATED after successful decryption
-    TEST_ASSERT_EQUAL(SPAN_NEGOTIATED, span->state);
+    EXPECT_EQ(SPAN_NEGOTIATED, span->state);
 }
 
 /**
@@ -663,7 +721,7 @@ void test_span_decrypt_success_first_attempt(void)
  * - Receiver has nonce N, tries it first (fails)
  * - Receiver advances to N+1 and retries (succeeds)
  */
-void test_span_decrypt_with_retry_sync_recovery(void)
+TEST_F(SpanTest, test_span_decrypt_with_retry_sync_recovery)
 {
     struct S2 s2_context;
     s2_connection_t connection;
@@ -757,10 +815,10 @@ void test_span_decrypt_with_retry_sync_recovery(void)
                                           aad_len,
                                           &frame_buffer[hdr_len],
                                           sizeof(plaintext));
-    TEST_ASSERT_GREATER_THAN(0, ciphertext_len);
+    EXPECT_GT(ciphertext_len, 0);
 
     uint16_t frame_len = hdr_len + ciphertext_len;
-    TEST_ASSERT_EQUAL_UINT16(total_msg_len, frame_len);
+    EXPECT_EQ(total_msg_len, frame_len);
 
     // Step 12: Set up connection parameters for receiving
     connection.l_node     = LOCAL_NODE_ID;
@@ -775,15 +833,15 @@ void test_span_decrypt_with_retry_sync_recovery(void)
     S2_application_command_handler(&s2_context, &connection, frame_buffer, frame_len);
 
     // Step 14: Verify decryption succeeded via retry
-    TEST_ASSERT_TRUE_MESSAGE(g_msg_received, "S2_msg_received_event was not called - SPAN retry may have failed");
-    TEST_ASSERT_EQUAL_UINT16(sizeof(plaintext), g_received_msg_len);
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(plaintext, g_received_msg, sizeof(plaintext));
+    EXPECT_TRUE(g_msg_received) << "S2_msg_received_event was not called - SPAN retry may have failed";
+    EXPECT_EQ(sizeof(plaintext), g_received_msg_len);
+    EXPECT_EQ(0, memcmp(plaintext, g_received_msg, sizeof(plaintext)));
 
     // Step 15: Verify security class correctly identified
-    TEST_ASSERT_EQUAL_UINT8(0, g_received_connection.class_id);
+    EXPECT_EQ(0, g_received_connection.class_id);
 
     // Step 16: Verify SPAN state remains NEGOTIATED
-    TEST_ASSERT_EQUAL(SPAN_NEGOTIATED, span->state);
+    EXPECT_EQ(SPAN_NEGOTIATED, span->state);
 
     // Step 17: Verify RNG is now synchronized at the correct position
     // After successful decryption, the receiver's RNG should be at N+2
@@ -795,7 +853,7 @@ void test_span_decrypt_with_retry_sync_recovery(void)
     next_nonce_generate(&sender_rng, sender_next_nonce);
 
     // Both should now be synchronized at the same position
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(sender_next_nonce, receiver_next_nonce, 16);
+    EXPECT_EQ(0, memcmp(sender_next_nonce, receiver_next_nonce, 16));
 }
 
 // /**
@@ -917,7 +975,7 @@ void test_span_decrypt_with_retry_sync_recovery(void)
  * This is a secondary integration test using Basic Get command.
  * Uses the correct AAD format matching S2_make_aad().
  */
-void test_span_message_reception_complete_flow(void)
+TEST_F(SpanTest, test_span_message_reception_complete_flow)
 {
     struct S2 s2_context;
     s2_connection_t connection;
@@ -999,11 +1057,11 @@ void test_span_message_reception_complete_flow(void)
     // Step 7: Encrypt plaintext with CCM
     memcpy(&frame_buffer[hdr_len], plaintext, sizeof(plaintext));
     ciphertext_len = CCM_encrypt_and_auth(encryption_key, nonce, aad, aad_len, &frame_buffer[hdr_len], sizeof(plaintext));
-    TEST_ASSERT_GREATER_THAN(0, ciphertext_len);
+    EXPECT_GT(ciphertext_len, 0);
 
     // Total frame length: header + ciphertext
     uint16_t frame_len = hdr_len + ciphertext_len;
-    TEST_ASSERT_EQUAL_UINT16(total_msg_len, frame_len);
+    EXPECT_EQ(total_msg_len, frame_len);
 
     // Step 8: Set up connection parameters
     connection.l_node     = LOCAL_NODE_ID;
@@ -1015,15 +1073,15 @@ void test_span_message_reception_complete_flow(void)
     S2_application_command_handler(&s2_context, &connection, frame_buffer, frame_len);
 
     // Step 10: Verify decrypted message was received
-    TEST_ASSERT_TRUE_MESSAGE(g_msg_received, "S2_msg_received_event was not called - decryption failed");
-    TEST_ASSERT_EQUAL_UINT16(sizeof(plaintext), g_received_msg_len);
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(plaintext, g_received_msg, sizeof(plaintext));
+    EXPECT_TRUE(g_msg_received) << "S2_msg_received_event was not called - decryption failed";
+    EXPECT_EQ(sizeof(plaintext), g_received_msg_len);
+    EXPECT_EQ(0, memcmp(plaintext, g_received_msg, sizeof(plaintext)));
 
     // Step 11: Verify SPAN state remains NEGOTIATED
-    TEST_ASSERT_EQUAL(SPAN_NEGOTIATED, span->state);
+    EXPECT_EQ(SPAN_NEGOTIATED, span->state);
 
     // Step 12: Verify security class correctly identified
-    TEST_ASSERT_EQUAL(0, g_received_connection.class_id);
+    EXPECT_EQ(0, g_received_connection.class_id);
 }
 
 /**
@@ -1046,7 +1104,7 @@ void test_span_message_reception_complete_flow(void)
  * 6. SPAN reinstantiated with new entropy
  * 7. Verify new message decrypts successfully
  */
-void test_span_resynchronization_after_desync(void)
+TEST_F(SpanTest, test_span_resynchronization_after_desync)
 {
     struct S2 s2_context;
     s2_connection_t connection;
@@ -1144,7 +1202,7 @@ void test_span_resynchronization_after_desync(void)
     // Encrypt with sender's nonce (N+6)
     memcpy(&frame_buffer[hdr_len], plaintext, sizeof(plaintext));
     ciphertext_len = CCM_encrypt_and_auth(encryption_key, sender_nonce, aad, aad_len, &frame_buffer[hdr_len], sizeof(plaintext));
-    TEST_ASSERT_GREATER_THAN(0, ciphertext_len);
+    EXPECT_GT(ciphertext_len, 0);
 
     uint16_t frame_len = hdr_len + ciphertext_len;
 
@@ -1161,17 +1219,17 @@ void test_span_resynchronization_after_desync(void)
     S2_application_command_handler(&s2_context, &connection, frame_buffer, frame_len);
 
     // Verify decryption failed (message not received)
-    TEST_ASSERT_FALSE_MESSAGE(g_msg_received, "Message should NOT have been received - sender was too far ahead");
+    EXPECT_FALSE(g_msg_received) << "Message should NOT have been received - sender was too far ahead";
 
     // Verify Nonce Report with SOS was sent
-    TEST_ASSERT_TRUE_MESSAGE(g_nonce_report_sent, "Nonce Report with SOS should have been sent");
-    TEST_ASSERT_EQUAL_HEX8_MESSAGE(0x01, g_nonce_report_flags & 0x01, "SOS flag (bit 0) should be set in Nonce Report");
+    EXPECT_TRUE(g_nonce_report_sent) << "Nonce Report with SOS should have been sent";
+    EXPECT_EQ(0x01, g_nonce_report_flags & 0x01) << "SOS flag (bit 0) should be set in Nonce Report";
 
     // Verify Nonce Report contains REI (16 bytes after 4-byte header)
-    TEST_ASSERT_EQUAL_UINT16_MESSAGE(20, g_nonce_report_len, "Nonce Report with SOS should be 20 bytes (4 header + 16 REI)");
+    EXPECT_EQ(20, g_nonce_report_len) << "Nonce Report with SOS should be 20 bytes (4 header + 16 REI)";
 
     // Verify SPAN state transitioned to SOS_LOCAL_NONCE
-    TEST_ASSERT_EQUAL_MESSAGE(SPAN_SOS_LOCAL_NONCE, span->state, "SPAN state should be SOS_LOCAL_NONCE after sending SOS Nonce Report");
+    EXPECT_EQ(SPAN_SOS_LOCAL_NONCE, span->state) << "SPAN state should be SOS_LOCAL_NONCE after sending SOS Nonce Report";
 
     // =========================================================================
     // PHASE 5: Simulate sender response with SN extension
@@ -1237,7 +1295,7 @@ void test_span_resynchronization_after_desync(void)
     // Encrypt new plaintext
     memcpy(&new_frame[new_hdr_len], new_plaintext, sizeof(new_plaintext));
     uint16_t new_ciphertext_len = CCM_encrypt_and_auth(encryption_key, new_sender_nonce, new_aad, new_aad_len, &new_frame[new_hdr_len], sizeof(new_plaintext));
-    TEST_ASSERT_GREATER_THAN(0, new_ciphertext_len);
+    EXPECT_GT(new_ciphertext_len, 0);
 
     uint16_t new_frame_len = new_hdr_len + new_ciphertext_len;
 
@@ -1253,15 +1311,15 @@ void test_span_resynchronization_after_desync(void)
     // =========================================================================
 
     // Verify decrypted message was received
-    TEST_ASSERT_TRUE_MESSAGE(g_msg_received, "S2_msg_received_event should have been called after SPAN resync");
-    TEST_ASSERT_EQUAL_UINT16(sizeof(new_plaintext), g_received_msg_len);
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(new_plaintext, g_received_msg, sizeof(new_plaintext));
+    EXPECT_TRUE(g_msg_received) << "S2_msg_received_event should have been called after SPAN resync";
+    EXPECT_EQ(sizeof(new_plaintext), g_received_msg_len);
+    EXPECT_EQ(0, memcmp(new_plaintext, g_received_msg, sizeof(new_plaintext)));
 
     // Verify SPAN state is back to NEGOTIATED
-    TEST_ASSERT_EQUAL_MESSAGE(SPAN_NEGOTIATED, span->state, "SPAN state should be NEGOTIATED after successful resync");
+    EXPECT_EQ(SPAN_NEGOTIATED, span->state) << "SPAN state should be NEGOTIATED after successful resync";
 
     // Verify security class correctly identified
-    TEST_ASSERT_EQUAL_UINT8(0, g_received_connection.class_id);
+    EXPECT_EQ(0, g_received_connection.class_id);
 
     // =========================================================================
     // PHASE 8: Verify continued communication works
@@ -1306,7 +1364,7 @@ void test_span_resynchronization_after_desync(void)
     // Encrypt
     memcpy(&continued_frame[continued_hdr_len], continued_plaintext, sizeof(continued_plaintext));
     uint16_t continued_ciphertext_len = CCM_encrypt_and_auth(encryption_key, continued_nonce, continued_aad, continued_aad_len, &continued_frame[continued_hdr_len], sizeof(continued_plaintext));
-    TEST_ASSERT_GREATER_THAN(0, continued_ciphertext_len);
+    EXPECT_GT(continued_ciphertext_len, 0);
 
     uint16_t continued_frame_len = continued_hdr_len + continued_ciphertext_len;
 
@@ -1315,12 +1373,12 @@ void test_span_resynchronization_after_desync(void)
     S2_application_command_handler(&s2_context, &connection, continued_frame, continued_frame_len);
 
     // Verify decryption succeeded
-    TEST_ASSERT_TRUE_MESSAGE(g_msg_received, "Continued communication should work after SPAN resync");
-    TEST_ASSERT_EQUAL_UINT16(sizeof(continued_plaintext), g_received_msg_len);
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(continued_plaintext, g_received_msg, sizeof(continued_plaintext));
+    EXPECT_TRUE(g_msg_received) << "Continued communication should work after SPAN resync";
+    EXPECT_EQ(sizeof(continued_plaintext), g_received_msg_len);
+    EXPECT_EQ(0, memcmp(continued_plaintext, g_received_msg, sizeof(continued_plaintext)));
 
     // SPAN should still be NEGOTIATED
-    TEST_ASSERT_EQUAL(SPAN_NEGOTIATED, span->state);
+    EXPECT_EQ(SPAN_NEGOTIATED, span->state);
 }
 
 /*******************************************************************************
@@ -1347,7 +1405,7 @@ void test_span_resynchronization_after_desync(void)
  * 2. Send Nonce Report with SOS flag
  * 3. Transition to SOS_LOCAL_NONCE state
  */
-void test_span_decrypt_wrong_key(void)
+TEST_F(SpanTest, test_span_decrypt_wrong_key)
 {
     struct S2 s2_context;
     s2_connection_t connection;
@@ -1455,7 +1513,7 @@ void test_span_decrypt_wrong_key(void)
                                           aad_len,
                                           &frame_buffer[hdr_len],
                                           sizeof(plaintext));
-    TEST_ASSERT_GREATER_THAN(0, ciphertext_len);
+    EXPECT_GT(ciphertext_len, 0);
 
     uint16_t frame_len = hdr_len + ciphertext_len;
 
@@ -1478,25 +1536,25 @@ void test_span_decrypt_wrong_key(void)
     // =========================================================================
 
     // Message should NOT have been received - wrong key causes auth failure
-    TEST_ASSERT_FALSE_MESSAGE(g_msg_received, "Message should NOT have been received - wrong encryption key");
+    EXPECT_FALSE(g_msg_received) << "Message should NOT have been received - wrong encryption key";
 
     // =========================================================================
     // Step 7: Verify SOS was triggered
     // =========================================================================
 
     // Nonce Report with SOS should have been sent
-    TEST_ASSERT_TRUE_MESSAGE(g_nonce_report_sent, "Nonce Report with SOS should have been sent after auth failure");
-    TEST_ASSERT_EQUAL_HEX8_MESSAGE(0x01, g_nonce_report_flags & 0x01, "SOS flag (bit 0) should be set in Nonce Report");
+    EXPECT_TRUE(g_nonce_report_sent) << "Nonce Report with SOS should have been sent after auth failure";
+    EXPECT_EQ(0x01, g_nonce_report_flags & 0x01) << "SOS flag (bit 0) should be set in Nonce Report";
 
     // Verify Nonce Report is full length (includes REI)
-    TEST_ASSERT_EQUAL_UINT16_MESSAGE(20, g_nonce_report_len, "Nonce Report with SOS should be 20 bytes (4 header + 16 REI)");
+    EXPECT_EQ(20, g_nonce_report_len) << "Nonce Report with SOS should be 20 bytes (4 header + 16 REI)";
 
     // =========================================================================
     // Step 8: Verify SPAN state transition
     // =========================================================================
 
     // SPAN should transition to SOS_LOCAL_NONCE (awaiting resync)
-    TEST_ASSERT_EQUAL_MESSAGE(SPAN_SOS_LOCAL_NONCE, span->state, "SPAN state should be SOS_LOCAL_NONCE after failed decryption with wrong key");
+    EXPECT_EQ(SPAN_SOS_LOCAL_NONCE, span->state) << "SPAN state should be SOS_LOCAL_NONCE after failed decryption with wrong key";
 
     // =========================================================================
     // Step 9: Verify recovery with correct key via SN extension
@@ -1563,7 +1621,7 @@ void test_span_decrypt_wrong_key(void)
                                                        new_aad_len,
                                                        &new_frame[new_hdr_len],
                                                        sizeof(new_plaintext));
-    TEST_ASSERT_GREATER_THAN(0, new_ciphertext_len);
+    EXPECT_GT(new_ciphertext_len, 0);
 
     uint16_t new_frame_len = new_hdr_len + new_ciphertext_len;
 
@@ -1575,12 +1633,12 @@ void test_span_decrypt_wrong_key(void)
     // Step 10: Verify recovery with correct key works
     // =========================================================================
 
-    TEST_ASSERT_TRUE_MESSAGE(g_msg_received, "Message should be received after resync with correct key");
-    TEST_ASSERT_EQUAL_UINT16(sizeof(new_plaintext), g_received_msg_len);
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(new_plaintext, g_received_msg, sizeof(new_plaintext));
+    EXPECT_TRUE(g_msg_received) << "Message should be received after resync with correct key";
+    EXPECT_EQ(sizeof(new_plaintext), g_received_msg_len);
+    EXPECT_EQ(0, memcmp(new_plaintext, g_received_msg, sizeof(new_plaintext)));
 
     // SPAN should be NEGOTIATED again
-    TEST_ASSERT_EQUAL(SPAN_NEGOTIATED, span->state);
+    EXPECT_EQ(SPAN_NEGOTIATED, span->state);
 }
 
 /**
@@ -1604,7 +1662,7 @@ void test_span_decrypt_wrong_key(void)
  * 4. Receiver generates corrupted nonces, all authentication attempts fail
  * 5. SOS triggered to resynchronize
  */
-void test_span_decrypt_modified_nonce(void)
+TEST_F(SpanTest, test_span_decrypt_modified_nonce)
 {
     struct S2 s2_context;
     s2_connection_t connection;
@@ -1693,7 +1751,7 @@ void test_span_decrypt_modified_nonce(void)
     // Encrypt with correct sender nonce
     memcpy(&frame_buffer[hdr_len], plaintext, sizeof(plaintext));
     ciphertext_len = CCM_encrypt_and_auth(encryption_key, sender_nonce, aad, aad_len, &frame_buffer[hdr_len], sizeof(plaintext));
-    TEST_ASSERT_GREATER_THAN(0, ciphertext_len);
+    EXPECT_GT(ciphertext_len, 0);
 
     uint16_t frame_len = hdr_len + ciphertext_len;
 
@@ -1726,25 +1784,25 @@ void test_span_decrypt_modified_nonce(void)
     // =========================================================================
 
     // Message should NOT have been received - corrupted nonce causes auth failure
-    TEST_ASSERT_FALSE_MESSAGE(g_msg_received, "Message should NOT have been received - nonce was corrupted");
+    EXPECT_FALSE(g_msg_received) << "Message should NOT have been received - nonce was corrupted";
 
     // =========================================================================
     // Step 7: Verify SOS was triggered
     // =========================================================================
 
     // Nonce Report with SOS should have been sent
-    TEST_ASSERT_TRUE_MESSAGE(g_nonce_report_sent, "Nonce Report with SOS should have been sent after auth failure");
-    TEST_ASSERT_EQUAL_HEX8_MESSAGE(0x01, g_nonce_report_flags & 0x01, "SOS flag (bit 0) should be set in Nonce Report");
+    EXPECT_TRUE(g_nonce_report_sent) << "Nonce Report with SOS should have been sent after auth failure";
+    EXPECT_EQ(0x01, g_nonce_report_flags & 0x01) << "SOS flag (bit 0) should be set in Nonce Report";
 
     // Verify Nonce Report is full length (includes REI)
-    TEST_ASSERT_EQUAL_UINT16_MESSAGE(20, g_nonce_report_len, "Nonce Report with SOS should be 20 bytes (4 header + 16 REI)");
+    EXPECT_EQ(20, g_nonce_report_len) << "Nonce Report with SOS should be 20 bytes (4 header + 16 REI)";
 
     // =========================================================================
     // Step 8: Verify SPAN state transition
     // =========================================================================
 
     // SPAN should transition to SOS_LOCAL_NONCE
-    TEST_ASSERT_EQUAL_MESSAGE(SPAN_SOS_LOCAL_NONCE, span->state, "SPAN state should be SOS_LOCAL_NONCE after failed decryption with corrupted nonce");
+    EXPECT_EQ(SPAN_SOS_LOCAL_NONCE, span->state) << "SPAN state should be SOS_LOCAL_NONCE after failed decryption with corrupted nonce";
 
     // =========================================================================
     // Step 9: Verify that a properly constructed message WOULD work
@@ -1765,8 +1823,8 @@ void test_span_decrypt_modified_nonce(void)
     next_nonce_generate(&verify_receiver_rng, verify_receiver_nonce);
 
     // These should match - confirming our original sender_nonce was correct
-    TEST_ASSERT_EQUAL_UINT8_ARRAY_MESSAGE(verify_sender_nonce, verify_receiver_nonce, 16, "Verification: sender and receiver should generate identical nonces with same entropy");
-    TEST_ASSERT_EQUAL_UINT8_ARRAY_MESSAGE(sender_nonce, verify_sender_nonce, 16, "Verification: original sender nonce should match freshly generated nonce");
+    EXPECT_EQ(0, memcmp(verify_sender_nonce, verify_receiver_nonce, 16)) << "Verification: sender and receiver should generate identical nonces with same entropy";
+    EXPECT_EQ(0, memcmp(sender_nonce, verify_sender_nonce, 16)) << "Verification: original sender nonce should match freshly generated nonce";
 }
 
 /**
@@ -1784,7 +1842,7 @@ void test_span_decrypt_modified_nonce(void)
  * messages are only valid within the correct network. A message from a
  * different network (different HomeID) will fail authentication.
  */
-void test_span_decrypt_mismatched_homeid(void)
+TEST_F(SpanTest, test_span_decrypt_mismatched_homeid)
 {
     struct S2 s2_context;
     s2_connection_t connection;
@@ -1874,7 +1932,7 @@ void test_span_decrypt_mismatched_homeid(void)
     // Encrypt with sender's nonce and SENDER's HomeID in AAD
     memcpy(&frame_buffer[hdr_len], plaintext, sizeof(plaintext));
     ciphertext_len = CCM_encrypt_and_auth(encryption_key, sender_nonce, aad, aad_len, &frame_buffer[hdr_len], sizeof(plaintext));
-    TEST_ASSERT_GREATER_THAN(0, ciphertext_len);
+    EXPECT_GT(ciphertext_len, 0);
 
     uint16_t frame_len = hdr_len + ciphertext_len;
 
@@ -1894,20 +1952,20 @@ void test_span_decrypt_mismatched_homeid(void)
     // =========================================================================
 
     // Message should NOT have been received - HomeID mismatch in AAD
-    TEST_ASSERT_FALSE_MESSAGE(g_msg_received, "Message should NOT have been received - HomeID mismatch in AAD");
+    EXPECT_FALSE(g_msg_received) << "Message should NOT have been received - HomeID mismatch in AAD";
 
     // =========================================================================
     // Step 6: Verify SOS was triggered
     // =========================================================================
 
-    TEST_ASSERT_TRUE_MESSAGE(g_nonce_report_sent, "Nonce Report with SOS should have been sent after auth failure");
-    TEST_ASSERT_EQUAL_HEX8_MESSAGE(0x01, g_nonce_report_flags & 0x01, "SOS flag (bit 0) should be set in Nonce Report");
+    EXPECT_TRUE(g_nonce_report_sent) << "Nonce Report with SOS should have been sent after auth failure";
+    EXPECT_EQ(0x01, g_nonce_report_flags & 0x01) << "SOS flag (bit 0) should be set in Nonce Report";
 
     // =========================================================================
     // Step 7: Verify SPAN state transition
     // =========================================================================
 
-    TEST_ASSERT_EQUAL_MESSAGE(SPAN_SOS_LOCAL_NONCE, span->state, "SPAN state should be SOS_LOCAL_NONCE after HomeID mismatch");
+    EXPECT_EQ(SPAN_SOS_LOCAL_NONCE, span->state) << "SPAN state should be SOS_LOCAL_NONCE after HomeID mismatch";
 }
 
 /**
@@ -1922,13 +1980,13 @@ void test_span_decrypt_mismatched_homeid(void)
  * Note: Nonce Get was already exact-match (window 1) before GH-84; this
  * documents 02D for Get and is not the GH-84 regression net.
  */
-void test_nonce_get_accepts_new_random_sequence_after_peer_restart(void)
+TEST_F(SpanTest, test_nonce_get_accepts_new_random_sequence_after_peer_restart)
 {
     const node_t LOCAL_NODE_ID       = 1;
     const node_t REMOTE_NODE_ID      = 2;
     const uint8_t PREVIOUS_SEQUENCE  = 0xEA;
     const uint8_t RESTARTED_SEQUENCE = 0xE9;
-    struct S2 s2_context             = {0};
+    struct S2 s2_context             = {};
     s2_connection_t connection       = {0};
     uint8_t nonce_get[]              = {COMMAND_CLASS_SECURITY_2, SECURITY_2_NONCE_GET, RESTARTED_SEQUENCE};
 
@@ -1943,15 +2001,15 @@ void test_nonce_get_accepts_new_random_sequence_after_peer_restart(void)
 
     S2_application_command_handler(&s2_context, &connection, nonce_get, sizeof(nonce_get));
 
-    TEST_ASSERT_EQUAL_UINT32(1, g_nonce_report_count);
-    TEST_ASSERT_EQUAL_HEX8(RESTARTED_SEQUENCE, span->rx_seq);
-    TEST_ASSERT_EQUAL(SPAN_SOS_LOCAL_NONCE, span->state);
-    TEST_ASSERT_EQUAL_HEX8(SECURITY_2_NONCE_REPORT_PROPERTIES1_SOS_BIT_MASK, g_nonce_report_flags);
+    EXPECT_EQ(1, g_nonce_report_count);
+    EXPECT_EQ(RESTARTED_SEQUENCE, span->rx_seq);
+    EXPECT_EQ(SPAN_SOS_LOCAL_NONCE, span->state);
+    EXPECT_EQ(SECURITY_2_NONCE_REPORT_PROPERTIES1_SOS_BIT_MASK, g_nonce_report_flags);
 
     S2_application_command_handler(&s2_context, &connection, nonce_get, sizeof(nonce_get));
 
-    TEST_ASSERT_EQUAL_UINT32(1, g_nonce_report_count);
-    TEST_ASSERT_EQUAL_HEX8(RESTARTED_SEQUENCE, span->rx_seq);
+    EXPECT_EQ(1, g_nonce_report_count);
+    EXPECT_EQ(RESTARTED_SEQUENCE, span->rx_seq);
 }
 
 /**
@@ -1963,11 +2021,11 @@ void test_nonce_get_accepts_new_random_sequence_after_peer_restart(void)
  * member of a numeric duplicate window. Would not have failed pre-GH-84
  * (Nonce Get already used exact-match).
  */
-void test_nonce_get_accepts_new_sequence_across_wraparound(void)
+TEST_F(SpanTest, test_nonce_get_accepts_new_sequence_across_wraparound)
 {
     const node_t LOCAL_NODE_ID  = 1;
     const node_t REMOTE_NODE_ID = 2;
-    struct S2 s2_context        = {0};
+    struct S2 s2_context        = {};
     s2_connection_t connection  = {0};
     uint8_t nonce_get[]         = {COMMAND_CLASS_SECURITY_2, SECURITY_2_NONCE_GET, 0xFF};
 
@@ -1982,8 +2040,8 @@ void test_nonce_get_accepts_new_sequence_across_wraparound(void)
 
     S2_application_command_handler(&s2_context, &connection, nonce_get, sizeof(nonce_get));
 
-    TEST_ASSERT_EQUAL_UINT32(1, g_nonce_report_count);
-    TEST_ASSERT_EQUAL_HEX8(0xFF, span->rx_seq);
+    EXPECT_EQ(1, g_nonce_report_count);
+    EXPECT_EQ(0xFF, span->rx_seq);
 }
 
 /**
@@ -1996,13 +2054,13 @@ void test_nonce_get_accepts_new_sequence_across_wraparound(void)
  * duplicate; it creates a separate SPAN-table entry. A repetition from that
  * peer is then discarded.
  */
-void test_nonce_get_duplicate_detection_is_scoped_to_peer(void)
+TEST_F(SpanTest, test_nonce_get_duplicate_detection_is_scoped_to_peer)
 {
     const node_t LOCAL_NODE_ID         = 1;
     const node_t FIRST_REMOTE_NODE_ID  = 2;
     const node_t SECOND_REMOTE_NODE_ID = 3;
     const uint8_t SEQUENCE             = 0x42;
-    struct S2 s2_context               = {0};
+    struct S2 s2_context               = {};
     s2_connection_t second_connection  = {0};
     uint8_t nonce_get[]                = {COMMAND_CLASS_SECURITY_2, SECURITY_2_NONCE_GET, SEQUENCE};
 
@@ -2017,13 +2075,13 @@ void test_nonce_get_duplicate_detection_is_scoped_to_peer(void)
 
     S2_application_command_handler(&s2_context, &second_connection, nonce_get, sizeof(nonce_get));
 
-    TEST_ASSERT_EQUAL_UINT32(1, g_nonce_report_count);
-    TEST_ASSERT_EQUAL_HEX8(SEQUENCE, s2_context.span_table[1].rx_seq);
-    TEST_ASSERT_EQUAL(SECOND_REMOTE_NODE_ID, s2_context.span_table[1].rnode);
+    EXPECT_EQ(1, g_nonce_report_count);
+    EXPECT_EQ(SEQUENCE, s2_context.span_table[1].rx_seq);
+    EXPECT_EQ(SECOND_REMOTE_NODE_ID, s2_context.span_table[1].rnode);
 
     S2_application_command_handler(&s2_context, &second_connection, nonce_get, sizeof(nonce_get));
 
-    TEST_ASSERT_EQUAL_UINT32(1, g_nonce_report_count);
+    EXPECT_EQ(1, g_nonce_report_count);
 }
 
 /**
@@ -2037,7 +2095,7 @@ void test_nonce_get_duplicate_detection_is_scoped_to_peer(void)
  * Nonce Report. An immediate same-seq replay with a different REI is still
  * rejected (02E / 02F).
  */
-void test_nonce_report_accepts_new_random_sequence_after_peer_restart(void)
+TEST_F(SpanTest, test_nonce_report_accepts_new_random_sequence_after_peer_restart)
 {
     const node_t LOCAL_NODE_ID        = 1;
     const node_t REMOTE_NODE_ID       = 2;
@@ -2045,7 +2103,7 @@ void test_nonce_report_accepts_new_random_sequence_after_peer_restart(void)
     const uint8_t RESTARTED_SEQUENCE  = 0xBE;
     const uint8_t first_rei[16]       = {0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F};
     const uint8_t replay_rei[16]      = {0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F};
-    struct S2 s2_context              = {0};
+    struct S2 s2_context              = {};
     s2_connection_t connection        = {0};
     uint8_t nonce_report[20]          = {COMMAND_CLASS_SECURITY_2, SECURITY_2_NONCE_REPORT, RESTARTED_SEQUENCE, SECURITY_2_NONCE_REPORT_PROPERTIES1_SOS_BIT_MASK};
     uint8_t replayed_nonce_report[20] = {COMMAND_CLASS_SECURITY_2, SECURITY_2_NONCE_REPORT, RESTARTED_SEQUENCE, SECURITY_2_NONCE_REPORT_PROPERTIES1_SOS_BIT_MASK};
@@ -2062,16 +2120,16 @@ void test_nonce_report_accepts_new_random_sequence_after_peer_restart(void)
     memcpy(&nonce_report[4], first_rei, sizeof(first_rei));
     S2_application_command_handler(&s2_context, &connection, nonce_report, sizeof(nonce_report));
 
-    TEST_ASSERT_EQUAL_HEX8(RESTARTED_SEQUENCE, span->rx_seq);
-    TEST_ASSERT_EQUAL(SPAN_SOS_REMOTE_NONCE, span->state);
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(first_rei, span->d.r_nonce, sizeof(first_rei));
+    EXPECT_EQ(RESTARTED_SEQUENCE, span->rx_seq);
+    EXPECT_EQ(SPAN_SOS_REMOTE_NONCE, span->state);
+    EXPECT_EQ(0, memcmp(first_rei, span->d.r_nonce, sizeof(first_rei)));
 
     memcpy(&replayed_nonce_report[4], replay_rei, sizeof(replay_rei));
     S2_application_command_handler(&s2_context, &connection, replayed_nonce_report, sizeof(replayed_nonce_report));
 
-    TEST_ASSERT_EQUAL_HEX8(RESTARTED_SEQUENCE, span->rx_seq);
-    TEST_ASSERT_EQUAL(SPAN_SOS_REMOTE_NONCE, span->state);
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(first_rei, span->d.r_nonce, sizeof(first_rei));
+    EXPECT_EQ(RESTARTED_SEQUENCE, span->rx_seq);
+    EXPECT_EQ(SPAN_SOS_REMOTE_NONCE, span->state);
+    EXPECT_EQ(0, memcmp(first_rei, span->d.r_nonce, sizeof(first_rei)));
 }
 
 /**
@@ -2084,14 +2142,14 @@ void test_nonce_report_accepts_new_random_sequence_after_peer_restart(void)
  * resume encapsulation of the held payload (01B). The old window-2 drop
  * left the controller stuck waiting for a Nonce Report.
  */
-void test_nonce_report_after_peer_restart_resumes_pending_secure_send(void)
+TEST_F(SpanTest, test_nonce_report_after_peer_restart_resumes_pending_secure_send)
 {
     const node_t LOCAL_NODE_ID       = 1;
     const node_t REMOTE_NODE_ID      = 2;
     const uint8_t PREVIOUS_SEQUENCE  = 0xBF;
     const uint8_t RESTARTED_SEQUENCE = 0xBE;
     const uint32_t HOME_ID           = 0x11223344;
-    struct S2 s2_context             = {0};
+    struct S2 s2_context             = {};
     s2_connection_t connection       = {0};
     uint8_t payload[]                = {0x25, 0x02};
     uint8_t nonce_report[20]         = {COMMAND_CLASS_SECURITY_2, SECURITY_2_NONCE_REPORT, RESTARTED_SEQUENCE, SECURITY_2_NONCE_REPORT_PROPERTIES1_SOS_BIT_MASK};
@@ -2114,20 +2172,20 @@ void test_nonce_report_after_peer_restart_resumes_pending_secure_send(void)
     span->rx_seq      = PREVIOUS_SEQUENCE;
     span->tx_seq      = 0x10;
 
-    TEST_ASSERT_TRUE(S2_send_data(&s2_context, &connection, payload, sizeof(payload)));
-    TEST_ASSERT_EQUAL(WAIT_NONCE_RAPORT, s2_context.fsm);
-    TEST_ASSERT_EQUAL_UINT32(1, g_sent_frame_count);
-    TEST_ASSERT_EQUAL_HEX8(SECURITY_2_NONCE_GET, g_sent_frame[1]);
+    EXPECT_TRUE(S2_send_data(&s2_context, &connection, payload, sizeof(payload)));
+    EXPECT_EQ(WAIT_NONCE_RAPORT, s2_context.fsm);
+    EXPECT_EQ(1, g_sent_frame_count);
+    EXPECT_EQ(SECURITY_2_NONCE_GET, g_sent_frame[1]);
 
     memcpy(&nonce_report[4], test_rei_valid, sizeof(test_rei_valid));
     S2_application_command_handler(&s2_context, &connection, nonce_report, sizeof(nonce_report));
 
-    TEST_ASSERT_EQUAL_HEX8(RESTARTED_SEQUENCE, span->rx_seq);
-    TEST_ASSERT_EQUAL(SENDING_MSG, s2_context.fsm);
-    TEST_ASSERT_EQUAL_UINT32(2, g_sent_frame_count);
-    TEST_ASSERT_GREATER_OR_EQUAL_UINT16(4, g_sent_frame_len);
-    TEST_ASSERT_EQUAL_HEX8(COMMAND_CLASS_SECURITY_2, g_sent_frame[0]);
-    TEST_ASSERT_EQUAL_HEX8(SECURITY_2_MESSAGE_ENCAPSULATION, g_sent_frame[1]);
+    EXPECT_EQ(RESTARTED_SEQUENCE, span->rx_seq);
+    EXPECT_EQ(SENDING_MSG, s2_context.fsm);
+    EXPECT_EQ(2, g_sent_frame_count);
+    EXPECT_GE(g_sent_frame_len, 4);
+    EXPECT_EQ(COMMAND_CLASS_SECURITY_2, g_sent_frame[0]);
+    EXPECT_EQ(SECURITY_2_MESSAGE_ENCAPSULATION, g_sent_frame[1]);
 }
 
 /**
@@ -2139,12 +2197,12 @@ void test_nonce_report_after_peer_restart_resumes_pending_secure_send(void)
  * duplicate and dropped a valid Nonce Report. 0xFF must be stored and the REI
  * applied (02F / 030).
  */
-void test_nonce_report_accepts_new_sequence_across_wraparound(void)
+TEST_F(SpanTest, test_nonce_report_accepts_new_sequence_across_wraparound)
 {
     const node_t LOCAL_NODE_ID  = 1;
     const node_t REMOTE_NODE_ID = 2;
     const uint8_t rei[16]       = {0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F};
-    struct S2 s2_context        = {0};
+    struct S2 s2_context        = {};
     s2_connection_t connection  = {0};
     uint8_t nonce_report[20]    = {COMMAND_CLASS_SECURITY_2, SECURITY_2_NONCE_REPORT, 0xFF, SECURITY_2_NONCE_REPORT_PROPERTIES1_SOS_BIT_MASK};
 
@@ -2160,9 +2218,9 @@ void test_nonce_report_accepts_new_sequence_across_wraparound(void)
     memcpy(&nonce_report[4], rei, sizeof(rei));
     S2_application_command_handler(&s2_context, &connection, nonce_report, sizeof(nonce_report));
 
-    TEST_ASSERT_EQUAL_HEX8(0xFF, span->rx_seq);
-    TEST_ASSERT_EQUAL(SPAN_SOS_REMOTE_NONCE, span->state);
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(rei, span->d.r_nonce, sizeof(rei));
+    EXPECT_EQ(0xFF, span->rx_seq);
+    EXPECT_EQ(SPAN_SOS_REMOTE_NONCE, span->state);
+    EXPECT_EQ(0, memcmp(rei, span->d.r_nonce, sizeof(rei)));
 }
 
 /**
@@ -2175,7 +2233,7 @@ void test_nonce_report_accepts_new_sequence_across_wraparound(void)
  * must allocate a separate SPAN entry and store that peer's REI. An immediate
  * same-seq replay from that peer must not replace the REI (02E / 02F).
  */
-void test_nonce_report_duplicate_detection_is_scoped_to_peer(void)
+TEST_F(SpanTest, test_nonce_report_duplicate_detection_is_scoped_to_peer)
 {
     const node_t LOCAL_NODE_ID         = 1;
     const node_t FIRST_REMOTE_NODE_ID  = 2;
@@ -2183,7 +2241,7 @@ void test_nonce_report_duplicate_detection_is_scoped_to_peer(void)
     const uint8_t SEQUENCE             = 0x42;
     const uint8_t first_rei[16]        = {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4A, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F};
     const uint8_t replay_rei[16]       = {0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F};
-    struct S2 s2_context               = {0};
+    struct S2 s2_context               = {};
     s2_connection_t second_connection  = {0};
     uint8_t nonce_report[20]           = {COMMAND_CLASS_SECURITY_2, SECURITY_2_NONCE_REPORT, SEQUENCE, SECURITY_2_NONCE_REPORT_PROPERTIES1_SOS_BIT_MASK};
     uint8_t replayed_nonce_report[20]  = {COMMAND_CLASS_SECURITY_2, SECURITY_2_NONCE_REPORT, SEQUENCE, SECURITY_2_NONCE_REPORT_PROPERTIES1_SOS_BIT_MASK};
@@ -2200,19 +2258,19 @@ void test_nonce_report_duplicate_detection_is_scoped_to_peer(void)
     memcpy(&nonce_report[4], first_rei, sizeof(first_rei));
     S2_application_command_handler(&s2_context, &second_connection, nonce_report, sizeof(nonce_report));
 
-    TEST_ASSERT_EQUAL_HEX8(SEQUENCE, first_span->rx_seq);
-    TEST_ASSERT_EQUAL(SPAN_NEGOTIATED, first_span->state);
-    TEST_ASSERT_EQUAL(SECOND_REMOTE_NODE_ID, s2_context.span_table[1].rnode);
-    TEST_ASSERT_EQUAL_HEX8(SEQUENCE, s2_context.span_table[1].rx_seq);
-    TEST_ASSERT_EQUAL(SPAN_SOS_REMOTE_NONCE, s2_context.span_table[1].state);
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(first_rei, s2_context.span_table[1].d.r_nonce, sizeof(first_rei));
+    EXPECT_EQ(SEQUENCE, first_span->rx_seq);
+    EXPECT_EQ(SPAN_NEGOTIATED, first_span->state);
+    EXPECT_EQ(SECOND_REMOTE_NODE_ID, s2_context.span_table[1].rnode);
+    EXPECT_EQ(SEQUENCE, s2_context.span_table[1].rx_seq);
+    EXPECT_EQ(SPAN_SOS_REMOTE_NONCE, s2_context.span_table[1].state);
+    EXPECT_EQ(0, memcmp(first_rei, s2_context.span_table[1].d.r_nonce, sizeof(first_rei)));
 
     memcpy(&replayed_nonce_report[4], replay_rei, sizeof(replay_rei));
     S2_application_command_handler(&s2_context, &second_connection, replayed_nonce_report, sizeof(replayed_nonce_report));
 
-    TEST_ASSERT_EQUAL_HEX8(SEQUENCE, s2_context.span_table[1].rx_seq);
-    TEST_ASSERT_EQUAL(SPAN_SOS_REMOTE_NONCE, s2_context.span_table[1].state);
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(first_rei, s2_context.span_table[1].d.r_nonce, sizeof(first_rei));
+    EXPECT_EQ(SEQUENCE, s2_context.span_table[1].rx_seq);
+    EXPECT_EQ(SPAN_SOS_REMOTE_NONCE, s2_context.span_table[1].state);
+    EXPECT_EQ(0, memcmp(first_rei, s2_context.span_table[1].d.r_nonce, sizeof(first_rei)));
 }
 
 /**
@@ -2225,14 +2283,14 @@ void test_nonce_report_duplicate_detection_is_scoped_to_peer(void)
  * "previous minus one". 02F has no numeric neighborhood; stored 0x10 and
  * incoming 0x13 must be accepted and the REI stored.
  */
-void test_nonce_report_accepts_non_adjacent_new_sequence(void)
+TEST_F(SpanTest, test_nonce_report_accepts_non_adjacent_new_sequence)
 {
     const node_t LOCAL_NODE_ID      = 1;
     const node_t REMOTE_NODE_ID     = 2;
     const uint8_t PREVIOUS_SEQUENCE = 0x10;
     const uint8_t NEW_SEQUENCE      = 0x13;
     const uint8_t rei[16]           = {0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F};
-    struct S2 s2_context            = {0};
+    struct S2 s2_context            = {};
     s2_connection_t connection      = {0};
     uint8_t nonce_report[20]        = {COMMAND_CLASS_SECURITY_2, SECURITY_2_NONCE_REPORT, NEW_SEQUENCE, SECURITY_2_NONCE_REPORT_PROPERTIES1_SOS_BIT_MASK};
 
@@ -2248,9 +2306,9 @@ void test_nonce_report_accepts_non_adjacent_new_sequence(void)
     memcpy(&nonce_report[4], rei, sizeof(rei));
     S2_application_command_handler(&s2_context, &connection, nonce_report, sizeof(nonce_report));
 
-    TEST_ASSERT_EQUAL_HEX8(NEW_SEQUENCE, span->rx_seq);
-    TEST_ASSERT_EQUAL(SPAN_SOS_REMOTE_NONCE, span->state);
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(rei, span->d.r_nonce, sizeof(rei));
+    EXPECT_EQ(NEW_SEQUENCE, span->rx_seq);
+    EXPECT_EQ(SPAN_SOS_REMOTE_NONCE, span->state);
+    EXPECT_EQ(0, memcmp(rei, span->d.r_nonce, sizeof(rei)));
 }
 
 /**
@@ -2264,11 +2322,11 @@ void test_nonce_report_accepts_non_adjacent_new_sequence(void)
  * that is CCM auth failure, not duplicate detection. Exact-seq Encapsulate
  * replay (02E / 02F) remains covered by test_span_decrypt_replay_attack.
  */
-void test_message_encapsulation_accepts_new_sequence_across_wraparound(void)
+TEST_F(SpanTest, test_message_encapsulation_accepts_new_sequence_across_wraparound)
 {
     const node_t LOCAL_NODE_ID  = 1;
     const node_t REMOTE_NODE_ID = 2;
-    struct S2 s2_context        = {0};
+    struct S2 s2_context        = {};
     s2_connection_t connection  = {0};
     /* Minimal Encapsulate frame: seq 0xFF, no valid CCM ciphertext required. */
     uint8_t encap_frame[] = {COMMAND_CLASS_SECURITY_2, SECURITY_2_MESSAGE_ENCAPSULATION, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
@@ -2294,8 +2352,8 @@ void test_message_encapsulation_accepts_new_sequence_across_wraparound(void)
 
     S2_application_command_handler(&s2_context, &connection, encap_frame, sizeof(encap_frame));
 
-    TEST_ASSERT_EQUAL_HEX8(0xFF, span->rx_seq);
-    TEST_ASSERT_FALSE_MESSAGE(g_msg_received, "Invalid ciphertext must not decrypt; seq layer already accepted 0xFF");
+    EXPECT_EQ(0xFF, span->rx_seq);
+    EXPECT_FALSE(g_msg_received) << "Invalid ciphertext must not decrypt; seq layer already accepted 0xFF";
 }
 
 /**
@@ -2317,7 +2375,7 @@ void test_message_encapsulation_accepts_new_sequence_across_wraparound(void)
  * This test verifies the first layer (sequence number check). The delay attack
  * test (test_span_decrypt_delay_attack) verifies the second layer.
  */
-void test_span_decrypt_replay_attack(void)
+TEST_F(SpanTest, test_span_decrypt_replay_attack)
 {
     struct S2 s2_context;
     s2_connection_t connection;
@@ -2401,7 +2459,7 @@ void test_span_decrypt_replay_attack(void)
 
     memcpy(&frame_buffer[hdr_len], plaintext, sizeof(plaintext));
     ciphertext_len = CCM_encrypt_and_auth(encryption_key, sender_nonce, aad, aad_len, &frame_buffer[hdr_len], sizeof(plaintext));
-    TEST_ASSERT_GREATER_THAN(0, ciphertext_len);
+    EXPECT_GT(ciphertext_len, 0);
 
     uint16_t frame_len = hdr_len + ciphertext_len;
 
@@ -2417,16 +2475,16 @@ void test_span_decrypt_replay_attack(void)
     S2_application_command_handler(&s2_context, &connection, frame_buffer, frame_len);
 
     // Verify first attempt succeeded
-    TEST_ASSERT_TRUE_MESSAGE(g_msg_received, "First attempt should succeed - message received");
-    TEST_ASSERT_EQUAL_UINT16(sizeof(plaintext), g_received_msg_len);
-    TEST_ASSERT_EQUAL_UINT8_ARRAY(plaintext, g_received_msg, sizeof(plaintext));
+    EXPECT_TRUE(g_msg_received) << "First attempt should succeed - message received";
+    EXPECT_EQ(sizeof(plaintext), g_received_msg_len);
+    EXPECT_EQ(0, memcmp(plaintext, g_received_msg, sizeof(plaintext)));
 
     // Verify SPAN state is still NEGOTIATED
-    TEST_ASSERT_EQUAL(SPAN_NEGOTIATED, span->state);
+    EXPECT_EQ(SPAN_NEGOTIATED, span->state);
 
     // Record rx_seq after first message
     uint8_t rx_seq_after_first = span->rx_seq;
-    TEST_ASSERT_EQUAL_UINT8(SEQUENCE_NUM, rx_seq_after_first);
+    EXPECT_EQ(SEQUENCE_NUM, rx_seq_after_first);
 
     // =========================================================================
     // Step 5: Reset test state for replay attempt
@@ -2463,17 +2521,17 @@ void test_span_decrypt_replay_attack(void)
     // =========================================================================
 
     // Message should NOT have been received - replay blocked by seq check
-    TEST_ASSERT_FALSE_MESSAGE(g_msg_received, "Replay attempt should FAIL - duplicate sequence number rejected");
+    EXPECT_FALSE(g_msg_received) << "Replay attempt should FAIL - duplicate sequence number rejected";
 
     // NO SOS should be sent - message was silently dropped at seq check level
     // This is more efficient than processing the message and triggering SOS
-    TEST_ASSERT_FALSE_MESSAGE(g_nonce_report_sent, "No Nonce Report should be sent - message dropped before decryption attempt");
+    EXPECT_FALSE(g_nonce_report_sent) << "No Nonce Report should be sent - message dropped before decryption attempt";
 
     // SPAN state should remain NEGOTIATED (message was rejected early)
-    TEST_ASSERT_EQUAL_MESSAGE(SPAN_NEGOTIATED, span->state, "SPAN state should remain NEGOTIATED - replay was caught by seq check");
+    EXPECT_EQ(SPAN_NEGOTIATED, span->state) << "SPAN state should remain NEGOTIATED - replay was caught by seq check";
 
     // rx_seq should remain unchanged (duplicate was rejected)
-    TEST_ASSERT_EQUAL_UINT8_MESSAGE(rx_seq_after_first, span->rx_seq, "rx_seq should remain unchanged after replay rejection");
+    EXPECT_EQ(rx_seq_after_first, span->rx_seq) << "rx_seq should remain unchanged after replay rejection";
 }
 
 /**
@@ -2491,7 +2549,7 @@ void test_span_decrypt_replay_attack(void)
  * delayed message is finally delivered, it should fail because its nonce
  * is too far in the past (beyond the 5-iteration retry window).
  */
-void test_span_decrypt_delay_attack(void)
+TEST_F(SpanTest, test_span_decrypt_delay_attack)
 {
     struct S2 s2_context;
     s2_connection_t connection;
@@ -2574,7 +2632,7 @@ void test_span_decrypt_delay_attack(void)
 
     memcpy(&m1_frame[m1_hdr_len], m1_plaintext, sizeof(m1_plaintext));
     uint16_t m1_cipher_len = CCM_encrypt_and_auth(encryption_key, m1_nonce, m1_aad, m1_aad_len, &m1_frame[m1_hdr_len], sizeof(m1_plaintext));
-    TEST_ASSERT_GREATER_THAN(0, m1_cipher_len);
+    EXPECT_GT(m1_cipher_len, 0);
     uint16_t m1_frame_len = m1_hdr_len + m1_cipher_len;
 
     // M1 is now "captured" by attacker - NOT delivered to receiver yet
@@ -2614,7 +2672,7 @@ void test_span_decrypt_delay_attack(void)
 
         memcpy(&msg_frame[msg_hdr_len], msg_plaintext, sizeof(msg_plaintext));
         uint16_t msg_cipher_len = CCM_encrypt_and_auth(encryption_key, msg_nonce, msg_aad, msg_aad_len, &msg_frame[msg_hdr_len], sizeof(msg_plaintext));
-        TEST_ASSERT_GREATER_THAN(0, msg_cipher_len);
+        EXPECT_GT(msg_cipher_len, 0);
         uint16_t msg_frame_len = msg_hdr_len + msg_cipher_len;
 
         // Reset for this message
@@ -2628,8 +2686,8 @@ void test_span_decrypt_delay_attack(void)
         S2_application_command_handler(&s2_context, &connection, msg_frame, msg_frame_len);
 
         // Each message should succeed
-        TEST_ASSERT_TRUE_MESSAGE(g_msg_received, "Messages M2-M7 should all succeed");
-        TEST_ASSERT_EQUAL(SPAN_NEGOTIATED, span->state);
+        EXPECT_TRUE(g_msg_received) << "Messages M2-M7 should all succeed";
+        EXPECT_EQ(SPAN_NEGOTIATED, span->state);
     }
 
     // At this point, receiver's SPAN has advanced 6 positions
@@ -2654,12 +2712,12 @@ void test_span_decrypt_delay_attack(void)
     // =========================================================================
 
     // M1 should NOT be received - nonce is too far in the past
-    TEST_ASSERT_FALSE_MESSAGE(g_msg_received, "Delayed message M1 should FAIL - nonce is beyond retry window (6 > 5)");
+    EXPECT_FALSE(g_msg_received) << "Delayed message M1 should FAIL - nonce is beyond retry window (6 > 5)";
 
     // SOS should be triggered
-    TEST_ASSERT_TRUE_MESSAGE(g_nonce_report_sent, "Nonce Report with SOS should have been sent for delayed message");
-    TEST_ASSERT_EQUAL_HEX8_MESSAGE(0x01, g_nonce_report_flags & 0x01, "SOS flag should be set for delayed message");
+    EXPECT_TRUE(g_nonce_report_sent) << "Nonce Report with SOS should have been sent for delayed message";
+    EXPECT_EQ(0x01, g_nonce_report_flags & 0x01) << "SOS flag should be set for delayed message";
 
     // SPAN transitions to SOS_LOCAL_NONCE
-    TEST_ASSERT_EQUAL_MESSAGE(SPAN_SOS_LOCAL_NONCE, span->state, "SPAN state should be SOS_LOCAL_NONCE after delay attack");
+    EXPECT_EQ(SPAN_SOS_LOCAL_NONCE, span->state) << "SPAN state should be SOS_LOCAL_NONCE after delay attack";
 }

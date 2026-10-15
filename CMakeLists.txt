@@ -45,7 +45,6 @@ include(cmake/include/version.cmake)
 include(CTest)
 option(UNIT_TEST "Configure unit tests" OFF)
 if(UNIT_TEST)
-  include(cmake/include/unity_test.cmake)
   include(cmake/include/gtest_test.cmake)
 endif()
 

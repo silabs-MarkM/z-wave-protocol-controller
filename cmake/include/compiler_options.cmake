@@ -97,10 +97,6 @@ if(ZPC_ENABLE_SANITIZERS)
   message(STATUS "Enabling ASan and UBSan for unit-test sanitizer build")
   add_compile_options(-fsanitize=address,undefined -fno-omit-frame-pointer)
   add_link_options(-fsanitize=address,undefined)
-  if(APPLE)
-    # zw-libs2 mock_control uses sprintf in macros; AppleClang treats it as deprecated.
-    add_compile_options(-Wno-deprecated-declarations)
-  endif()
 endif()
 
 # ##############################################################################

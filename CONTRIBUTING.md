@@ -264,7 +264,7 @@ Use the `unit-test` CMake preset (`UNIT_TEST=ON`) on macOS and Linux. Do not use
 
 The `unit-test` preset builds with **AddressSanitizer** and **UndefinedBehaviorSanitizer** (`ZPC_ENABLE_SANITIZERS=ON`). CTest sets `ASAN_OPTIONS` with `detect_leaks=1` (LeakSanitizer on Linux) and `UBSAN_OPTIONS` for halt-on-error. On macOS, leak-at-exit detection is limited compared to Linux. Do not combine unit tests with `COVERAGE` or gcov in the same configure. For a faster non-sanitizer run only, configure with `-DZPC_ENABLE_SANITIZERS=OFF` (requires `--fresh` if toggling).
 
-ZPC component tests use **GoogleTest** and **GoogleMock** (`add_zpc_gtest` in [cmake/include/gtest_test.cmake](cmake/include/gtest_test.cmake)). The embedded **zw-libs2** tree still uses **Unity** (`add_unity_test`).
+ZPC component tests use **GoogleTest** and **GoogleMock** (`add_zpc_gtest` in [cmake/include/gtest_test.cmake](cmake/include/gtest_test.cmake)).
 
 To add a component test, create `components/<name>/test/`, register it from the component `CMakeLists.txt` with `if(UNIT_TEST) add_subdirectory(test) endif()`, and call `add_zpc_gtest` from the test `CMakeLists.txt`.
 

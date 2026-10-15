@@ -4,10 +4,12 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unity.h>
+#include <gtest/gtest.h>
+extern "C" {
 #include "ccm.h"
+}
 
-void test_verify_handful_payload_lengths(void)
+TEST(Ccm, test_verify_handful_payload_lengths)
 {
     uint8_t key[16]       = {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f};
     uint8_t nonce[15 - 7] = {0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17};
@@ -33,27 +35,27 @@ void test_verify_handful_payload_lengths(void)
     for (i = 0; i < 6; i++) {
         plaintext_len = text_to_encrypt_len = lengths[i];
         ciphertext_len                      = text_to_encrypt_len + t;
-        ciphertext                          = malloc(ciphertext_len);
+        ciphertext                          = (uint8_t *)malloc(ciphertext_len);
         if (ciphertext == NULL) {
             printf("malloc failed for ciphertext\n");
             ret = 1;
             // return;
             // goto out3;
         }
-        text_to_encrypt = malloc(text_to_encrypt_len);
+        text_to_encrypt = (uint8_t *)malloc(text_to_encrypt_len);
         if (text_to_encrypt == NULL) {
             printf("malloc failed for ciphertext\n");
             ret = 1;
             goto out2;
         }
-        text_to_encrypt_bkup = malloc(text_to_encrypt_len);
+        text_to_encrypt_bkup = (uint8_t *)malloc(text_to_encrypt_len);
         if (text_to_encrypt_bkup == NULL) {
             printf("malloc failed for ciphertext\n");
             ret = 1;
             goto out1;
         }
 
-        plaintext = malloc(plaintext_len);
+        plaintext = (uint8_t *)malloc(plaintext_len);
         if (ciphertext == NULL) {
             printf("malloc failed for ciphertext\n");
             ret = 1;
@@ -81,7 +83,7 @@ void test_verify_handful_payload_lengths(void)
             plaintext_len = ret;
         }
 
-        // UNITY_TEST_ASSERT_EQUAL_UINT8_ARRAY(text_to_encrypt_bkup, ciphertext, plaintext_len, __LINE__, "");
+        // EXPECT_EQ(0, memcmp(text_to_encrypt_bkup, ciphertext, plaintext_len));
 
         if (memcmp(ciphertext, text_to_encrypt_bkup, plaintext_len)) {
             printf("verify_handful_payload_lengths TEST FAILED at %dth iteration\n", i);
@@ -109,7 +111,8 @@ out2:
     return;
 }
 
-void ignore_test_verify_all_payload_lengths(void)
+#if 0
+static void unused_verify_all_payload_lengths(void)
 {
     uint8_t key[16]       = {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f};
     uint8_t nonce[15 - 7] = {0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17};
@@ -139,26 +142,26 @@ void ignore_test_verify_all_payload_lengths(void)
     for (i = 1; i < 0xffff; i++) {
         plaintext_len = text_to_encrypt_len = i;
         ciphertext_len                      = text_to_encrypt_len + t;
-        ciphertext                          = malloc(ciphertext_len);
+        ciphertext                          = (uint8_t *)malloc(ciphertext_len);
         if (ciphertext == NULL) {
             printf("malloc failed for ciphertext\n");
             ret = 1;
             goto out3;
         }
-        text_to_encrypt = malloc(text_to_encrypt_len);
+        text_to_encrypt = (uint8_t *)malloc(text_to_encrypt_len);
         if (text_to_encrypt == NULL) {
             printf("malloc failed for ciphertext\n");
             ret = 1;
             goto out2;
         }
-        text_to_encrypt_bkup = malloc(text_to_encrypt_len);
+        text_to_encrypt_bkup = (uint8_t *)malloc(text_to_encrypt_len);
         if (text_to_encrypt_bkup == NULL) {
             printf("malloc failed for ciphertext\n");
             ret = 1;
             goto out2;
         }
 
-        plaintext = malloc(plaintext_len);
+        plaintext = (uint8_t *)malloc(plaintext_len);
         if (ciphertext == NULL) {
             printf("malloc failed for ciphertext\n");
             ret = 1;
@@ -186,7 +189,7 @@ void ignore_test_verify_all_payload_lengths(void)
             plaintext_len = ret;
         }
 
-        UNITY_TEST_ASSERT_EQUAL_UINT8_ARRAY(text_to_encrypt_bkup, ciphertext, plaintext_len, __LINE__, "");
+        EXPECT_EQ(0, memcmp(text_to_encrypt_bkup, ciphertext, plaintext_len));
 
         /*
         if(memcmp(ciphertext, text_to_encrypt_bkup, plaintext_len)) {
@@ -212,8 +215,9 @@ out2:
 out3:
     return;
 }
+#endif
 
-void test_example1(void)
+TEST(Ccm, test_example1)
 {
     uint8_t key[16] = {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f};
     /* 7 is valie of q below */
@@ -243,24 +247,24 @@ void test_example1(void)
     printf("Refer to http://csrc.nist.gov/publications/nistpubs/800-38C/SP800-38C_updated-July20_2007.pdf page 17 Example 2\n");
     ret = CCM_encrypt_and_auth(key, nonce, aad, aad_len, ciphertext, text_to_encrypt_len);
 
-    UNITY_TEST_ASSERT((0 != ret), __LINE__, "Could not encrypt :(");
+    ASSERT_NE(0, ret) << "Could not encrypt :(";
 
     ciphertext_len = ret;
 
-    UNITY_TEST_ASSERT_EQUAL_UINT32(sizeof(nist_cipher_and_auth_tag), ciphertext_len, __LINE__, "Ciphertext length does not match with NIST document.");
+    EXPECT_EQ(sizeof(nist_cipher_and_auth_tag), ciphertext_len) << "Ciphertext length does not match with NIST document.";
 
-    UNITY_TEST_ASSERT_EQUAL_UINT8_ARRAY(nist_cipher_and_auth_tag, ciphertext, ciphertext_len, __LINE__, "Ciphertext does not match with NIST document.");
+    EXPECT_EQ(0, memcmp(nist_cipher_and_auth_tag, ciphertext, ciphertext_len)) << "Ciphertext does not match with NIST document.";
 
     ret = CCM_decrypt_and_auth(key, nonce, aad, aad_len, ciphertext, ciphertext_len);
 
-    UNITY_TEST_ASSERT((0 != ret), __LINE__, "Could not decrypt :(");
+    ASSERT_NE(0, ret) << "Could not decrypt :(";
 
     plaintext_len = ret;
 
-    UNITY_TEST_ASSERT_EQUAL_UINT8_ARRAY(text_to_encrypt_bkup, ciphertext, plaintext_len, __LINE__, "");
+    EXPECT_EQ(0, memcmp(text_to_encrypt_bkup, ciphertext, plaintext_len));
 }
 
-void test_big_aad_example(void)
+TEST(Ccm, test_big_aad_example)
 {
     uint8_t key[16]   = {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f};
     uint8_t nonce[13] = {0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c};
@@ -289,9 +293,9 @@ void test_big_aad_example(void)
     */
 
     /*the for loop below writes 1 byte more than aad_len, so just to be secure alloc 2 more bytes*/
-    aad = malloc(aad_len + 2);
+    aad = (uint8_t *)malloc(aad_len + 2);
 
-    UNITY_TEST_ASSERT_NOT_NULL(aad, __LINE__, "malloc failed for aad.");
+    ASSERT_NE(nullptr, aad) << "malloc failed for aad.";
 
 #ifdef NOT_USED
     if (aad == NULL) {
@@ -300,7 +304,7 @@ void test_big_aad_example(void)
     }
 #endif
     ciphertext_len = text_to_encrypt_len + t;
-    ciphertext     = malloc(ciphertext_len);
+    ciphertext     = (uint8_t *)malloc(ciphertext_len);
 
     if (ciphertext == NULL) {
         printf("malloc failed for ciphertext\n");
@@ -336,7 +340,7 @@ void test_big_aad_example(void)
         goto out;
     }
 
-    UNITY_TEST_ASSERT_EQUAL_UINT8_ARRAY(text_to_encrypt_bkup, ciphertext, plaintext_len, __LINE__, "");
+    EXPECT_EQ(0, memcmp(text_to_encrypt_bkup, ciphertext, plaintext_len));
 
     /*
     if(memcmp(ciphertext, text_to_encrypt_bkup, plaintext_len)) {
@@ -354,7 +358,7 @@ free_aad:
     return;
 }
 
-void test_handful_aad_lengths(void)
+TEST(Ccm, test_handful_aad_lengths)
 {
     uint8_t key[16]   = {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f};
     uint8_t nonce[13] = {0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c};
@@ -384,7 +388,7 @@ void test_handful_aad_lengths(void)
 
     for (i = 0; i < sizeof(lengths) / sizeof(*lengths); i++) {
         aad_len = lengths[i];
-        aad     = malloc(aad_len);
+        aad     = (uint8_t *)malloc(aad_len);
         for (j = 0; j < lengths[i]; j++) {
             aad[j] = j;
         }
@@ -393,7 +397,7 @@ void test_handful_aad_lengths(void)
             return;
         }
         ciphertext_len = text_to_encrypt_len + t;
-        ciphertext     = malloc(ciphertext_len);
+        ciphertext     = (uint8_t *)malloc(ciphertext_len);
         if (ciphertext == NULL) {
             printf("malloc failed for ciphertext\n");
             ret = 1;
@@ -416,7 +420,7 @@ void test_handful_aad_lengths(void)
             goto out;
         }
 
-        UNITY_TEST_ASSERT_EQUAL_UINT8_ARRAY(text_to_encrypt_bkup, ciphertext, plaintext_len, __LINE__, "");
+        EXPECT_EQ(0, memcmp(text_to_encrypt_bkup, ciphertext, plaintext_len));
 
         /*
         if(memcmp(ciphertext, text_to_encrypt_bkup, plaintext_len) != 0) {
@@ -468,7 +472,7 @@ static int test_all_aad_lengths(void)
 
     for (i = 0; i < 0xffff; i++) {
         aad_len = i;
-        aad     = malloc(aad_len);
+        aad     = (uint8_t *)malloc(aad_len);
         for (j = 0; j < i; j++) {
             aad[j] = j;
         }
@@ -477,7 +481,7 @@ static int test_all_aad_lengths(void)
             return 1;
         }
         ciphertext_len = text_to_encrypt_len + t;
-        ciphertext     = malloc(ciphertext_len);
+        ciphertext     = (uint8_t *)malloc(ciphertext_len);
         if (ciphertext == NULL) {
             printf("malloc failed for ciphertext\n");
             ret = 1;
@@ -544,7 +548,7 @@ static int test_aad_len_smaller_than_12(void)
     n = 13;
     */
     ciphertext_len = text_to_encrypt_len + t;
-    ciphertext     = malloc(ciphertext_len);
+    ciphertext     = (uint8_t *)malloc(ciphertext_len);
     if (ciphertext == NULL) {
         printf("malloc failed for ciphertext\n");
         return 1;

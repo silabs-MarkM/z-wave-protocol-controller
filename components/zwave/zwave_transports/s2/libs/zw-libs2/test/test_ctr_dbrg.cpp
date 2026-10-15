@@ -22,8 +22,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+extern "C" {
 #include <ctr_drbg.h>
-#include <unity.h>
+}
+#include <gtest/gtest.h>
 uint8_t dbgCTRDRBG = 0;
 
 typedef struct {
@@ -270,12 +272,12 @@ int AJ_HexToRaw(const char *hex, size_t hexLen, uint8_t *raw, size_t rawLen)
  */
 #define ArraySize(a) (sizeof(a) / sizeof(a[0]))
 
-void test_ctr_dbrg(void)
+TEST(CtrDrbg, KnownAnswerVectors)
 {
     CTR_DRBG_CTX ctx;
     size_t i;
     size_t size;
-    uint8_t *d;
+    uint8_t *d = nullptr;
     uint8_t *__data;
     uint8_t *rand;
     uint8_t *personal;
@@ -289,10 +291,10 @@ void test_ctr_dbrg(void)
         size_t rlen = strlen(testVector[i].reseed) / 2;
 
         size     = elen + nlen;
-        __data   = malloc(size);
-        personal = malloc(size);
-        TEST_ASSERT_NOT_NULL(__data);
-        TEST_ASSERT_NOT_NULL(personal);
+        __data   = (uint8_t *)malloc(size);
+        personal = (uint8_t *)malloc(size);
+        ASSERT_NE(nullptr, __data);
+        ASSERT_NE(nullptr, personal);
         d = __data;
         p = personal;
         AJ_HexToRaw(testVector[i].entropy, 2 * elen, d, size);
@@ -315,25 +317,25 @@ void test_ctr_dbrg(void)
 
         if (rlen) {
             size   = rlen;
-            __data = malloc(size);
-            TEST_ASSERT_NOT_NULL(__data);
+            __data = (uint8_t *)malloc(size);
+            ASSERT_NE(nullptr, __data);
             AJ_HexToRaw(testVector[i].reseed, 2 * rlen, __data, size);
             AES_CTR_DRBG_Reseed(&ctx, __data);
             free(__data);
         }
 
         size   = strlen(testVector[i].rand) / 2;
-        __data = malloc(size);
-        rand   = malloc(size);
-        TEST_ASSERT(__data);
-        TEST_ASSERT(rand);
+        __data = (uint8_t *)malloc(size);
+        rand   = (uint8_t *)malloc(size);
+        ASSERT_NE(nullptr, __data);
+        ASSERT_NE(nullptr, rand);
         AJ_HexToRaw(testVector[i].rand, 2 * size, rand, size);
 
         AES_CTR_DRBG_Generate(&ctx, __data);
         AES_CTR_DRBG_Generate(&ctx, __data);
 
-        sprintf(message, "Expected failed for test #%lu\n", (long unsigned)i);
-        TEST_ASSERT_EQUAL_UINT8_ARRAY_MESSAGE(__data, rand, size, message);
+        snprintf(message, sizeof(message), "Expected failed for test #%lu\n", (long unsigned)i);
+        EXPECT_EQ(0, memcmp(__data, rand, size)) << message;
 
         free(__data);
         free(rand);
@@ -346,9 +348,9 @@ void test_ctr_dbrg(void)
 
     // Get some random __data
     size = 64;
-    rand = malloc(size);
+    rand = (uint8_t *)malloc(size);
     assert(rand);
-    hex = malloc(2 * size + 1);
+    hex = (uint8_t *)malloc(2 * size + 1);
     assert(hex);
     for (i = 0; i < 64; i++) {
         AJ_RandBytes(rand, size);
@@ -360,7 +362,7 @@ void test_ctr_dbrg(void)
     */
 }
 
-void test_ctr_drbg_different_entropy_yields_different_output(void)
+TEST(CtrDrbg, DifferentEntropyYieldsDifferentOutput)
 {
     CTR_DRBG_CTX ctx;
     const uint8_t personalization[SEEDLEN] = {0};
@@ -378,5 +380,5 @@ void test_ctr_drbg_different_entropy_yields_different_output(void)
     AES_CTR_DRBG_Instantiate(&ctx, entropy_b, personalization);
     AES_CTR_DRBG_Generate(&ctx, out_b);
 
-    TEST_ASSERT_NOT_EQUAL(0, memcmp(out_a, out_b, RANDLEN));
+    EXPECT_NE(0, memcmp(out_a, out_b, RANDLEN));
 }

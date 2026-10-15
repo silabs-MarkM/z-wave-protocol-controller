@@ -1,29 +1,27 @@
-
 add_compile_definitions(
   UNIT_TEST
 )
 
-#include_directories( ../crypto/aes )
-#add_executable( test_ccm test_ccm.c ../crypto/ccm/ccm.c ../crypto/aes/aes.c )
-#add_test( test_ccm test_ccm )
+set(LIBS2_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/../include)
 
-# AES-128 ECB/CBC (vectors from legacy aes_test.c)
-add_unity_test(NAME test_aes FILES test_aes.c LIBRARIES aes)
+add_zpc_gtest(NAME test_aes SRCS test_aes.cpp LIBS aes INCLUDES ${LIBS2_INCLUDE})
 
-# Add test for AES-CMAC
-add_unity_test(NAME test_aes_cmac FILES test_aes_cmac.c LIBRARIES s2crypto aes)
+add_zpc_gtest(NAME test_aes_cmac SRCS test_aes_cmac.cpp LIBS aes INCLUDES ${LIBS2_INCLUDE} ${CMAKE_CURRENT_SOURCE_DIR})
 
-# Add test for Curve25519
-include_directories(.)
-add_unity_test(NAME test_curve25519 FILES test_curve25519.c LIBRARIES s2crypto aes)
+add_zpc_gtest(NAME test_curve25519 SRCS test_curve25519.cpp LIBS s2crypto aes INCLUDES ${LIBS2_INCLUDE})
 
-# Add test for CCM
-add_unity_test(NAME test_ccm FILES test_ccm.c ../crypto/ccm/ccm.c ../crypto/aes/aes.c)
+add_zpc_gtest(
+  NAME test_ccm
+  SRCS test_ccm.cpp ../crypto/ccm/ccm.c ../crypto/aes/aes.c
+  INCLUDES ${LIBS2_INCLUDE})
 
-add_compile_definitions(
-  RANDLEN=64 
-)
+add_zpc_gtest(
+  NAME test_ctr_dbrg
+  SRCS test_ctr_dbrg.cpp ../crypto/ctr_drbg/ctr_drbg.c ../crypto/aes/aes.c
+  INCLUDES ${LIBS2_INCLUDE})
+target_compile_definitions(test_ctr_dbrg PRIVATE RANDLEN=64)
 
-add_unity_test(NAME test_ctr_dbrg FILES test_ctr_dbrg.c ../crypto/ctr_drbg/ctr_drbg.c ../crypto/aes/aes.c)
-
-add_unity_test(NAME test_kderiv FILES test_kderiv.c ../crypto/kderiv/kderiv.c ../crypto/aes-cmac/aes_cmac.c ../crypto/aes/aes.c)
+add_zpc_gtest(
+  NAME test_kderiv
+  SRCS test_kderiv.cpp ../crypto/kderiv/kderiv.c ../crypto/aes-cmac/aes_cmac.c ../crypto/aes/aes.c
+  INCLUDES ${LIBS2_INCLUDE})

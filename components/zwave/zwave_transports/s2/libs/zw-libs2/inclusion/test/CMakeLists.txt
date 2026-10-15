@@ -2,17 +2,14 @@ add_compile_definitions(
   UNIT_TEST
 )
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
-
-add_unity_test(NAME test_inclusion_joining_node_slave
-  TEST_BASE
-    test_inclusion_joining_node.c
-  FILES
+add_zpc_gtest(
+  NAME test_inclusion_joining_node_slave
+  SRCS
+    test_inclusion_joining_node.cpp
+    libs2_gmock.cpp
     ../s2_inclusion.c
-    test_inclusion_joining_node.c
-  LIBRARIES
-    mock
-    s2_mock
-    s2_inclusion_mocks
-    crypto_mocks
+  INCLUDES
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../include
+    ${CMAKE_CURRENT_SOURCE_DIR}/..
 )

@@ -50,7 +50,7 @@ function(ADD_ZPC_GTEST)
     PRIVATE GTest::gtest_main GTest::gmock ${ADD_ZPC_GTEST_LIBS})
   target_include_directories(${ADD_ZPC_GTEST_NAME} PRIVATE ${ADD_ZPC_GTEST_INCLUDES})
 
-  gtest_discover_tests(${ADD_ZPC_GTEST_NAME})
+  gtest_discover_tests(${ADD_ZPC_GTEST_NAME} DISCOVERY_MODE PRE_TEST)
 
   add_dependencies(UNIT_TEST ${ADD_ZPC_GTEST_NAME})
 endfunction()

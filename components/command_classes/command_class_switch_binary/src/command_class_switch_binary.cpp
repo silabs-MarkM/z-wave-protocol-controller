@@ -51,6 +51,12 @@ namespace zwave_command_class
         }
         frame_generator->add_value(target_value_node, DESIRED_ATTRIBUTE);
 
+        const auto version_node = group_node.parent().child_by_type(static_cast<attribute_store_type_t>(command_class_switch_binary_attributes_t::supported_version));
+        const uint8_t supported_version = version_node.reported_exists() ? version_node.reported<uint8_t>() : switch_binary_set_min_version;
+        if (supported_version < 2) {
+            return frame_generator->generate_frame();
+        }
+
         auto duration_node = group_node.emplace_node(static_cast<attribute_store_type_t>(switch_binary_set_group_attributes_t::duration));
         if (!duration_node.desired_exists()) {
             return SL_STATUS_NOT_READY;

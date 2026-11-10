@@ -95,38 +95,32 @@
     {
       "name": "debug",
       "configurePreset": "debug",
-      "hidden": false,
-      "jobs": 8
+      "hidden": false
     },
     {
       "name": "release",
       "configurePreset": "release",
-      "hidden": false,
-      "jobs": 8
+      "hidden": false
     },
     {
       "name": "unit-test",
       "configurePreset": "unit-test",
-      "targets": ["UNIT_TEST"],
-      "jobs": 8
+      "targets": ["UNIT_TEST"]
     },
     {
       "name": "unit-test-coverage",
       "configurePreset": "unit-test-coverage",
-      "targets": ["UNIT_TEST"],
-      "jobs": 8
+      "targets": ["UNIT_TEST"]
     },
     {
       "name": "debug-sanitize",
       "configurePreset": "debug-sanitize",
-      "targets": ["zpc"],
-      "jobs": 8
+      "targets": ["zpc"]
     },
     {
       "name": "debug-tsan",
       "configurePreset": "debug-tsan",
-      "targets": ["zpc"],
-      "jobs": 8
+      "targets": ["zpc"]
     }
   ],
   "packagePresets": [

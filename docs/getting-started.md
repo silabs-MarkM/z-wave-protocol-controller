@@ -109,6 +109,8 @@ ZPC uses CMake presets. Use `debug` or `release` on macOS, Linux, and inside Doc
 cmake --workflow --preset <preset>
 ```
 
+The build presets do not pin a job count, so Ninja uses the host CPU count. Cap parallelism with `CMAKE_BUILD_PARALLEL_LEVEL` (for example `CMAKE_BUILD_PARALLEL_LEVEL=16 cmake --workflow --preset debug`).
+
 On Linux, you can produce a `.deb` package after the build — see [Debian packaging](packaging-debian.md).
 
 ## Configure ZPC
